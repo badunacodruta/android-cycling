@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.collaborative.cycling</groupId>
+        <artifactId>cycling-project</artifactId>
+        <version>v1.0-SNAPSHOT</version>
+        <relativePath>../</relativePath>
+    </parent>
+
+    <artifactId>cycling-parent</artifactId>
+
+    <packaging>pom</packaging>
+    <name>Android Cycling :: Base Module</name>
+
+    <properties>
+        <java.version>1.7</java.version>
+
+        <!-- maven -->
+        <maven.compiler.version>3.1</maven.compiler.version>
+        <maven.resources.version>2.6</maven.resources.version>
+        <maven.surefire.version>2.16</maven.surefire.version>
+        <skipTests>false</skipTests>
+
+        <!-- jpa -->
+        <hibernate.jpa.version>1.0.0.Final</hibernate.jpa.version>
+        <spring.data.jpa.version>1.6.1.RELEASE</spring.data.jpa.version>
+        <hibernate.entitymanager.version>4.3.5.Final</hibernate.entitymanager.version>
+
+        <!-- validation -->
+        <validation.api.version>1.1.0.Final</validation.api.version>
+        <hibernate.validator.version>5.1.1.Final</hibernate.validator.version>
+
+        <!-- db -->
+        <mysql.connector.version>5.1.6</mysql.connector.version>
+
+        <!-- tests -->
+        <test.ng.version>6.8.5</test.ng.version>
+
+        <!-- spring -->
+        <spring.version>4.0.6.RELEASE</spring.version>
+        <spring.integration.version>4.0.3.RELEASE</spring.integration.version>
+
+        <jersey.version>2.10.1</jersey.version>
+        <jackson.version>2.4.1</jackson.version>
+
+        <hsql.db.version>2.3.2</hsql.db.version>
+        <model.mapper.version>0.7.2</model.mapper.version>
+
+        <aspectj.version>1.8.0</aspectj.version>
+
+        <stateless.filter.version>0.4</stateless.filter.version>
+
+        <tomcat.plugin.version>2.2</tomcat.plugin.version>
+
+
+
+
+        <!--&lt;!&ndash; maven &ndash;&gt;-->
+        <!--<maven.compiler.version>3.1</maven.compiler.version>-->
+        <!--<maven.resources.version>2.6</maven.resources.version>-->
+        <!--<maven.surefire.version>2.16</maven.surefire.version>-->
+        <!--<skipTests>false</skipTests>-->
+
+        <!--&lt;!&ndash; jpa &ndash;&gt;-->
+        <!--<hibernate.jpa.version>1.0.0.Final</hibernate.jpa.version>-->
+        <!--<spring.data.jpa.version>1.5.2.RELEASE</spring.data.jpa.version>-->
+        <!--<hibernate.entitymanager.version>4.3.3.Final</hibernate.entitymanager.version>-->
+
+        <!--&lt;!&ndash; validation &ndash;&gt;-->
+        <!--<validation.api.version>1.1.0.Final</validation.api.version>-->
+        <!--<hibernate.validator.version>5.1.1.Final</hibernate.validator.version>-->
+
+        <!--&lt;!&ndash; tests &ndash;&gt;-->
+        <!--<test.ng.version>6.8.5</test.ng.version>-->
+
+        <!--&lt;!&ndash; spring &ndash;&gt;-->
+        <!--<spring.version>3.2.8.RELEASE</spring.version>-->
+        <!--<spring.integration.version>3.0.2.RELEASE</spring.integration.version>-->
+
+        <!--<jersey.version>2.8</jersey.version>-->
+        <!--<jackson.version>2.3.3</jackson.version>-->
+
+        <!--<hsql.db.version>2.3.2</hsql.db.version>-->
+        <!--<model.mapper.version>0.7.2</model.mapper.version>-->
+
+        <!--<aspectj.version>1.8.0</aspectj.version>-->
+
+        <!--<stateless.filter.version>0.4</stateless.filter.version>-->
+
+        <!--<tomcat.plugin.version>2.2</tomcat.plugin.version>-->
+
+
+
+
+
+        <!-- logging -->
+        <slf4j.version>1.7.7</slf4j.version>
+
+        <!--build variables-->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Spring -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.integration</groupId>
+                <artifactId>spring-integration-core</artifactId>
+                <version>${spring.integration.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.integration</groupId>
+                <artifactId>spring-integration-http</artifactId>
+                <version>${spring.integration.version}</version>
+            </dependency>
+
+            <!--Jersey-->
+            <dependency>
+                <groupId>org.glassfish.jersey.ext</groupId>
+                <artifactId>jersey-spring3</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-json-jackson</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-client</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-common</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+
+            <!-- Jackson & HTTP -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-xml</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.jaxrs</groupId>
+                <artifactId>jackson-jaxrs-json-provider</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <!-- JAX-RS -->
+            <dependency>
+                <groupId>javax.ws.rs</groupId>
+                <artifactId>javax.ws.rs-api</artifactId>
+                <version>2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.1.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjrt</artifactId>
+                <version>${aspectj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>${aspectj.version}</version>
+            </dependency>
+
+            <!-- Client session -->
+            <dependency>
+                <groupId>net.sourceforge.statelessfilter</groupId>
+                <artifactId>stateless-core</artifactId>
+                <version>${stateless.filter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sourceforge.statelessfilter</groupId>
+                <artifactId>stateless-cookie-aes</artifactId>
+                <version>${stateless.filter.version}</version>
+            </dependency>
+
+            <!-- Persistence -->
+            <dependency>
+                <groupId>org.hibernate.javax.persistence</groupId>
+                <artifactId>hibernate-jpa-2.1-api</artifactId>
+                <version>${hibernate.jpa.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>${spring.data.jpa.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${hibernate.entitymanager.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>${validation.api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate.validator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hsqldb</groupId>
+                <artifactId>hsqldb</artifactId>
+                <version>${hsql.db.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.modelmapper</groupId>
+                <artifactId>modelmapper</artifactId>
+                <version>${model.mapper.version}</version>
+            </dependency>
+
+            <!-- Testing -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.testng</groupId>
+                <artifactId>testng</artifactId>
+                <version>${test.ng.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- Logging -->
+            <!-- TODO: cofigure slf4j : http://www.slf4j.org/api/org/slf4j/impl/SimpleLogger.html-->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <compilerArgument>-Xlint:all</compilerArgument>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven.resources.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.version}</version>
+                <configuration>
+                    <parallel>classes</parallel>
+                    <threadCount>15</threadCount>
+                    <skip>${skipTests}</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
