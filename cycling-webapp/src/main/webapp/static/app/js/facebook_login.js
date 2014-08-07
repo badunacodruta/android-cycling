@@ -1,7 +1,7 @@
 //======= load facebook sdk =============
 window.fbAsyncInit = function() {
     FB.init({
-        appId   : facebook_app_id,
+        appId   : facebookAppId,
         oauth   : true,
         status  : true, // check login status
         cookie  : true, // enable cookies to allow the server to access the session
