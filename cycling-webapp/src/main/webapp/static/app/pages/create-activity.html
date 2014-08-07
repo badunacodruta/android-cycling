@@ -14,6 +14,8 @@
     <link href="../css/commons.css" rel="stylesheet">
     <link href="../css/create-activity.css" rel="stylesheet">
 
+    <link href="../css/bootstrap/bootstrap-toggle.min.css" rel="stylesheet">
+
     <!--[if lt IE 9]>
     <script src="../js/bootstrap/html5shiv.js"></script>
     <script src="../js/bootstrap/respond.min.js"></script>
@@ -31,6 +33,7 @@
     <script src="../js/commons.js"></script>
     <script src="../js/create-activity.js"></script>
 
+    <script src="../js/bootstrap/bootstrap-toggle.min.js"></script>
 
 </head><!--/head-->
 <body>
@@ -95,6 +98,8 @@
                     <div class="col-xs-2"></div>
                 </div>
 
+                <br>
+                <br>
 
                 <div class="row">
                     <div class="col-xs-1"></div>
@@ -113,42 +118,109 @@
 
                 <div class="row">
                     <div class="col-xs-1"></div>
-                    <div class="col-xs-7">
-                            <div class="control-group">
-                                <label class="control-label">Access type</label>
-                                <div class="controls">
-                                    <label class="radio-inline">
-                                        <input type="radio" name="user[role]" id="user_role_managing_editor" value="Public" checked>
-                                        Public
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="user[role]" id="user_role_area_editor" value="Access request">
-                                        Access request
-                                    </label>
-
+                    <div class="col-xs-6">
+                        <div class="col-xs-5">
+                            <label class="control-label">Access type</label>
+                        </div>
+                        <div class="col-xs-5">
+                            <div id="access-type-switch" class="toggle btn btn-primary" data-toggle="toggle">
+                                <input type="checkbox" checked>
+                                <div class="toggle-group">
+                                    <label class="toggle-on btn btn-primary">Public</label>
+                                    <label class="toggle-off btn active">Access request</label>
+                                    <span class="toggle-handle btn"></span>
                                 </div>
                             </div>
-                        </div>
-                    <div class="col-xs-2"></div>
-                </div>
-
-
-
-
-
-                <br>
-                <div class="row">
-                    <div class="col-xs-1"></div>
-                    <div class="col-xs-6">
-                        <div class="btn-group">
-                            <button id="create-track-button" type="button" class="btn btn-default">Add pins on map</button>
-                            <button id="clear-track-button" type="button" class="btn btn-default">Clear all pins</button>
                         </div>
                     </div>
                     <div class="col-xs-3"></div>
                 </div>
+                <br>
 
 
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-6">
+                        <div class="col-xs-5">
+                            <label class="control-label">Add pins on map</label>
+                        </div>
+                        <div class="col-xs-5">
+                            <div id="add-pins-switch" class="toggle btn btn-inverse active off" data-toggle="toggle" onmouseout="changeAddPins()">
+                                <input type="checkbox" checked>
+                                <div class="toggle-group">
+                                    <label class="toggle-on btn btn-primary">On</label>
+                                    <label class="toggle-off btn active">Off</label>
+                                    <span class="toggle-handle btn"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3"></div>
+                </div>
+                <br>
+
+
+                <!-- TODO: add two switches instead of the acces-type and the add-pins radios -->
+
+                <!--<div class="row">-->
+                <!--<div class="col-xs-1"></div>-->
+                <!--<div class="col-xs-7">-->
+                <!--<div class="control-group">-->
+                <!--<label class="control-label">Access type</label>-->
+                <!--<div class="controls">-->
+                <!--<label class="radio-inline">-->
+                <!--<input type="radio" name="access-type" id="public" value="Public" checked>-->
+                <!--Public-->
+                <!--</label>-->
+                <!--<label class="radio-inline">-->
+                <!--<input type="radio" name="access-type" id="access-request" value="Access request">-->
+                <!--Access request-->
+                <!--</label>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="col-xs-2"></div>-->
+                <!--</div>-->
+                <!--<br>-->
+
+
+                <!--<div class="row">-->
+                <!--<div class="col-xs-1"></div>-->
+                <!--<div class="col-xs-7">-->
+                <!--<div class="control-group">-->
+                <!--<label class="control-label">Add pins on map</label>-->
+                <!--<div class="controls">-->
+                <!--<label class="radio-inline">-->
+                <!--<input type="radio" name="add-pins" id="add-pins-on" value="On">-->
+                <!--On-->
+                <!--</label>-->
+                <!--<label class="radio-inline">-->
+                <!--<input type="radio" name="add-pins" id="add-pins-off" value="Off" checked>-->
+                <!--Off-->
+                <!--</label>-->
+
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="col-xs-2"></div>-->
+                <!--</div>-->
+                <!--<br>-->
+
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-6">
+
+                        <div class="col-xs-5">
+                            <span/>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="btn-group">
+                                <button id="clear-track-button" type="button" class="btn btn-default" onclick="clearAllPins()">Clear all pins</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3"></div>
+                </div>
 
             </div>
             <div class="col-xs-6"><!--map-canvas will be positioned here--></div>

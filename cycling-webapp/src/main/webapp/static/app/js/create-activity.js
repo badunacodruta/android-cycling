@@ -1,12 +1,11 @@
-google.maps.event.addDomListener(window, 'load', initialize);
+google.maps.event.addDomListener(window, 'load', createMap);
 
 var map;
 var markersByUnigueId = {};
 var coordinatesByUniqueId = {};
 var coordinatesForTrack = [];
 
-function initialize() {
-
+function createMap() {
     /* position Amsterdam */
 //    TODO: Bucharest
     var latlng = new google.maps.LatLng(52.3731, 4.8922);
@@ -17,10 +16,6 @@ function initialize() {
     };
 
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-
-    google.maps.event.addListener(map, 'click', function(point) {
-        addMarker(point);
-    });
 };
 
 function addMarker(point) {
@@ -77,10 +72,7 @@ function removeMarker(markerId) {
 var polyline;
 
 function recreateTrack() {
-
-    if (polyline) {
-        polyline.setMap(null);
-    }
+    clearTrack();
 
     polyline = new google.maps.Polyline({
         path: coordinatesForTrack,
@@ -89,4 +81,56 @@ function recreateTrack() {
     });
 }
 
+function clearTrack() {
+    if (polyline) {
+        polyline.setMap(null);
+    }
+}
+
+function clearAllPins() {
+    clearTrack();
+
+    var markerIds = Object.keys(markersByUnigueId);
+    for (i = 0; i < markerIds.length; i++) {
+        var markerId = markerIds[i]
+        markersByUnigueId[markerId].setMap(null);
+    }
+
+    markersByUnigueId = {};
+    coordinatesByUniqueId = {};
+    coordinatesForTrack = [];
+}
+
+
+//
+//$(document).ready(function() {
+//    $('#add-pins-on').change(
+//        function(){
+//        if ($(this).is(':checked')) {
+//            google.maps.event.clearListeners(map, 'click');
+//            google.maps.event.addListener(map, 'click', function(point) {
+//                addMarker(point);
+//            });
+//        }
+//        });
+//
+//    $('#add-pins-off').change(
+//        function(){
+//            if ($(this).is(':checked')) {
+//                google.maps.event.clearListeners(map, 'click');
+//            }
+//        });
+//});
+
+
+function changeAddPins() {
+    if ($('#add-pins-switch').hasClass('btn-primary')) {
+        google.maps.event.clearListeners(map, 'click');
+        google.maps.event.addListener(map, 'click', function(point) {
+            addMarker(point);
+        });
+    } else {
+        google.maps.event.clearListeners(map, 'click');
+    }
+}
 
