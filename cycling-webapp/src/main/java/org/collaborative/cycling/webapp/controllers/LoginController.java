@@ -1,12 +1,9 @@
 package org.collaborative.cycling.webapp.controllers;
 
-import org.collaborative.cycling.User;
+import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.services.UserService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-
-import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

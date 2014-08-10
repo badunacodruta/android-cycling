@@ -1,7 +1,7 @@
 package org.collaborative.cycling.webapp.controllers;
 
 
-import org.collaborative.cycling.User;
+import org.collaborative.cycling.models.User;
 
 import javax.servlet.http.HttpSession;
 

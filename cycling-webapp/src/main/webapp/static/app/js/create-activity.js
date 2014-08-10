@@ -6,9 +6,7 @@ var coordinatesByUniqueId = {};
 var coordinatesForTrack = [];
 
 function createMap() {
-    /* position Amsterdam */
-//    TODO: Bucharest
-    var latlng = new google.maps.LatLng(52.3731, 4.8922);
+    var latlng = new google.maps.LatLng(44.4325, 26.1039);
 
     var mapOptions = {
         center: latlng,
@@ -101,28 +99,6 @@ function clearAllPins() {
     coordinatesForTrack = [];
 }
 
-
-//
-//$(document).ready(function() {
-//    $('#add-pins-on').change(
-//        function(){
-//        if ($(this).is(':checked')) {
-//            google.maps.event.clearListeners(map, 'click');
-//            google.maps.event.addListener(map, 'click', function(point) {
-//                addMarker(point);
-//            });
-//        }
-//        });
-//
-//    $('#add-pins-off').change(
-//        function(){
-//            if ($(this).is(':checked')) {
-//                google.maps.event.clearListeners(map, 'click');
-//            }
-//        });
-//});
-
-
 function changeAddPins() {
     if ($('#add-pins-switch').hasClass('btn-primary')) {
         google.maps.event.clearListeners(map, 'click');
@@ -133,4 +109,52 @@ function changeAddPins() {
         google.maps.event.clearListeners(map, 'click');
     }
 }
+
+function createActivity() {
+
+    var activityName = $("#activity-name").val();
+    var accessType = getAccessType();
+
+    var activity = {};
+    activity.name = activityName;
+    activity.activityAccessType = accessType;
+    activity.coordinates = JSON.stringify(coordinatesForTrack);
+
+    $.ajax({
+        type: "POST",
+        url: "/api/v1/activities",
+        data: JSON.stringify(activity),
+        success: displaySuccessMessage,
+        error: displayErrorMessage,
+        contentType: "application/json"
+    });
+}
+
+function getAccessType() {
+    if ($('#access-type-switch').hasClass('btn-primary')) {
+       return "PUBLIC";
+    } else {
+        return "REQUEST";
+    }
+}
+
+function displaySuccessMessage(response) {
+    console.log(response);
+
+    var message = "Activity " + response.name + " has been successfully created";
+
+    $("#success-message").text(message);
+    $("#success-message").show();
+
+    setTimeout(function()
+        { location.reload(); }
+        , 1000);
+
+}
+
+function displayErrorMessage() {
+    $("#error-message").text("An error has occurred while trying to create the activity!");
+    $("#error-message").show();
+}
+
 

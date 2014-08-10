@@ -12,6 +12,10 @@ public class UserRecord {
     @Column(name = "email", nullable = false)
     private String email;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
+    @OrderBy("created_date desc")
+    private List<ActivityRecord> activityRecordList;
+
     @Column(name = "deleted", nullable = false)
     private boolean deleted;
 

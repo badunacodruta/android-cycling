@@ -1,10 +1,9 @@
 package org.collaborative.cycling.services;
 
-import org.collaborative.cycling.User;
+import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.records.UserRecord;
 import org.collaborative.cycling.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
 
 public class UserService {
     private UserRepository userRepository;

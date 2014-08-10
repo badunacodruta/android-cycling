@@ -1,8 +1,8 @@
-package org.collaborative.cycling;
+package org.collaborative.cycling.models;
 
 import java.io.Serializable;
 
-public class User implements Serializable{
+public class User implements Serializable {
 
     public static final String ID = "USER_ID";
     private String email;
