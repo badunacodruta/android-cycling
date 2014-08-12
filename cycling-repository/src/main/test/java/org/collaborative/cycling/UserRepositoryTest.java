@@ -30,7 +30,7 @@ public class UserRepositoryTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void testWriteReadDb() {
-        UserRecord codrutaBaduna = new UserRecord(testEmail);
+        UserRecord codrutaBaduna = new UserRecord(testEmail, untitledActivitiesIndex);
         userRepository.save (codrutaBaduna);
         assertEquals(userRepository.count(), 1);
         assertEquals(userRepository.findAll().get(0).getEmail(), testEmail);

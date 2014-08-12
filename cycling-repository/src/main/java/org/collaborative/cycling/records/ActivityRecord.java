@@ -27,7 +27,8 @@ public class ActivityRecord {
     @Column(name = "activity_access_type", nullable = false)
     private ActivityAccessType activityAccessType;
 
-    @Column(name = "coordinates", nullable = false)
+//    @Lob
+    @Column(name = "coordinates", nullable = false, length = 50000)
     private String coordinates;
 
     @Column(name = "deleted", nullable = false)

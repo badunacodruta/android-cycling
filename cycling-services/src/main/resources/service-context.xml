@@ -12,6 +12,7 @@
 
     <bean id="activityService" class="org.collaborative.cycling.services.ActivityService">
         <constructor-arg ref="activityRepository"/>
+        <constructor-arg ref="userRepository"/>
     </bean>
 
 </beans>

@@ -56,4 +56,8 @@ public class Utilities {
             throw new RuntimeException(ex);
         }
     }
+
+    public static boolean isNullOrEmpty(String string) {
+        return string == null || string.isEmpty();
+    }
 }

@@ -58,8 +58,3 @@ function fbLogin(){
         scope: "public_profile,email"
     });
 }
-
-
-
-
-

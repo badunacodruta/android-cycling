@@ -10,8 +10,8 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(String email) {
-        this.email = email;
+    public static String getId() {
+        return ID;
     }
 
     public String getEmail() {

@@ -8,14 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Date;
+import java.util.List;
 
 @Path(ActivityController.MAPPING)
 public class ActivityController {
@@ -34,17 +32,44 @@ public class ActivityController {
     @Path(MAPPING_VERSION)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(Activity activity, @Context HttpServletRequest request) {
-        logger.debug("create -- activity:{}", activity);
+    public Activity createActivity(Activity activity, @Context HttpServletRequest request) {
+        logger.debug("create activity -- activity:{}", activity);
 
         HttpSession session = request.getSession(true);
         User user = Utils.getUser(session);
 
-        activity.setOwner(user);
-        activity.setCreatedDate(new Date());
+        Activity activityResponse = activityService.saveActivity(user, activity);
 
-        activityService.saveActivity(activity);
-
-        return Response.status(Response.Status.OK).build();
+        return activityResponse;
     }
+
+    @GET
+    @Path(MAPPING_VERSION)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public List<Activity> getActivities(@QueryParam("pageNumber") int pageNumber,
+                                        @QueryParam("pageSize") int pageSize,
+                                        @Context HttpServletRequest request) {
+        logger.debug("get activities");
+
+        HttpSession session = request.getSession(true);
+        User user = Utils.getUser(session);
+
+        return activityService.getActivities(user, pageNumber, pageSize);
+    }
+
+    @GET
+    @Path(MAPPING_VERSION + "count")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public int getActivitiesCount(@Context HttpServletRequest request) {
+        logger.debug("get activities count");
+
+        HttpSession session = request.getSession(true);
+        User user = Utils.getUser(session);
+
+        return activityService.getActivitiesCount(user);
+    }
+
+
 }

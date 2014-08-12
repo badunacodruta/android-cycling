@@ -12,9 +12,13 @@ public class UserRecord {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
     @OrderBy("created_date desc")
     private List<ActivityRecord> activityRecordList;
+
+    @Column(name = "untitled_activities_index", nullable = false)
+    private long untitledActivitiesIndex;
 
     @Column(name = "deleted", nullable = false)
     private boolean deleted;
@@ -75,5 +79,21 @@ public class UserRecord {
 
     public void setDeletedDate(Date deletedDate) {
         this.deletedDate = deletedDate;
+    }
+
+    public long getUntitledActivitiesIndex() {
+        return untitledActivitiesIndex;
+    }
+
+    public void setUntitledActivitiesIndex(long untitledActivitiesIndex) {
+        this.untitledActivitiesIndex = untitledActivitiesIndex;
+    }
+
+    public List<ActivityRecord> getActivityRecordList() {
+        return activityRecordList;
+    }
+
+    public void setActivityRecordList(List<ActivityRecord> activityRecordList) {
+        this.activityRecordList = activityRecordList;
     }
 }
