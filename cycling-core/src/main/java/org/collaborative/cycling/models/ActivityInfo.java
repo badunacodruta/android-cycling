@@ -1,25 +1,18 @@
 package org.collaborative.cycling.models;
 
-import org.collaborative.cycling.Utilities;
-
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Activity implements Serializable {
+public class ActivityInfo implements Serializable {
     private long id;
     private String name;
-    private User owner;
     private ActivityAccessType activityAccessType;
-    private List<Coordinate> coordinates;
-    private boolean deleted;
     private Date createdDate;
     private Date updatedDate;
-    private Date deletedDate;
+    private UserActivityState state;
 
-    public Activity() {
+    public ActivityInfo() {
     }
 
     public long getId() {
@@ -38,36 +31,12 @@ public class Activity implements Serializable {
         this.name = name;
     }
 
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
     public ActivityAccessType getActivityAccessType() {
         return activityAccessType;
     }
 
     public void setActivityAccessType(ActivityAccessType activityAccessType) {
         this.activityAccessType = activityAccessType;
-    }
-
-    public String getCoordinates() {
-        return Utilities.serialize(coordinates);
-    }
-
-    public void setCoordinates(String coordinates) throws IOException {
-        this.coordinates = Utilities.deserialize(coordinates, new ArrayList<Coordinate>().getClass());
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
     }
 
     public Date getCreatedDate() {
@@ -86,11 +55,11 @@ public class Activity implements Serializable {
         this.updatedDate = updatedDate;
     }
 
-    public Date getDeletedDate() {
-        return deletedDate;
+    public UserActivityState getState() {
+        return state;
     }
 
-    public void setDeletedDate(Date deletedDate) {
-        this.deletedDate = deletedDate;
+    public void setState(UserActivityState state) {
+        this.state = state;
     }
 }

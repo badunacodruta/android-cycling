@@ -1,14 +1,15 @@
 package org.collaborative.cycling.records;
 
 import org.collaborative.cycling.models.ActivityAccessType;
+import org.collaborative.cycling.models.UserActivityState;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "activities",
-        uniqueConstraints=
-        @UniqueConstraint(columnNames={"name", "owner"})
+@Table(name = "activities"
+//        uniqueConstraints=@UniqueConstraint(columnNames={"name", "owner"})
 )
 public class ActivityRecord {
 
@@ -27,9 +28,12 @@ public class ActivityRecord {
     @Column(name = "activity_access_type", nullable = false)
     private ActivityAccessType activityAccessType;
 
-//    @Lob
     @Column(name = "coordinates", nullable = false, length = 50000)
     private String coordinates;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "activity")
+    @OrderBy("created_date desc")
+    private List<UserActivityRecord> joinedUserActivityRecordList;
 
     @Column(name = "deleted", nullable = false)
     private boolean deleted;
@@ -126,5 +130,42 @@ public class ActivityRecord {
 
     public void setDeletedDate(Date deletedDate) {
         this.deletedDate = deletedDate;
+    }
+
+    public List<UserActivityRecord> getJoinedUserActivityRecordList() {
+        return joinedUserActivityRecordList;
+    }
+
+    public void setJoinedUserActivityRecordList(List<UserActivityRecord> joinedUserActivityRecordList) {
+        this.joinedUserActivityRecordList = joinedUserActivityRecordList;
+    }
+
+    /**
+     * Computes the state of the activity:
+     *  NOT_STARTED if no user has started the activity or no user joined the activity
+     *  FINISHED if there is no active user and at least one user has finished
+     *  ACTIVE if there is at least one active user
+     *
+     * @return the state of the activity
+     */
+    public UserActivityState getState() {
+        boolean finished = false;
+
+        if (joinedUserActivityRecordList == null || joinedUserActivityRecordList.size() == 0) {
+            return UserActivityState.NOT_STARTED;
+        }
+
+        for (UserActivityRecord userActivityRecord : joinedUserActivityRecordList) {
+            UserActivityState state = userActivityRecord.getState();
+            if (state == UserActivityState.ACTIVE || state == UserActivityState.PAUSED) {
+                return UserActivityState.ACTIVE;
+            }
+
+            if (state == UserActivityState.FINISHED) {
+                finished = true;
+            }
+        }
+
+        return finished ? UserActivityState.FINISHED : UserActivityState.NOT_STARTED;
     }
 }

@@ -58,12 +58,22 @@ function logout() {
     });
 }
 
+function createMap() {
+    var latlng = new google.maps.LatLng(44.4325, 26.1039);
+
+    var mapOptions = {
+        center: latlng,
+        zoom: 13
+    };
+
+    map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+};
 
 
-
-
-
-
+function displayErrorMessage(message) {
+    $("#error-message").text(message);
+    $("#error-message").show();
+}
 
 Date.prototype.yyyymmdd = function() {
     var yyyy = this.getFullYear().toString();

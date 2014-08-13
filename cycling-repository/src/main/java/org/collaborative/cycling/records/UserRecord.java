@@ -12,10 +12,13 @@ public class UserRecord {
     @Column(name = "email", nullable = false)
     private String email;
 
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
     @OrderBy("created_date desc")
-    private List<ActivityRecord> activityRecordList;
+    private List<ActivityRecord> createdActivityRecordList;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OrderBy("created_date desc")
+    private List<UserActivityRecord> joinedUserActivityRecordList;
 
     @Column(name = "untitled_activities_index", nullable = false)
     private long untitledActivitiesIndex;
@@ -89,11 +92,19 @@ public class UserRecord {
         this.untitledActivitiesIndex = untitledActivitiesIndex;
     }
 
-    public List<ActivityRecord> getActivityRecordList() {
-        return activityRecordList;
+    public List<ActivityRecord> getCreatedActivityRecordList() {
+        return createdActivityRecordList;
     }
 
-    public void setActivityRecordList(List<ActivityRecord> activityRecordList) {
-        this.activityRecordList = activityRecordList;
+    public void setCreatedActivityRecordList(List<ActivityRecord> createdActivityRecordList) {
+        this.createdActivityRecordList = createdActivityRecordList;
+    }
+
+    public List<UserActivityRecord> getJoinedUserActivityRecordList() {
+        return joinedUserActivityRecordList;
+    }
+
+    public void setJoinedUserActivityRecordList(List<UserActivityRecord> joinedUserActivityRecordList) {
+        this.joinedUserActivityRecordList = joinedUserActivityRecordList;
     }
 }

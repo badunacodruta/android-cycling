@@ -5,17 +5,6 @@ var markersByUnigueId = {};
 var coordinatesByUniqueId = {};
 var coordinatesForTrack = [];
 
-function createMap() {
-    var latlng = new google.maps.LatLng(44.4325, 26.1039);
-
-    var mapOptions = {
-        center: latlng,
-        zoom: 13
-    };
-
-    map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-};
-
 function addMarker(point) {
     var lat = point.latLng.lat();
     var lng = point.latLng.lng();
@@ -127,7 +116,7 @@ function createActivity() {
         url: "/api/v1/activities",
         data: JSON.stringify(activity),
         success: displaySuccessMessage,
-        error: displayErrorMessage,
+        error: function() { displayErrorMessage("An error has occurred while trying to create the activity!") },
         contentType: "application/json"
     });
 }
@@ -153,10 +142,4 @@ function displaySuccessMessage(response) {
         , 1000);
 
 }
-
-function displayErrorMessage() {
-    $("#error-message").text("An error has occurred while trying to create the activity!");
-    $("#error-message").show();
-}
-
 

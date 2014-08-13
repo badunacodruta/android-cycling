@@ -2,6 +2,7 @@ package org.collaborative.cycling.services;
 
 import org.collaborative.cycling.Utilities;
 import org.collaborative.cycling.models.Activity;
+import org.collaborative.cycling.models.ActivityInfo;
 import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.records.ActivityRecord;
 import org.collaborative.cycling.records.UserRecord;
@@ -60,6 +61,39 @@ public class ActivityService {
     }
 
     public List<Activity> getActivities(User user, int pageNumber, int pageSize) {
+        List<ActivityRecord> activityRecordList = getActivityRecords(user, pageNumber, pageSize);
+        Type activityListType = new TypeToken<List<Activity>>(){}.getType();
+        return modelMapper.map(activityRecordList, activityListType);
+    }
+
+    public List<ActivityInfo> getActivitiesInfo(User user, int pageNumber, int pageSize) {
+        List<ActivityRecord> activityRecordList = getActivityRecords(user, pageNumber, pageSize);
+        Type activityInfoListType = new TypeToken<List<ActivityInfo>>(){}.getType();
+        return modelMapper.map(activityRecordList, activityInfoListType);
+    }
+
+    public int getActivitiesCount(User user) {
+        if (user == null) {
+            return 0;
+        }
+
+        return activityRepository.getActivitiesCount(user.getEmail());
+    }
+
+    public Activity getActivity(User user, long activityId) {
+        if (user == null) {
+            return null;
+        }
+
+        ActivityRecord activityRecord = activityRepository.findOne(activityId);
+        if (activityRecord == null) {
+            return null;
+        }
+
+        return modelMapper.map(activityRecord, Activity.class);
+    }
+
+    private List<ActivityRecord> getActivityRecords(User user, int pageNumber, int pageSize) {
         if (user == null) {
             return new ArrayList<>();
         }
@@ -73,16 +107,6 @@ public class ActivityService {
         }
 
         PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.DESC, "createdDate");
-        List<ActivityRecord> activityRecordList = activityRepository.getActivitiesByPage(user.getEmail(), pageRequest);
-        Type activityListType = new TypeToken<List<Activity>>(){}.getType();
-        return modelMapper.map(activityRecordList, activityListType);
-    }
-
-    public int getActivitiesCount(User user) {
-        if (user == null) {
-            return 0;
-        }
-
-        return activityRepository.getActivitiesCount(user.getEmail());
+        return activityRepository.getActivitiesByPage(user.getEmail(), pageRequest);
     }
 }

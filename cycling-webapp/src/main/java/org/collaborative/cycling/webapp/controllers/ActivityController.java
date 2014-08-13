@@ -1,6 +1,7 @@
 package org.collaborative.cycling.webapp.controllers;
 
 import org.collaborative.cycling.models.Activity;
+import org.collaborative.cycling.models.ActivityInfo;
 import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.services.ActivityService;
 import org.slf4j.LoggerFactory;
@@ -59,6 +60,21 @@ public class ActivityController {
     }
 
     @GET
+    @Path(MAPPING_VERSION + "info")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public List<ActivityInfo> getActivitiesInfo(@QueryParam("pageNumber") int pageNumber,
+                                                @QueryParam("pageSize") int pageSize,
+                                                @Context HttpServletRequest request) {
+        logger.debug("get activities info");
+
+        HttpSession session = request.getSession(true);
+        User user = Utils.getUser(session);
+
+        return activityService.getActivitiesInfo(user, pageNumber, pageSize);
+    }
+
+    @GET
     @Path(MAPPING_VERSION + "count")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -71,5 +87,17 @@ public class ActivityController {
         return activityService.getActivitiesCount(user);
     }
 
+    @GET
+    @Path(MAPPING_VERSION + "activity")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Activity getActivity(@QueryParam("id") long activityId,
+                                @Context HttpServletRequest request) {
+        logger.debug("get activity -- id {}", activityId);
 
+        HttpSession session = request.getSession(true);
+        User user = Utils.getUser(session);
+
+        return activityService.getActivity(user, activityId);
+    }
 }

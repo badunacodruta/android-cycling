@@ -21,7 +21,7 @@ window.fbAsyncInit = function() {
 
 
 function goToHomePage() {
-    window.location.href = "home.html";
+    window.location.href = "my-activities.html";
 }
 
 function appLogin(fbEmail) {

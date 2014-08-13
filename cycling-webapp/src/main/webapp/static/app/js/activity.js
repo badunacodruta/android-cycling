@@ -5,24 +5,30 @@ function getActivityIdFromUrl() {
     return window.location.href.split("?")[1].split("=")[1];
 }
 
-google.maps.event.addDomListener(window, 'load', createMap);
-
-function createMap() {
-    var latlng = new google.maps.LatLng(44.4325, 26.1039);
-
-    var mapOptions = {
-        center: latlng,
-        zoom: 13
-    };
-
-    map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-};
-
-
-
 $(document).ready(function() {
-
-
-
-    $("#activity-name").text("test TODO");
+    createMap();
+    getActivity();
 });
+
+function getActivity() {
+    $.ajax({
+        type: "GET",
+        url: "/api/v1/activities/activity?id=" + activityId,
+        success: updateActivityInfo,
+        error: function() { displayErrorMessage("An error has occurred while trying to retrieve the activity info!") },
+        contentType: "application/json"
+    });
+}
+
+function updateActivityInfo(response) {
+    console.log(response);
+
+    $("#activity-name").attr("placeholder", response.name);
+
+
+//    TODO
+}
+
+function saveActivity() {
+//    TODO
+}

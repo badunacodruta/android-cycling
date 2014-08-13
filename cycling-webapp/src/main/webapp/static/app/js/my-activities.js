@@ -12,7 +12,7 @@ function getActivitiesCount() {
         type: "GET",
         url: "/api/v1/activities/count",
         success: setActivitiesCount,
-        error: displayErrorMessage,
+        error: function() { displayErrorMessage("An error has occurred while trying to retrieve the activities count!") },
         contentType: "application/json"
     });
 }
@@ -20,13 +20,14 @@ function getActivitiesCount() {
 function getActivities() {
     $.ajax({
         type: "GET",
-        url: "/api/v1/activities?pageNumber=" + pageNumber + "&pageSize=" + pageSize,
+        url: "/api/v1/activities/info?pageNumber=" + pageNumber + "&pageSize=" + pageSize,
         success: populateTableWithActivities,
-        error: displayErrorMessage,
+        error: function() { displayErrorMessage("An error has occurred while trying to retrieve the activities list!") },
         contentType: "application/json"
     });
 }
 
+//TODO: transform the enum values to some nicer strings
 function populateTableWithActivities(response) {
     $("#activities-table tr td").remove();
 
@@ -39,11 +40,14 @@ function populateTableWithActivities(response) {
             lastUpdateDate = activity.updatedDate;
         }
 
-        $("#activities-table").append( "<tr onclick='viewActivity(" + activity.id + ")'>\
-                                            <td>" + activity.name + "</td>\
-                                            <td>" + activity.activityAccessType + "</td>\
-                                            <td>" +  new Date(activity.createdDate).yyyymmdd() + "</td>\
-                                            <td>" + new Date(lastUpdateDate).yyyymmdd() + "</td>\
+        var onClick = " onclick='viewActivity(" + activity.id + ")'";
+        $("#activities-table").append( "<tr>\
+                                            <td" + onClick + ">" + activity.name + "</td>\
+                                            <td" + onClick + ">" + activity.activityAccessType + "</td>\
+                                            <td" + onClick + ">" +  new Date(activity.createdDate).yyyymmdd() + "</td>\
+                                            <td" + onClick + ">" + new Date(lastUpdateDate).yyyymmdd() + "</td>\
+                                            <td" + onClick + ">" + activity.state + "</td>\
+                                            <td class='glyphicon glyphicon-trash' onclick='deleteActivity(" + activity.id + ")'></td>\
                                         </tr>"
         );
     }
@@ -51,6 +55,11 @@ function populateTableWithActivities(response) {
 
 function viewActivity(activityId) {
     window.location.href = "activity.html?id=" + activityId;
+}
+
+function deleteActivity(activityId) {
+    console.log("delete " + activityId);
+//    TODO
 }
 
 function setActivitiesCount(response) {
@@ -102,7 +111,4 @@ function disableNextPage() {
     $("#next-page").addClass("disabled");
 }
 
-function displayErrorMessage() {
-    $("#error-message").text("An error has occurred while trying to retrieve the activities for the current user!");
-    $("#error-message").show();
-}
+

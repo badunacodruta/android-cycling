@@ -24,3 +24,12 @@ body{
 #main-slider {
     min-height: 100%;
 }
+
+#save-activity-button {
+    width: 100%;
+}
+
+#access-type-switch, #add-pins-switch, #clear-track-button {
+    min-height: 30px;
+    min-width: 140px;
+}

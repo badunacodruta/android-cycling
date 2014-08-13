@@ -41,7 +41,7 @@
 <header class="navbar navbar-inverse navbar-fixed-top wet-asphalt" role="banner">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="home.html"><img class="logo" src="../img/logo.png" alt="logo"></a>
+            <a class="navbar-brand" href="my-activities.html"><img class="logo" src="../img/logo.png" alt="logo"></a>
         </div>
 
         <div class="navbar-header">
@@ -51,7 +51,6 @@
 
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="home.html">Home</a></li>
 
                 <li  class="active" class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Activities <i class="icon-angle-down"></i></a>
@@ -91,7 +90,7 @@
                 <div class="row">
                     <div class="col-xs-1"></div>
                     <div class="col-xs-7">
-                        <h2 id="activity-name"></h2>
+                        <h2>Edit activity</h2>
                         <hr>
                     </div>
                     <div class="col-xs-2"></div>
@@ -101,7 +100,81 @@
                 <br>
 
 
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-7">
+                        <div class="input-group">
+                            <span class="input-group-addon">Name</span>
+                            <input id="activity-name" type="text" class="form-control" placeholder="activity name">
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <button id="save-activity-button" type="button" class="btn btn-success" onclick="saveActivity()">Save</button>
+                    </div>
+                </div>
+                <br>
 
+
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-6">
+                        <div class="col-xs-5">
+                            <label class="control-label">Access type</label>
+                        </div>
+                        <div class="col-xs-5">
+                            <div id="access-type-switch" class="toggle btn btn-primary" data-toggle="toggle">
+                                <input type="checkbox" checked>
+                                <div class="toggle-group">
+                                    <label class="toggle-on btn btn-primary">Public</label>
+                                    <label class="toggle-off btn active">Access request</label>
+                                    <span class="toggle-handle btn"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3"></div>
+                </div>
+                <br>
+
+
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-6">
+                        <div class="col-xs-5">
+                            <label class="control-label">Add pins on map</label>
+                        </div>
+                        <div class="col-xs-5">
+                            <div id="add-pins-switch" class="toggle btn active off" data-toggle="toggle" onmouseout="changeAddPins()">
+                                <input type="checkbox" checked>
+                                <div class="toggle-group">
+                                    <label class="toggle-on btn btn-primary">On</label>
+                                    <label class="toggle-off btn active">Off</label>
+                                    <span class="toggle-handle btn"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3"></div>
+                </div>
+                <br>
+
+
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-6">
+
+                        <div class="col-xs-5">
+                            <span/>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="btn-group">
+                                <button id="clear-track-button" type="button" class="btn btn-default" onclick="clearAllPins()">Clear all pins</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3"></div>
+                </div>
+                <br>
 
 
                 <div class="row">
@@ -111,6 +184,9 @@
                     </div>
                 </div>
                 <br>
+
+
+
 
                 <div class="row">
                     <div class="col-xs-1"></div>
