@@ -90,8 +90,34 @@ public class ActivityService {
             return null;
         }
 
-        return modelMapper.map(activityRecord, Activity.class);
+        if (activityRecord.getOwner().getEmail().equals(user.getEmail())) {
+            return modelMapper.map(activityRecord, Activity.class);
+        }
+
+        return null;
     }
+
+
+    public boolean deleteActivity(User user, long activityId) {
+        if (user == null) {
+            return false;
+        }
+
+        ActivityRecord activityRecord = activityRepository.findOne(activityId);
+        if (activityRecord == null) {
+            return false;
+        }
+
+        if (activityRecord.getOwner().getEmail().equals(user.getEmail())) {
+            activityRecord.setDeleted(true);
+            activityRecord.setDeletedDate(new Date());
+            activityRepository.save(activityRecord);
+        }
+
+        return false;
+    }
+
+
 
     private List<ActivityRecord> getActivityRecords(User user, int pageNumber, int pageSize) {
         if (user == null) {

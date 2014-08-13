@@ -3,21 +3,24 @@ var pageSize = 10;
 var pageNumber = 1;
 
 $(document).ready(function() {
-    getActivitiesCount();
-    getActivities();
+    updateActivities();
 });
 
-function getActivitiesCount() {
+function updateActivities() {
     $.ajax({
         type: "GET",
         url: "/api/v1/activities/count",
-        success: setActivitiesCount,
+        success: getActivities,
         error: function() { displayErrorMessage("An error has occurred while trying to retrieve the activities count!") },
         contentType: "application/json"
     });
 }
 
-function getActivities() {
+function getActivities(response) {
+    activitiesCount = response;
+    checkPreviousPage();
+    checkNextPage();
+
     $.ajax({
         type: "GET",
         url: "/api/v1/activities/info?pageNumber=" + pageNumber + "&pageSize=" + pageSize,
@@ -58,40 +61,48 @@ function viewActivity(activityId) {
 }
 
 function deleteActivity(activityId) {
-    console.log("delete " + activityId);
-//    TODO
-}
-
-function setActivitiesCount(response) {
-    activitiesCount = response;
-
-    disablePreviousPage();
-    if (activitiesCount <= pageSize) {
-        disableNextPage();
-    }
+    $.ajax({
+        type: "DELETE",
+        url: "/api/v1/activities/activity?id=" + activityId,
+        success: updateActivities,
+        error: function() { displayErrorMessage("An error has occurred while trying to delete the activity!") },
+        contentType: "application/json"
+    });
 }
 
 function previousPage() {
     if (pageNumber > 1) {
         pageNumber--;
-        getActivities();
-        enableNextPage();
+        updateActivities();
     }
 
-    if (pageNumber <= 1) {
-        disablePreviousPage();
-    }
+    checkPreviousPage();
+    checkNextPage();
 }
 
 function nextPage() {
     if (pageNumber * pageSize < activitiesCount) {
         pageNumber++;
-        getActivities();
-        enablePreviousPage();
+        updateActivities();
     }
 
+    checkPreviousPage();
+    checkNextPage();
+}
+
+function checkPreviousPage() {
+    if (pageNumber <= 1) {
+        disablePreviousPage()
+    } else {
+        enablePreviousPage();
+    }
+}
+
+function checkNextPage() {
     if (pageNumber * pageSize >= activitiesCount) {
         disableNextPage();
+    } else {
+        enableNextPage();
     }
 }
 
@@ -100,7 +111,9 @@ function enablePreviousPage() {
 }
 
 function disablePreviousPage() {
-    $("#previous-page").addClass("disabled");
+    if (!$("#previous-page").hasClass("disabled")) {
+        $("#previous-page").addClass("disabled");
+    }
 }
 
 function enableNextPage() {
@@ -108,7 +121,9 @@ function enableNextPage() {
 }
 
 function disableNextPage() {
-    $("#next-page").addClass("disabled");
+    if (!$("#next-page").hasClass("disabled")) {
+        $("#next-page").addClass("disabled");
+    }
 }
 
 

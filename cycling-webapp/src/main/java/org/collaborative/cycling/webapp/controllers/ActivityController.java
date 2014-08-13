@@ -100,4 +100,18 @@ public class ActivityController {
 
         return activityService.getActivity(user, activityId);
     }
+
+    @DELETE
+    @Path(MAPPING_VERSION + "activity")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean deleteActivity(@QueryParam("id") long activityId,
+                                  @Context HttpServletRequest request) {
+        logger.debug("delete activity -- id {}", activityId);
+
+        HttpSession session = request.getSession(true);
+        User user = Utils.getUser(session);
+
+        return activityService.deleteActivity(user, activityId);
+    }
 }
