@@ -2,6 +2,7 @@ package org.collaborative.cycling.models;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public class Activity implements Serializable {
@@ -10,7 +11,7 @@ public class Activity implements Serializable {
     private User owner;
     private ActivityAccessType activityAccessType;
     private String coordinates;
-    private UserCoordinates userCoordinates;
+    private List<UserCoordinates> userCoordinates;
     private Date createdDate;
     private Date updatedDate;
     private UserActivityState state;
@@ -74,19 +75,19 @@ public class Activity implements Serializable {
         this.coordinates = coordinates;
     }
 
-    public UserCoordinates getUserCoordinates() {
-        return userCoordinates;
-    }
-
-    public void setUserCoordinates(UserCoordinates userCoordinates) {
-        this.userCoordinates = userCoordinates;
-    }
-
     public UserActivityState getState() {
         return state;
     }
 
     public void setState(UserActivityState state) {
         this.state = state;
+    }
+
+    public List<UserCoordinates> getUserCoordinates() {
+        return userCoordinates;
+    }
+
+    public void setUserCoordinates(List<UserCoordinates> userCoordinates) {
+        this.userCoordinates = userCoordinates;
     }
 }
