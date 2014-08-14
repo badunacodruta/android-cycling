@@ -25,6 +25,8 @@ function updateActivityInfo(response) {
 
     $("#activity-name").attr("placeholder", response.name);
 
+//    response.
+
 
 //    TODO
 }

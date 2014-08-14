@@ -101,7 +101,7 @@ function changeAddPins() {
 
 
 //TODO: verify the name of the activity is unique and display en error message
-function createActivity() {
+function saveActivity() {
 
     var activityName = $("#activity-name").val();
     var accessType = getAccessType();

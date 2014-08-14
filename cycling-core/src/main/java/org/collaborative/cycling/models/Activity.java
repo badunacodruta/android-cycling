@@ -1,23 +1,19 @@
 package org.collaborative.cycling.models;
 
-import org.collaborative.cycling.Utilities;
-
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 
 public class Activity implements Serializable {
     private long id;
     private String name;
     private User owner;
     private ActivityAccessType activityAccessType;
-    private List<Coordinate> coordinates;
-    private boolean deleted;
+    private String coordinates;
+    private UserCoordinates userCoordinates;
     private Date createdDate;
     private Date updatedDate;
-    private Date deletedDate;
+    private UserActivityState state;
 
     public Activity() {
     }
@@ -54,22 +50,6 @@ public class Activity implements Serializable {
         this.activityAccessType = activityAccessType;
     }
 
-    public String getCoordinates() {
-        return Utilities.serialize(coordinates);
-    }
-
-    public void setCoordinates(String coordinates) throws IOException {
-        this.coordinates = Utilities.deserialize(coordinates, new ArrayList<Coordinate>().getClass());
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -86,11 +66,27 @@ public class Activity implements Serializable {
         this.updatedDate = updatedDate;
     }
 
-    public Date getDeletedDate() {
-        return deletedDate;
+    public String getCoordinates() {
+        return coordinates;
     }
 
-    public void setDeletedDate(Date deletedDate) {
-        this.deletedDate = deletedDate;
+    public void setCoordinates(String coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public UserCoordinates getUserCoordinates() {
+        return userCoordinates;
+    }
+
+    public void setUserCoordinates(UserCoordinates userCoordinates) {
+        this.userCoordinates = userCoordinates;
+    }
+
+    public UserActivityState getState() {
+        return state;
+    }
+
+    public void setState(UserActivityState state) {
+        this.state = state;
     }
 }

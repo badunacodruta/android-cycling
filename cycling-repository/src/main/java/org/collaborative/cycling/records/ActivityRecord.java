@@ -1,11 +1,12 @@
 package org.collaborative.cycling.records;
 
 import org.collaborative.cycling.models.ActivityAccessType;
+import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.models.UserActivityState;
+import org.collaborative.cycling.models.UserCoordinates;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "activities"
@@ -141,7 +142,7 @@ public class ActivityRecord {
     public UserActivityState getState() {
         boolean finished = false;
 
-        if (joinedUserActivityRecordList == null || joinedUserActivityRecordList.size() == 0) {
+        if (joinedUserActivityRecordList == null || joinedUserActivityRecordList.isEmpty()) {
             return UserActivityState.NOT_STARTED;
         }
 
@@ -157,5 +158,27 @@ public class ActivityRecord {
         }
 
         return finished ? UserActivityState.FINISHED : UserActivityState.NOT_STARTED;
+    }
+
+    public List<UserCoordinates> getUserCoordinates() {
+        List<UserCoordinates> userCoordinatesList = new ArrayList<>();
+
+        if (joinedUserActivityRecordList == null || joinedUserActivityRecordList.isEmpty()) {
+            return userCoordinatesList;
+        }
+
+        for (UserActivityRecord joinedUserActivityRecord : joinedUserActivityRecordList) {
+            if (joinedUserActivityRecord.isActive()) {
+
+                UserRecord userRecord = joinedUserActivityRecord.getUser();
+                User user = new User(userRecord.getEmail(), userRecord.getImageUrl());
+                String coordinates = joinedUserActivityRecord.getCoordinates();
+                UserCoordinates userCoordinates = new UserCoordinates(user, coordinates);
+
+                userCoordinatesList.add(userCoordinates);
+            }
+        }
+
+        return userCoordinatesList;
     }
 }

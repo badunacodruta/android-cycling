@@ -1,9 +1,7 @@
 package org.collaborative.cycling.services;
 
 import org.collaborative.cycling.Utilities;
-import org.collaborative.cycling.models.Activity;
-import org.collaborative.cycling.models.ActivityInfo;
-import org.collaborative.cycling.models.User;
+import org.collaborative.cycling.models.*;
 import org.collaborative.cycling.records.ActivityRecord;
 import org.collaborative.cycling.records.UserRecord;
 import org.collaborative.cycling.repositories.ActivityRepository;
@@ -33,7 +31,7 @@ public class ActivityService {
     }
 
     public Activity saveActivity(User user, Activity activity) {
-        if (activity == null || user == null) {
+        if (user == null || activity == null) {
             return null;
         }
 
@@ -41,21 +39,30 @@ public class ActivityService {
         if (userRecord == null) {
             return  null;
         }
-        user = modelMapper.map(userRecord, User.class);
 
-        activity.setOwner(user);
-        activity.setCreatedDate(new Date());
+        Date currentDate = new Date();
 
-        if (Utilities.isNullOrEmpty(activity.getName())) {
-            long untitledActivitiesIndex = userRecord.getUntitledActivitiesIndex();
-            activity.setName(UNTITLED_ACTIVITY_PREFIX + untitledActivitiesIndex);
-            untitledActivitiesIndex++;
-
-            userRecord.setUntitledActivitiesIndex(untitledActivitiesIndex);
-            userRepository.save(userRecord);
+        ActivityRecord activityRecord = activityRepository.findOne(activity.getId());
+        if (activityRecord == null) {
+            activityRecord = new ActivityRecord();
+            activityRecord.setCreatedDate(currentDate);
+        } else {
+            if (!activityRecord.getOwner().getEmail().equals(user.getEmail())
+                    || activityRecord.isDeleted()) {
+                return null;
+            }
         }
 
-        ActivityRecord activityRecord = modelMapper.map(activity, ActivityRecord.class);
+        activityRecord.setName(getActivityName(userRecord, activity));
+        if (activity.getActivityAccessType() != null) {
+            activityRecord.setActivityAccessType(activity.getActivityAccessType());
+        }
+        if (activity.getCoordinates() != null) {
+            activityRecord.setCoordinates(activity.getCoordinates());
+        }
+        activityRecord.setOwner(userRecord);
+        activityRecord.setUpdatedDate(currentDate);
+
         activityRecord = activityRepository.save(activityRecord);
         return modelMapper.map(activityRecord, Activity.class);
     }
@@ -86,7 +93,7 @@ public class ActivityService {
         }
 
         ActivityRecord activityRecord = activityRepository.findOne(activityId);
-        if (activityRecord == null) {
+        if (activityRecord == null || activityRecord.isDeleted()) {
             return null;
         }
 
@@ -104,7 +111,7 @@ public class ActivityService {
         }
 
         ActivityRecord activityRecord = activityRepository.findOne(activityId);
-        if (activityRecord == null) {
+        if (activityRecord == null || activityRecord.isDeleted()) {
             return false;
         }
 
@@ -112,6 +119,7 @@ public class ActivityService {
             activityRecord.setDeleted(true);
             activityRecord.setDeletedDate(new Date());
             activityRepository.save(activityRecord);
+            return true;
         }
 
         return false;
@@ -132,5 +140,20 @@ public class ActivityService {
 
         PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.DESC, "createdDate");
         return activityRepository.getActivitiesByPage(user.getEmail(), pageRequest);
+    }
+
+    private String getActivityName(UserRecord userRecord, Activity activity) {
+        String name = activity.getName();
+
+        if (Utilities.isNullOrEmpty(name)) {
+            long untitledActivitiesIndex = userRecord.getUntitledActivitiesIndex();
+            name = UNTITLED_ACTIVITY_PREFIX + untitledActivitiesIndex;
+            untitledActivitiesIndex++;
+
+            userRecord.setUntitledActivitiesIndex(untitledActivitiesIndex);
+            userRepository.save(userRecord);
+        }
+
+        return name;
     }
 }

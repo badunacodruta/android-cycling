@@ -38,8 +38,8 @@ public class ActivityController {
     @Path(MAPPING_VERSION)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Activity createActivity(Activity activity, @Context HttpServletRequest request) {
-        logger.debug("create activity -- activity:{}", activity);
+    public Activity saveActivity(Activity activity, @Context HttpServletRequest request) {
+        logger.debug("save activity -- activity:{}", activity);
 
         HttpSession session = request.getSession(true);
         User user = Utils.getUser(session);
@@ -119,7 +119,7 @@ public class ActivityController {
     }
 
     @POST
-    @Path(MAPPING_VERSION)
+    @Path(MAPPING_VERSION + "join")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public JoinRequest joinActivity(long activityId, @Context HttpServletRequest request) {

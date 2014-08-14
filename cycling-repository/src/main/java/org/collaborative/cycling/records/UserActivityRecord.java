@@ -136,4 +136,8 @@ public class UserActivityRecord {
     public void setJoinAccept(boolean joinAccept) {
         this.joinAccept = joinAccept;
     }
+
+    public boolean isActive() {
+        return UserActivityState.ACTIVE == getState() || UserActivityState.PAUSED == getState();
+    }
 }
