@@ -25,10 +25,19 @@ public class UserActivityRecord {
     @Column(name = "state", nullable = false)
     private UserActivityState state = UserActivityState.NOT_STARTED;
 
+    @Column(name = "join_request", nullable = false)
+    private boolean joinRequest;
+
+    @Column(name = "join_accept", nullable = false)
+    private boolean joinAccept;
+
+    @Column(name = "coordinates", length = 50000)
+    private String coordinates;
+
     @Column(name = "deleted", nullable = false)
     private boolean deleted;
 
-    @Column(name = "created_date")
+    @Column(name = "created_date", nullable = false)
     private Date createdDate;
 
     @Column(name = "updated_date")
@@ -102,5 +111,29 @@ public class UserActivityRecord {
 
     public void setDeletedDate(Date deletedDate) {
         this.deletedDate = deletedDate;
+    }
+
+    public String getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(String coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public boolean isJoinRequest() {
+        return joinRequest;
+    }
+
+    public void setJoinRequest(boolean joinRequest) {
+        this.joinRequest = joinRequest;
+    }
+
+    public boolean isJoinAccept() {
+        return joinAccept;
+    }
+
+    public void setJoinAccept(boolean joinAccept) {
+        this.joinAccept = joinAccept;
     }
 }

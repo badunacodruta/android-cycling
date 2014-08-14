@@ -117,8 +117,6 @@ public class ActivityService {
         return false;
     }
 
-
-
     private List<ActivityRecord> getActivityRecords(User user, int pageNumber, int pageSize) {
         if (user == null) {
             return new ArrayList<>();

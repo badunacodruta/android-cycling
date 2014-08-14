@@ -32,7 +32,7 @@ public class LoginController {
     public Response login(User user, @Context HttpServletRequest request) {
         logger.debug("login -- email:{}", user.getEmail());
 
-        User loggedUser = userService.login(user.getEmail());
+        User loggedUser = userService.login(user);
 
         HttpSession session = request.getSession(true);
         Utils.setUser(session, loggedUser);

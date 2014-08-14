@@ -13,13 +13,15 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User login(String email) {
-        UserRecord userRecord = userRepository.findOne(email);
+    public User login(User user) {
+        UserRecord userRecord = userRepository.findOne(user.getEmail());
         if (userRecord == null) {
-            userRecord = new UserRecord(email);
-            userRepository.save(userRecord);
+            userRecord = new UserRecord(user.getEmail(), user.getImageUrl());
+        } else {
+            userRecord.setImageUrl(user.getImageUrl());
         }
 
+        userRepository.save(userRecord);
         return modelMapper.map(userRecord, User.class);
     }
 }

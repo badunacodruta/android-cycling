@@ -2,8 +2,10 @@ package org.collaborative.cycling.webapp.controllers;
 
 import org.collaborative.cycling.models.Activity;
 import org.collaborative.cycling.models.ActivityInfo;
+import org.collaborative.cycling.models.JoinRequest;
 import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.services.ActivityService;
+import org.collaborative.cycling.services.UserActivityService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,6 +25,9 @@ public class ActivityController {
     @Autowired
     private ActivityService activityService;
 
+    @Autowired
+    private UserActivityService userActivityService;
+
     public static final String MAPPING = "/activities";
     public static final String MAPPING_VERSION = "/";
 
@@ -39,9 +44,7 @@ public class ActivityController {
         HttpSession session = request.getSession(true);
         User user = Utils.getUser(session);
 
-        Activity activityResponse = activityService.saveActivity(user, activity);
-
-        return activityResponse;
+        return activityService.saveActivity(user, activity);
     }
 
     @GET
@@ -93,7 +96,7 @@ public class ActivityController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Activity getActivity(@QueryParam("id") long activityId,
                                 @Context HttpServletRequest request) {
-        logger.debug("get activity -- id {}", activityId);
+        logger.debug("get activity -- activityId:{}", activityId);
 
         HttpSession session = request.getSession(true);
         User user = Utils.getUser(session);
@@ -107,11 +110,24 @@ public class ActivityController {
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean deleteActivity(@QueryParam("id") long activityId,
                                   @Context HttpServletRequest request) {
-        logger.debug("delete activity -- id {}", activityId);
+        logger.debug("delete activity -- activityId:{}", activityId);
 
         HttpSession session = request.getSession(true);
         User user = Utils.getUser(session);
 
         return activityService.deleteActivity(user, activityId);
+    }
+
+    @POST
+    @Path(MAPPING_VERSION)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public JoinRequest joinActivity(long activityId, @Context HttpServletRequest request) {
+        logger.debug("join activity -- activityId:{}", activityId);
+
+        HttpSession session = request.getSession(true);
+        User user = Utils.getUser(session);
+
+        return userActivityService.joinActivity(user, activityId);
     }
 }

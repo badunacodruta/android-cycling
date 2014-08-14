@@ -50,16 +50,6 @@ public class ActivityRecord {
     public ActivityRecord() {
     }
 
-    public ActivityRecord(String name, UserRecord owner, ActivityAccessType activityAccessType, String coordinates) {
-        this.name = name;
-        this.owner = owner;
-        this.activityAccessType = activityAccessType;
-        this.coordinates = coordinates;
-
-        this.deleted = false;
-        this.createdDate = new Date();
-    }
-
     public long getId() {
         return id;
     }

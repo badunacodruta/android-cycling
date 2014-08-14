@@ -12,6 +12,9 @@ public class UserRecord {
     @Column(name = "email", nullable = false)
     private String email;
 
+    @Column(name = "image_url", nullable = false)
+    private String imageUrl;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
     @OrderBy("created_date desc")
     private List<ActivityRecord> createdActivityRecordList;
@@ -38,8 +41,10 @@ public class UserRecord {
     public UserRecord() {
     }
 
-    public UserRecord(String email) {
+    public UserRecord(String email, String imageUrl) {
         this.email = email;
+        this.imageUrl = imageUrl;
+
         this.deleted = false;
         this.createdDate = new Date();
     }
@@ -106,5 +111,13 @@ public class UserRecord {
 
     public void setJoinedUserActivityRecordList(List<UserActivityRecord> joinedUserActivityRecordList) {
         this.joinedUserActivityRecordList = joinedUserActivityRecordList;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

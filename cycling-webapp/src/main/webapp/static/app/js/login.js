@@ -19,34 +19,6 @@ window.fbAsyncInit = function() {
 }());
 //=========================================
 
-
-function goToHomePage() {
-    window.location.href = "my-activities.html";
-}
-
-function appLogin(fbEmail) {
-    fbData = JSON.stringify({ email: fbEmail });
-
-    $.ajax({
-        type: "POST",
-        url: "/api/v1/login",
-        data: fbData,
-        success: goToHomePage,
-        error: errorLogin,
-        contentType: "application/json"
-    });
-}
-
-function fetchFBInfo() {
-    FB.api('/me', function(response) {
-        appLogin(response.email);
-    });
-}
-
-function errorLogin() {
-    alert( "An error has occurred. Please try again!" );
-}
-
 function fbLogin(){
     FB.login(function(response) {
         if (response.status === 'connected') {
@@ -58,3 +30,39 @@ function fbLogin(){
         scope: "public_profile,email"
     });
 }
+
+function fetchFBInfo() {
+    FB.api('/me', function(response) {
+        fetchFBImage(response.email);
+    });
+}
+
+function fetchFBImage(email) {
+//    TODO: decide on the image size
+    FB.api("/me/picture?width=30&height=30",  function(response) {
+        appLogin(email, response.data.url);
+    });
+}
+
+function appLogin(fbEmail, fbImageUrl) {
+    fbData = JSON.stringify({ email: fbEmail, imageUrl :fbImageUrl });
+
+    $.ajax({
+        type: "POST",
+        url: "/api/v1/login",
+        data: fbData,
+        success: goToHomePage,
+        error: errorLogin,
+        contentType: "application/json"
+    });
+}
+
+function goToHomePage() {
+    window.location.href = "my-activities.html";
+}
+
+function errorLogin() {
+    alert( "An error has occurred. Please try again!" );
+}
+
+
