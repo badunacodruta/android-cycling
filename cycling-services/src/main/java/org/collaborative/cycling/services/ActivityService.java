@@ -1,7 +1,14 @@
 package org.collaborative.cycling.services;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.collaborative.cycling.Utilities;
-import org.collaborative.cycling.models.*;
+import org.collaborative.cycling.models.Activity;
+import org.collaborative.cycling.models.ActivityInfo;
+import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.records.ActivityRecord;
 import org.collaborative.cycling.records.UserRecord;
 import org.collaborative.cycling.repositories.ActivityRepository;
@@ -10,11 +17,6 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class ActivityService {
 
@@ -37,7 +39,7 @@ public class ActivityService {
 
         UserRecord userRecord = userRepository.findOne(user.getEmail());
         if (userRecord == null) {
-            return  null;
+            return null;
         }
 
         Date currentDate = new Date();

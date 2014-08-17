@@ -34,6 +34,24 @@ public class ActivityController {
     public ActivityController() {
     }
 
+
+
+    @POST
+    @Path("solo/activity/{distance}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void saveSoloActivity(@PathParam("distance") String distance, String data, @Context HttpServletRequest request) {
+
+        logger.debug("distance:{}", distance);
+        logger.debug("data:{}", data);
+
+
+        HttpSession session = request.getSession(true);
+        User user = Utils.getUser(session);
+
+    }
+
+
     @POST
     @Path(MAPPING_VERSION)
     @Produces(MediaType.APPLICATION_JSON)
