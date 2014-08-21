@@ -3,7 +3,6 @@ package org.collaborative.cycling.models;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public class Activity implements Serializable {
     private long id;
@@ -11,10 +10,11 @@ public class Activity implements Serializable {
     private User owner;
     private ActivityAccessType activityAccessType;
     private String coordinates;
-    private List<UserCoordinates> userCoordinates;
+    private Date startDate;
+    private List<JoinedUser> joinedUsers;
     private Date createdDate;
     private Date updatedDate;
-    private UserActivityState state;
+    private ProgressStatus progressStatus;
 
     public Activity() {
     }
@@ -67,27 +67,35 @@ public class Activity implements Serializable {
         this.updatedDate = updatedDate;
     }
 
+    public ProgressStatus getProgressStatus() {
+        return progressStatus;
+    }
+
+    public void setProgressStatus(ProgressStatus progressStatus) {
+        this.progressStatus = progressStatus;
+    }
+
+    public List<JoinedUser> getJoinedUsers() {
+        return joinedUsers;
+    }
+
+    public void setJoinedUsers(List<JoinedUser> joinedUsers) {
+        this.joinedUsers = joinedUsers;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
     public String getCoordinates() {
         return coordinates;
     }
 
     public void setCoordinates(String coordinates) {
         this.coordinates = coordinates;
-    }
-
-    public UserActivityState getState() {
-        return state;
-    }
-
-    public void setState(UserActivityState state) {
-        this.state = state;
-    }
-
-    public List<UserCoordinates> getUserCoordinates() {
-        return userCoordinates;
-    }
-
-    public void setUserCoordinates(List<UserCoordinates> userCoordinates) {
-        this.userCoordinates = userCoordinates;
     }
 }

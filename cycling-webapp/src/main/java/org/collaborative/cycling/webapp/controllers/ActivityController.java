@@ -1,9 +1,6 @@
 package org.collaborative.cycling.webapp.controllers;
 
-import org.collaborative.cycling.models.Activity;
-import org.collaborative.cycling.models.ActivityInfo;
-import org.collaborative.cycling.models.JoinRequest;
-import org.collaborative.cycling.models.User;
+import org.collaborative.cycling.models.*;
 import org.collaborative.cycling.services.ActivityService;
 import org.collaborative.cycling.services.UserActivityService;
 import org.slf4j.LoggerFactory;
@@ -14,8 +11,6 @@ import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.Date;
 import java.util.List;
 
 @Path(ActivityController.MAPPING)
@@ -34,23 +29,20 @@ public class ActivityController {
     public ActivityController() {
     }
 
-
-
     @POST
     @Path("solo/activity/{distance}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public void saveSoloActivity(@PathParam("distance") String distance, String data, @Context HttpServletRequest request) {
-
-        logger.debug("distance:{}", distance);
-        logger.debug("data:{}", data);
-
+    public void saveSoloActivity(@PathParam("distance") String distance, String coordinates, @Context HttpServletRequest request) {
+        logger.debug("save solo activity -- distance:{}, coordinates:{}", distance, coordinates);
 
         HttpSession session = request.getSession(true);
         User user = Utils.getUser(session);
 
+        Activity activity = new Activity();
+        Activity savedActivity = activityService.saveActivity(user, activity);
+        userActivityService.saveJoinedUser(user, savedActivity.getId(), ProgressStatus.FINISHED, JoinedStatus.MINE, coordinates);
     }
-
 
     @POST
     @Path(MAPPING_VERSION)
@@ -81,18 +73,33 @@ public class ActivityController {
     }
 
     @GET
-    @Path(MAPPING_VERSION + "info")
+    @Path(MAPPING_VERSION + "summary")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public List<ActivityInfo> getActivitiesInfo(@QueryParam("pageNumber") int pageNumber,
+    public List<ActivitySummary> getActivitiesSummary(@QueryParam("pageNumber") int pageNumber,
                                                 @QueryParam("pageSize") int pageSize,
                                                 @Context HttpServletRequest request) {
-        logger.debug("get activities info");
+        logger.debug("get activities summary");
 
         HttpSession session = request.getSession(true);
         User user = Utils.getUser(session);
 
-        return activityService.getActivitiesInfo(user, pageNumber, pageSize);
+        return activityService.getActivitiesSummary(user, pageNumber, pageSize);
+    }
+
+    @GET
+    @Path(MAPPING_VERSION + "joined")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public List<JoinedActivity> getJoinedActivities(@QueryParam("pageNumber") int pageNumber,
+                                                            @QueryParam("pageSize") int pageSize,
+                                                            @Context HttpServletRequest request) {
+        logger.debug("get joined activities");
+
+        HttpSession session = request.getSession(true);
+        User user = Utils.getUser(session);
+
+        return activityService.getJoinedActivities(user, pageNumber, pageSize);
     }
 
     @GET

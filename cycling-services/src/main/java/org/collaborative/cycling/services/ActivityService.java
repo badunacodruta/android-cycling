@@ -6,12 +6,12 @@ import java.util.Date;
 import java.util.List;
 
 import org.collaborative.cycling.Utilities;
-import org.collaborative.cycling.models.Activity;
-import org.collaborative.cycling.models.ActivityInfo;
-import org.collaborative.cycling.models.User;
+import org.collaborative.cycling.models.*;
 import org.collaborative.cycling.records.ActivityRecord;
+import org.collaborative.cycling.records.UserActivityRecord;
 import org.collaborative.cycling.records.UserRecord;
 import org.collaborative.cycling.repositories.ActivityRepository;
+import org.collaborative.cycling.repositories.UserActivityRepository;
 import org.collaborative.cycling.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -25,11 +25,13 @@ public class ActivityService {
 
     private ActivityRepository activityRepository;
     private UserRepository userRepository;
+    private UserActivityRepository userActivityRepository;
     private ModelMapper modelMapper = new ModelMapper();
 
-    public ActivityService(ActivityRepository activityRepository, UserRepository userRepository) {
+    public ActivityService(ActivityRepository activityRepository, UserRepository userRepository, UserActivityRepository userActivityRepository) {
         this.activityRepository = activityRepository;
         this.userRepository = userRepository;
+        this.userActivityRepository = userActivityRepository;
     }
 
     public Activity saveActivity(User user, Activity activity) {
@@ -62,10 +64,13 @@ public class ActivityService {
         if (activity.getCoordinates() != null) {
             activityRecord.setCoordinates(activity.getCoordinates());
         }
+
         activityRecord.setOwner(userRecord);
         activityRecord.setUpdatedDate(currentDate);
 
         activityRecord = activityRepository.save(activityRecord);
+        userActivityRepository.save(activityRecord.getJoinedUser(userRecord, JoinedStatus.MINE));
+
         return modelMapper.map(activityRecord, Activity.class);
     }
 
@@ -75,10 +80,37 @@ public class ActivityService {
         return modelMapper.map(activityRecordList, activityListType);
     }
 
-    public List<ActivityInfo> getActivitiesInfo(User user, int pageNumber, int pageSize) {
+    public List<ActivitySummary> getActivitiesSummary(User user, int pageNumber, int pageSize) {
         List<ActivityRecord> activityRecordList = getActivityRecords(user, pageNumber, pageSize);
-        Type activityInfoListType = new TypeToken<List<ActivityInfo>>(){}.getType();
+        Type activityInfoListType = new TypeToken<List<ActivitySummary>>(){}.getType();
         return modelMapper.map(activityRecordList, activityInfoListType);
+    }
+
+    public List<JoinedActivity> getJoinedActivities(User user, int pageNumber, int pageSize) {
+        List<JoinedActivity> joinedActivityList = new ArrayList<>();
+        if (user == null) {
+            return joinedActivityList;
+        }
+
+        if (pageNumber <= 0) {
+            pageNumber = 1;
+        }
+
+        if (pageSize <= 0) {
+            pageSize = DEFAULT_PAGE_SIZE;
+        }
+
+        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.DESC, "createdDate");
+        List<UserActivityRecord> userActivityRecordList = userActivityRepository.getUserActivitiesByPage(user.getEmail(), pageRequest);
+
+        for (UserActivityRecord userActivityRecord : userActivityRecordList) {
+            JoinedActivity joinedActivity = modelMapper.map(userActivityRecord.getActivity(), JoinedActivity.class);
+            joinedActivity.setJoinedStatus(userActivityRecord.getJoinedStatus());
+
+            joinedActivityList.add(joinedActivity);
+        }
+
+        return joinedActivityList;
     }
 
     public int getActivitiesCount(User user) {
@@ -142,6 +174,29 @@ public class ActivityService {
 
         PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.DESC, "createdDate");
         return activityRepository.getActivitiesByPage(user.getEmail(), pageRequest);
+    }
+
+    private List<ActivityRecord> getJoinedActivityRecords(User user, int pageNumber, int pageSize) {
+        List<ActivityRecord> activityRecordList = new ArrayList<>();
+        if (user == null) {
+            return activityRecordList;
+        }
+
+        if (pageNumber <= 0) {
+            pageNumber = 1;
+        }
+
+        if (pageSize <= 0) {
+            pageSize = DEFAULT_PAGE_SIZE;
+        }
+
+        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.DESC, "createdDate");
+        List<UserActivityRecord> userActivityRecordList = userActivityRepository.getUserActivitiesByPage(user.getEmail(), pageRequest);
+        for (UserActivityRecord userActivityRecord : userActivityRecordList) {
+            activityRecordList.add(userActivityRecord.getActivity());
+        }
+
+        return activityRecordList;
     }
 
     private String getActivityName(UserRecord userRecord, Activity activity) {

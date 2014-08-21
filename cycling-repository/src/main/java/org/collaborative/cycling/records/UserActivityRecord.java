@@ -1,6 +1,7 @@
 package org.collaborative.cycling.records;
 
-import org.collaborative.cycling.models.UserActivityState;
+import org.collaborative.cycling.models.JoinedStatus;
+import org.collaborative.cycling.models.ProgressStatus;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -22,14 +23,11 @@ public class UserActivityRecord {
     @JoinColumn(name = "activity", referencedColumnName = "id", nullable = false)
     private ActivityRecord activity;
 
-    @Column(name = "state", nullable = false)
-    private UserActivityState state = UserActivityState.NOT_STARTED;
+    @Column(name = "progress_status", nullable = false)
+    private ProgressStatus progressStatus = ProgressStatus.NOT_STARTED;
 
-    @Column(name = "join_request", nullable = false)
-    private boolean joinRequest;
-
-    @Column(name = "join_accept", nullable = false)
-    private boolean joinAccept;
+    @Column(name = "join_status", nullable = false)
+    private JoinedStatus joinedStatus = JoinedStatus.PENDING;
 
     @Column(name = "coordinates", length = 50000)
     private String coordinates;
@@ -73,12 +71,12 @@ public class UserActivityRecord {
         this.activity = activity;
     }
 
-    public UserActivityState getState() {
-        return state;
+    public ProgressStatus getProgressStatus() {
+        return progressStatus;
     }
 
-    public void setState(UserActivityState state) {
-        this.state = state;
+    public void setProgressStatus(ProgressStatus progressStatus) {
+        this.progressStatus = progressStatus;
     }
 
     public boolean isDeleted() {
@@ -121,23 +119,11 @@ public class UserActivityRecord {
         this.coordinates = coordinates;
     }
 
-    public boolean isJoinRequest() {
-        return joinRequest;
+    public JoinedStatus getJoinedStatus() {
+        return joinedStatus;
     }
 
-    public void setJoinRequest(boolean joinRequest) {
-        this.joinRequest = joinRequest;
-    }
-
-    public boolean isJoinAccept() {
-        return joinAccept;
-    }
-
-    public void setJoinAccept(boolean joinAccept) {
-        this.joinAccept = joinAccept;
-    }
-
-    public boolean isActive() {
-        return UserActivityState.ACTIVE == getState() || UserActivityState.PAUSED == getState();
+    public void setJoinedStatus(JoinedStatus joinedStatus) {
+        this.joinedStatus = joinedStatus;
     }
 }

@@ -2,17 +2,16 @@ package org.collaborative.cycling.models;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-public class ActivityInfo implements Serializable {
+public class ActivitySummary implements Serializable {
     private long id;
     private String name;
     private ActivityAccessType activityAccessType;
     private Date createdDate;
     private Date updatedDate;
-    private UserActivityState state;
+    private ProgressStatus progressStatus;
 
-    public ActivityInfo() {
+    public ActivitySummary() {
     }
 
     public long getId() {
@@ -55,11 +54,11 @@ public class ActivityInfo implements Serializable {
         this.updatedDate = updatedDate;
     }
 
-    public UserActivityState getState() {
-        return state;
+    public ProgressStatus getProgressStatus() {
+        return progressStatus;
     }
 
-    public void setState(UserActivityState state) {
-        this.state = state;
+    public void setProgressStatus(ProgressStatus progressStatus) {
+        this.progressStatus = progressStatus;
     }
 }

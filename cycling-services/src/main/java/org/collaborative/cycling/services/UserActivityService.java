@@ -1,8 +1,6 @@
 package org.collaborative.cycling.services;
 
-import org.collaborative.cycling.models.ActivityAccessType;
-import org.collaborative.cycling.models.JoinRequest;
-import org.collaborative.cycling.models.User;
+import org.collaborative.cycling.models.*;
 import org.collaborative.cycling.records.ActivityRecord;
 import org.collaborative.cycling.records.UserActivityRecord;
 import org.collaborative.cycling.records.UserRecord;
@@ -53,35 +51,32 @@ public class UserActivityService {
             }
         }
 
+        Date currentDate = new Date();
         if (userActivityRecord == null) {
             userActivityRecord = new UserActivityRecord();
-            userActivityRecord.setCreatedDate(new Date());
+            userActivityRecord.setCreatedDate(currentDate);
         }
 
         userActivityRecord.setUser(userRecord);
         userActivityRecord.setActivity(activityRecord);
-
-        boolean waitingForAcceptance = true;
         if (activityRecord.getActivityAccessType() == ActivityAccessType.PUBLIC) {
-            waitingForAcceptance = false;
-        } else {
-            userActivityRecord.setJoinRequest(true);
-            userActivityRecord.setJoinAccept(false);
+            userActivityRecord.setJoinedStatus(JoinedStatus.ACCEPTED);
         }
+        userActivityRecord.setUpdatedDate(currentDate);
 
         userActivityRecord = userActivityRepository.save(userActivityRecord);
-        return new JoinRequest(userActivityRecord.getId(), user, activityId, waitingForAcceptance);
+        return new JoinRequest(userActivityRecord.getId(), user, activityId, userActivityRecord.getJoinedStatus());
     }
 
     public boolean acceptJoinRequest(User user, long userActivityId) {
-        return setJoinAcceptRequest(user, userActivityId, true);
+        return setJoinAcceptRequest(user, userActivityId, JoinedStatus.ACCEPTED);
     }
 
     public boolean declineJoinRequest(User user, long userActivityId) {
-        return setJoinAcceptRequest(user, userActivityId, false);
+        return setJoinAcceptRequest(user, userActivityId, JoinedStatus.DECLINED);
     }
 
-    private boolean setJoinAcceptRequest(User user, long userActivityId, boolean accept) {
+    private boolean setJoinAcceptRequest(User user, long userActivityId, JoinedStatus joinedStatus) {
         if (user == null) {
             return false;
         }
@@ -96,13 +91,13 @@ public class UserActivityService {
             return false;
         }
 
-        userActivityRecord.setJoinAccept(accept);
+        userActivityRecord.setJoinedStatus(joinedStatus);
         userActivityRepository.save(userActivityRecord);
 
         return true;
     }
 
-    public List<JoinRequest> getJoinRequestsForUser(User user) {
+    public List<JoinRequest> getPendingJoinRequestsForUser(User user) {
         List<JoinRequest> joinRequestList = new ArrayList<>();
 
         if (user == null) {
@@ -120,10 +115,11 @@ public class UserActivityService {
             List<UserActivityRecord> joinedUserActivityRecordList = createdActivityRecord.getJoinedUserActivityRecordList();
             for (UserActivityRecord joinedUserActivityRecord : joinedUserActivityRecordList) {
 
-                if (joinedUserActivityRecord.isJoinRequest() && !joinedUserActivityRecord.isJoinAccept()) {
+                if (joinedUserActivityRecord.getJoinedStatus() == JoinedStatus.PENDING) {
                     User joinedUser = modelMapper.map(joinedUserActivityRecord.getUser(), User.class);
                     long activityId = joinedUserActivityRecord.getActivity().getId();
-                    JoinRequest joinRequest = new JoinRequest(joinedUserActivityRecord.getId(), joinedUser, activityId, true);
+                    JoinedStatus joinedStatus = joinedUserActivityRecord.getJoinedStatus();
+                    JoinRequest joinRequest = new JoinRequest(joinedUserActivityRecord.getId(), joinedUser, activityId, joinedStatus);
                     joinRequestList.add(joinRequest);
                 }
             }
@@ -132,7 +128,11 @@ public class UserActivityService {
         return joinRequestList;
     }
 
-    public List<JoinRequest> getJoinRequestsCreatedByUser(User user) {
+    public List<JoinRequest> getPendingJoinRequestsCreatedByUser(User user) {
+        return getJoinRequestsCreatedByUser(user, JoinedStatus.PENDING);
+    }
+
+    public List<JoinRequest> getJoinRequestsCreatedByUser(User user, JoinedStatus filterJoinedStatus) {
         List<JoinRequest> joinRequestList = new ArrayList<>();
 
         if (user == null) {
@@ -147,14 +147,55 @@ public class UserActivityService {
         List<UserActivityRecord> joinedUserActivityRecordList = userRecord.getJoinedUserActivityRecordList();
         for (UserActivityRecord joinedUserActivityRecord : joinedUserActivityRecordList) {
 
-            if (joinedUserActivityRecord.isJoinRequest() && !joinedUserActivityRecord.isJoinAccept()) {
-                User joinedUser = modelMapper.map(joinedUserActivityRecord.getUser(), User.class);
-                long activityId = joinedUserActivityRecord.getActivity().getId();
-                JoinRequest joinRequest = new JoinRequest(joinedUserActivityRecord.getId(), joinedUser, activityId, true);
-                joinRequestList.add(joinRequest);
+            if (filterJoinedStatus != null && joinedUserActivityRecord.getJoinedStatus() != filterJoinedStatus) {
+                continue;
             }
+
+            User joinedUser = modelMapper.map(joinedUserActivityRecord.getUser(), User.class);
+            long activityId = joinedUserActivityRecord.getActivity().getId();
+            JoinedStatus joinedStatus = joinedUserActivityRecord.getJoinedStatus();
+            JoinRequest joinRequest = new JoinRequest(joinedUserActivityRecord.getId(), joinedUser, activityId, joinedStatus);
+            joinRequestList.add(joinRequest);
         }
 
         return joinRequestList;
+    }
+
+    public void saveJoinedUser(User user, long activityId, ProgressStatus progressStatus, JoinedStatus joinedStatus, String coordinates) {
+        if (user == null) {
+            return;
+        }
+
+        UserRecord userRecord = userRepository.findOne(user.getEmail());
+        if (userRecord == null) {
+            return;
+        }
+
+        ActivityRecord activityRecord = activityRepository.findOne(activityId);
+        if (activityRecord == null) {
+            return;
+        }
+
+        UserActivityRecord userActivityRecord = activityRecord.getJoinedUser(userRecord, progressStatus, joinedStatus, coordinates);
+        userActivityRepository.save(userActivityRecord);
+    }
+
+    public void saveJoinedUser(User user, long activityId, ProgressStatus progressStatus, JoinedStatus joinedStatus, Coordinate coordinates) {
+        if (user == null) {
+            return;
+        }
+
+        UserRecord userRecord = userRepository.findOne(user.getEmail());
+        if (userRecord == null) {
+            return;
+        }
+
+        ActivityRecord activityRecord = activityRepository.findOne(activityId);
+        if (activityRecord == null) {
+            return;
+        }
+
+        UserActivityRecord userActivityRecord = activityRecord.getJoinedUser(userRecord, progressStatus, joinedStatus, coordinates);
+        userActivityRepository.save(userActivityRecord);
     }
 }

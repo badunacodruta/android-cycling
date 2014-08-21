@@ -76,9 +76,9 @@ public class JoinRequestController {
 
         switch (joinRequestType) {
             case SENT:
-                return userActivityService.getJoinRequestsCreatedByUser(user);
+                return userActivityService.getPendingJoinRequestsCreatedByUser(user);
             case RECEIVED:
-                return userActivityService.getJoinRequestsForUser(user);
+                return userActivityService.getPendingJoinRequestsForUser(user);
         }
 
         return null;

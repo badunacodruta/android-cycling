@@ -23,7 +23,7 @@ function getActivities(response) {
 
     $.ajax({
         type: "GET",
-        url: "/api/v1/activities/info?pageNumber=" + pageNumber + "&pageSize=" + pageSize,
+        url: "/api/v1/activities/summary?pageNumber=" + pageNumber + "&pageSize=" + pageSize,
         success: populateTableWithActivities,
         error: function() { displayErrorMessage("An error has occurred while trying to retrieve the activities list!") },
         contentType: "application/json"
@@ -49,7 +49,7 @@ function populateTableWithActivities(response) {
                                             <td" + onClick + ">" + activity.activityAccessType + "</td>\
                                             <td" + onClick + ">" +  new Date(activity.createdDate).yyyymmdd() + "</td>\
                                             <td" + onClick + ">" + new Date(lastUpdateDate).yyyymmdd() + "</td>\
-                                            <td" + onClick + ">" + activity.state + "</td>\
+                                            <td" + onClick + ">" + activity.progressStatus + "</td>\
                                             <td class='glyphicon glyphicon-trash' onclick='deleteActivity(" + activity.id + ")'></td>\
                                         </tr>"
         );

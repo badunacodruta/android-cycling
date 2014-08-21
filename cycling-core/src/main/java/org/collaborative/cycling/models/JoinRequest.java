@@ -6,16 +6,16 @@ public class JoinRequest implements Serializable {
     private long id;
     private User user;
     private long activityId;
-    private boolean waitingForAcceptance;
+    private JoinedStatus joinedStatus;
 
     public JoinRequest() {
     }
 
-    public JoinRequest(long id, User user, long activityId, boolean waitingForAcceptance) {
+    public JoinRequest(long id, User user, long activityId, JoinedStatus joinedStatus) {
         this.id = id;
         this.user = user;
         this.activityId = activityId;
-        this.waitingForAcceptance = waitingForAcceptance;
+        this.joinedStatus = joinedStatus;
     }
 
     public long getId() {
@@ -42,11 +42,11 @@ public class JoinRequest implements Serializable {
         this.activityId = activityId;
     }
 
-    public boolean isWaitingForAcceptance() {
-        return waitingForAcceptance;
+    public JoinedStatus getJoinedStatus() {
+        return joinedStatus;
     }
 
-    public void setWaitingForAcceptance(boolean waitingForAcceptance) {
-        this.waitingForAcceptance = waitingForAcceptance;
+    public void setJoinedStatus(JoinedStatus joinedStatus) {
+        this.joinedStatus = joinedStatus;
     }
 }
