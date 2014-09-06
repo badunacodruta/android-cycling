@@ -141,6 +141,18 @@ public class ActivityRecord {
         this.joinedUserActivityRecordList = joinedUserActivityRecordList;
     }
 
+    public void addJoinedUserActivityRecord(UserActivityRecord joinedUserActivityRecord) {
+        if (joinedUserActivityRecordList == null) {
+            joinedUserActivityRecordList = new ArrayList<>();
+        }
+//        for (UserActivityRecord userActivityRecord : joinedUserActivityRecordList) {
+//            if (userActivityRecord.getUser().getEmail().equals(joinedUserActivityRecord.getUser().getEmail())) {
+//                joinedUserActivityRecordList.remove(userActivityRecord);
+//            }
+//        }
+        joinedUserActivityRecordList.add(joinedUserActivityRecord);
+    }
+
     /**
      * Computes the state of the activity:
      *  NOT_STARTED if no user has started the activity or no user joined the activity
@@ -191,46 +203,7 @@ public class ActivityRecord {
         return joinedUserList;
     }
 
-    public UserActivityRecord getJoinedUser(UserRecord userRecord, JoinedStatus joinedStatus) {
-        return getJoinedUser(userRecord, null, joinedStatus);
-    }
-
-    public UserActivityRecord getJoinedUser(UserRecord userRecord, ProgressStatus progressStatus, JoinedStatus joinedStatus, String userCoordinates) {
-
-        UserActivityRecord joinedUser = getJoinedUser(userRecord, progressStatus, joinedStatus);
-        if (joinedUser == null) {
-            return joinedUser;
-        }
-
-        if (userCoordinates != null) {
-            joinedUser.setCoordinates(userCoordinates);
-        }
-
-        return joinedUser;
-    }
-
-    public UserActivityRecord getJoinedUser(UserRecord userRecord, ProgressStatus progressStatus, JoinedStatus joinedStatus, Coordinate userCoordinate) {
-
-        UserActivityRecord joinedUser = getJoinedUser(userRecord, progressStatus, joinedStatus);
-        if (joinedUser == null) {
-            return joinedUser;
-        }
-
-        if (userCoordinate != null) {
-            ArrayList<Coordinate> userCoordinates = new ArrayList<>();
-            String existingCoordinates = joinedUser.getCoordinates();
-            if (existingCoordinates != null) {
-                userCoordinates = Utilities.deserialize(existingCoordinates, new ArrayList<Coordinate>().getClass());
-            }
-
-            userCoordinates.add(userCoordinate);
-            joinedUser.setCoordinates(Utilities.serialize(userCoordinates));
-        }
-
-        return joinedUser;
-    }
-
-    public UserActivityRecord getJoinedUser(UserRecord userRecord, ProgressStatus progressStatus, JoinedStatus joinedStatus) {
+    public UserActivityRecord updateJoinedUser(UserRecord userRecord, ProgressStatus progressStatus, JoinedStatus joinedStatus) {
         if (userRecord == null) {
             return null;
         }
@@ -238,9 +211,10 @@ public class ActivityRecord {
         UserActivityRecord newJoinedUser = null;
         List<UserActivityRecord> joinedUsers = getJoinedUserActivityRecordList();
         if (joinedUsers != null) {
-            for (UserActivityRecord joinedUser :joinedUsers) {
+            for (UserActivityRecord joinedUser : joinedUsers) {
                 if (joinedUser.getUser().getEmail().equals(userRecord.getEmail())) {
                     newJoinedUser = joinedUser;
+                    break;
                 }
             }
         }
@@ -249,6 +223,7 @@ public class ActivityRecord {
         if (newJoinedUser == null) {
             newJoinedUser = new UserActivityRecord();
             newJoinedUser.setCreatedDate(currentDate);
+            addJoinedUserActivityRecord(newJoinedUser);
         }
 
         newJoinedUser.setUser(userRecord);
@@ -263,5 +238,52 @@ public class ActivityRecord {
         newJoinedUser.setUpdatedDate(currentDate);
 
         return newJoinedUser;
+    }
+
+    public UserActivityRecord updateJoinedUser(UserRecord userRecord, ProgressStatus progressStatus) {
+        return updateJoinedUser(userRecord, progressStatus, null);
+    }
+
+    public UserActivityRecord updateJoinedUser(UserRecord userRecord, JoinedStatus joinedStatus) {
+        return updateJoinedUser(userRecord, null, joinedStatus);
+    }
+
+    public UserActivityRecord updateJoinedUser(UserRecord userRecord) {
+        return updateJoinedUser(userRecord, null, null);
+    }
+
+    public UserActivityRecord updateJoinedUser(UserRecord userRecord, ProgressStatus progressStatus, JoinedStatus joinedStatus, String userCoordinates) {
+
+        UserActivityRecord joinedUser = updateJoinedUser(userRecord, progressStatus, joinedStatus);
+        if (joinedUser == null) {
+            return joinedUser;
+        }
+
+        if (userCoordinates != null) {
+            joinedUser.setCoordinates(userCoordinates);
+        }
+
+        return joinedUser;
+    }
+
+    public UserActivityRecord updateJoinedUser(UserRecord userRecord, ProgressStatus progressStatus, JoinedStatus joinedStatus, Coordinates userCoordinate) {
+
+        UserActivityRecord joinedUser = updateJoinedUser(userRecord, progressStatus, joinedStatus);
+        if (joinedUser == null) {
+            return joinedUser;
+        }
+
+        if (userCoordinate != null) {
+            ArrayList<Coordinates> userCoordinates = new ArrayList<>();
+            String existingCoordinates = joinedUser.getCoordinates();
+            if (existingCoordinates != null) {
+                userCoordinates = Utilities.deserialize(existingCoordinates, new ArrayList<Coordinates>().getClass());
+            }
+
+            userCoordinates.add(userCoordinate);
+            joinedUser.setCoordinates(Utilities.serialize(userCoordinates));
+        }
+
+        return joinedUser;
     }
 }

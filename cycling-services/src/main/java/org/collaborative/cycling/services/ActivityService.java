@@ -69,7 +69,7 @@ public class ActivityService {
         activityRecord.setUpdatedDate(currentDate);
 
         activityRecord = activityRepository.save(activityRecord);
-        userActivityRepository.save(activityRecord.getJoinedUser(userRecord, JoinedStatus.MINE));
+        userActivityRepository.save(activityRecord.updateJoinedUser(userRecord, JoinedStatus.MINE));
 
         return modelMapper.map(activityRecord, Activity.class);
     }

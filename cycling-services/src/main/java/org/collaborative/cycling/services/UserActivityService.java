@@ -176,11 +176,11 @@ public class UserActivityService {
             return;
         }
 
-        UserActivityRecord userActivityRecord = activityRecord.getJoinedUser(userRecord, progressStatus, joinedStatus, coordinates);
+        UserActivityRecord userActivityRecord = activityRecord.updateJoinedUser(userRecord, progressStatus, joinedStatus, coordinates);
         userActivityRepository.save(userActivityRecord);
     }
 
-    public void saveJoinedUser(User user, long activityId, ProgressStatus progressStatus, JoinedStatus joinedStatus, Coordinate coordinates) {
+    public void saveJoinedUser(User user, long activityId, ProgressStatus progressStatus, JoinedStatus joinedStatus, Coordinates coordinates) {
         if (user == null) {
             return;
         }
@@ -195,7 +195,14 @@ public class UserActivityService {
             return;
         }
 
-        UserActivityRecord userActivityRecord = activityRecord.getJoinedUser(userRecord, progressStatus, joinedStatus, coordinates);
+        UserActivityRecord userActivityRecord = activityRecord.updateJoinedUser(userRecord, progressStatus, joinedStatus, coordinates);
         userActivityRepository.save(userActivityRecord);
+    }
+
+    public boolean updatePosition(User user, long activityId, Coordinates coordinate) {
+
+//TODO
+
+        return false;
     }
 }

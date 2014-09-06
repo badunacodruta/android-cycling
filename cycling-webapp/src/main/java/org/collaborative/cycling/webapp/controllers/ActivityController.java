@@ -29,8 +29,9 @@ public class ActivityController {
     public ActivityController() {
     }
 
+//    TODO: update path and params
     @POST
-    @Path("solo/activity/{distance}")
+    @Path(MAPPING_VERSION + "solo/activity/{distance}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public void saveSoloActivity(@PathParam("distance") String distance, String coordinates, @Context HttpServletRequest request) {
@@ -77,8 +78,8 @@ public class ActivityController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public List<ActivitySummary> getActivitiesSummary(@QueryParam("pageNumber") int pageNumber,
-                                                @QueryParam("pageSize") int pageSize,
-                                                @Context HttpServletRequest request) {
+                                                      @QueryParam("pageSize") int pageSize,
+                                                      @Context HttpServletRequest request) {
         logger.debug("get activities summary");
 
         HttpSession session = request.getSession(true);
@@ -92,8 +93,8 @@ public class ActivityController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public List<JoinedActivity> getJoinedActivities(@QueryParam("pageNumber") int pageNumber,
-                                                            @QueryParam("pageSize") int pageSize,
-                                                            @Context HttpServletRequest request) {
+                                                    @QueryParam("pageSize") int pageSize,
+                                                    @Context HttpServletRequest request) {
         logger.debug("get joined activities");
 
         HttpSession session = request.getSession(true);

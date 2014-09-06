@@ -84,6 +84,8 @@ public class JoinRequestController {
         return null;
     }
 
+
+    //TODO: use getJoinedActivities (from ActivityController) instead -> for the app
     @GET
     @Path("/joinedRides")
     @Produces(MediaType.APPLICATION_JSON)

@@ -11,7 +11,7 @@ public class JoinedUser implements Serializable {
     private User user;
     private JoinedStatus joinedStatus;
     private ProgressStatus progressStatus;
-    private List<Coordinate> coordinates;
+    private List<Coordinates> coordinates;
 
     public JoinedUser() {
     }
@@ -55,6 +55,6 @@ public class JoinedUser implements Serializable {
         if (coordinates == null) {
             return;
         }
-        this.coordinates = Utilities.deserialize(coordinates, new ArrayList<Coordinate>().getClass());
+        this.coordinates = Utilities.deserialize(coordinates, new ArrayList<Coordinates>().getClass());
     }
 }

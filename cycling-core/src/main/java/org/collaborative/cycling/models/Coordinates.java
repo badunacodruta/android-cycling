@@ -5,17 +5,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
-public class Coordinate implements Serializable {
+public class Coordinates implements Serializable {
 //    TODO: check this for the Android application
     @JsonProperty("k")
     private double latitude;
     @JsonProperty("B")
     private double longitude;
 
-    public Coordinate() {
+    public Coordinates() {
     }
 
-    public Coordinate(double latitude, double longitude) {
+    public Coordinates(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -34,5 +34,13 @@ public class Coordinate implements Serializable {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    @Override
+    public String toString() {
+        return "Coordinates{" +
+                "latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
 }
