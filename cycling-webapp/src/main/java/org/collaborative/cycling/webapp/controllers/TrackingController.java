@@ -1,8 +1,16 @@
 package org.collaborative.cycling.webapp.controllers;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -43,14 +51,58 @@ public class TrackingController {
         return userActivityService.updatePosition(user, activityId, coordinates);
     }
 
+    static int index = 0;
 
-// return list of:
-//    public String email;
-//    public double lat;
-//    public double lng;
-//    public long distanceInMeters;
-//    public long distanceInTime;
+    @GET
+    @Path("/{lat}/{lng}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public List<UserMapDetails> getJoinedRides(
+        @PathParam("lat") double lat,
+        @PathParam("lng") double lng,
+        @Context HttpServletRequest request) {
+
+        //TODO: this is the list of rides: MY rides + All rides I`ve clicked join ( accepted or not )
 
 
+        index ++;
+        return Arrays.asList(
+            new UserMapDetails("email1", 10 + index, 10, 1000, 1000),
+            new UserMapDetails("email1", 11 + index, 10, 1000, 1000),
+            new UserMapDetails("email1", 12 + index, 10, 1000, 1000),
+            new UserMapDetails("email1", 13 + index, 10, 1000, 1000),
+            new UserMapDetails("email1", 14 + index, 10, 1000, 1000)
+        );
+    }
+    @GET
+    @Path("/finish")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void finish(){
+
+
+        //TODO: ignore any new tracking calls ? or do nothing
+
+    }
+
+
+    private class UserMapDetails {
+
+        public String email;
+        public double lat;
+        public double lng;
+        public long distanceInMeters;
+        public long distanceInTime;
+
+        private UserMapDetails() {
+        }
+
+        private UserMapDetails(String email, double lat, double lng, long distanceInMeters, long distanceInTime) {
+            this.email = email;
+            this.lat = lat;
+            this.lng = lng;
+            this.distanceInMeters = distanceInMeters;
+            this.distanceInTime = distanceInTime;
+        }
+    }
 }
-
