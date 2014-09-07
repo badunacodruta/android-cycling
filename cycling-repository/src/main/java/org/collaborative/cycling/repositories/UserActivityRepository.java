@@ -12,4 +12,7 @@ public interface UserActivityRepository extends JpaRepository<UserActivityRecord
     @Query("select ua from UserActivityRecord ua where ua.user.email = ?1 and ua.deleted = false")
     List<UserActivityRecord> getUserActivitiesByPage(String email, Pageable pageable);
 
+    @Query("select ua from UserActivityRecord ua where ua.user.email = ?1 and ua.deleted = false order by ua.activity.name")
+    List<UserActivityRecord> getUserActivities(String email);
+
 }

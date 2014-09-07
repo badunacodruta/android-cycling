@@ -1,5 +1,7 @@
 package org.collaborative.cycling.records;
 
+import org.collaborative.cycling.models.ProgressStatus;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -119,5 +121,19 @@ public class UserRecord {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public ProgressStatus getProgressStatusForActivity(long activityId) {
+        if (joinedUserActivityRecordList == null || joinedUserActivityRecordList.isEmpty()) {
+            return ProgressStatus.NOT_STARTED;
+        }
+
+        for (UserActivityRecord userActivityRecord : joinedUserActivityRecordList) {
+            if (userActivityRecord.getActivity() != null && userActivityRecord.getActivity().getId() == activityId) {
+                return userActivityRecord.getProgressStatus();
+            }
+        }
+
+        return ProgressStatus.NOT_STARTED;
     }
 }

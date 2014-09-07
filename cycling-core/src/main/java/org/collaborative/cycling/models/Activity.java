@@ -1,6 +1,10 @@
 package org.collaborative.cycling.models;
 
+import org.collaborative.cycling.Utilities;
+
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,7 +13,7 @@ public class Activity implements Serializable {
     private String name;
     private User owner;
     private ActivityAccessType activityAccessType;
-    private String coordinates;
+    private List<Coordinates> coordinates;
     private Date startDate;
     private List<JoinedUser> joinedUsers;
     private Date createdDate;
@@ -51,6 +55,22 @@ public class Activity implements Serializable {
         this.activityAccessType = activityAccessType;
     }
 
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public List<JoinedUser> getJoinedUsers() {
+        return joinedUsers;
+    }
+
+    public void setJoinedUsers(List<JoinedUser> joinedUsers) {
+        this.joinedUsers = joinedUsers;
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -75,27 +95,14 @@ public class Activity implements Serializable {
         this.progressStatus = progressStatus;
     }
 
-    public List<JoinedUser> getJoinedUsers() {
-        return joinedUsers;
-    }
-
-    public void setJoinedUsers(List<JoinedUser> joinedUsers) {
-        this.joinedUsers = joinedUsers;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
     public String getCoordinates() {
-        return coordinates;
+        return Utilities.serialize(coordinates);
     }
 
-    public void setCoordinates(String coordinates) {
-        this.coordinates = coordinates;
+    public void setCoordinates(String coordinates) throws IOException {
+        if (coordinates == null) {
+            return;
+        }
+        this.coordinates = Utilities.deserialize(coordinates, new ArrayList<Coordinates>().getClass());
     }
 }

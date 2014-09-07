@@ -200,4 +200,62 @@ public class UserActivityService {
         userActivityRepository.save(userActivityRecord);
         return true;
     }
+
+    public boolean saveJoinedUser(User user, long activityId, ProgressStatus progressStatus, JoinedStatus joinedStatus) {
+        if (user == null) {
+            return false;
+        }
+
+        UserRecord userRecord = userRepository.findOne(user.getEmail());
+        if (userRecord == null) {
+            return false;
+        }
+
+        ActivityRecord activityRecord = activityRepository.findOne(activityId);
+        if (activityRecord == null) {
+            return false;
+        }
+
+        UserActivityRecord userActivityRecord = activityRecord.updateJoinedUser(userRecord, progressStatus, joinedStatus);
+        userActivityRepository.save(userActivityRecord);
+        return true;
+    }
+
+    public ProgressStatus getProgressStatusForUser(User user, long activityId) {
+        if (user == null) {
+            return ProgressStatus.NOT_STARTED;
+        }
+
+        UserRecord userRecord = userRepository.findOne(user.getEmail());
+        if (userRecord == null) {
+            return ProgressStatus.NOT_STARTED;
+        }
+
+        return userRecord.getProgressStatusForActivity(activityId);
+    }
+
+    public boolean isJoinedUser(User user, long activityId) {
+        if (user == null) {
+            return false;
+        }
+
+        UserRecord userRecord = userRepository.findOne(user.getEmail());
+        if (userRecord == null) {
+            return false;
+        }
+
+        ActivityRecord activityRecord = activityRepository.findOne(activityId);
+        if (activityRecord == null) {
+            return false;
+        }
+
+        List<UserActivityRecord> joinedUsers = activityRecord.getJoinedUserActivityRecordList();
+        for (UserActivityRecord joinedUser : joinedUsers) {
+            if (joinedUser.getActivity().getId() == activityId) {
+                return joinedUser.getJoinedStatus() == JoinedStatus.ACCEPTED ? true : false;
+            }
+        }
+
+        return false;
+    }
 }

@@ -145,11 +145,6 @@ public class ActivityRecord {
         if (joinedUserActivityRecordList == null) {
             joinedUserActivityRecordList = new ArrayList<>();
         }
-//        for (UserActivityRecord userActivityRecord : joinedUserActivityRecordList) {
-//            if (userActivityRecord.getUser().getEmail().equals(joinedUserActivityRecord.getUser().getEmail())) {
-//                joinedUserActivityRecordList.remove(userActivityRecord);
-//            }
-//        }
         joinedUserActivityRecordList.add(joinedUserActivityRecord);
     }
 

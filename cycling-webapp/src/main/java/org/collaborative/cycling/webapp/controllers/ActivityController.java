@@ -95,15 +95,13 @@ public class ActivityController {
     @Path(MAPPING_VERSION + "joined")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public List<JoinedActivity> getJoinedActivities(@QueryParam("pageNumber") int pageNumber,
-                                                    @QueryParam("pageSize") int pageSize,
-                                                    @Context HttpServletRequest request) {
+    public List<JoinedActivity> getJoinedActivities(@Context HttpServletRequest request) {
         logger.debug("get joined activities");
 
         HttpSession session = request.getSession(true);
         User user = Utils.getUser(session);
 
-        return activityService.getJoinedActivities(user, pageNumber, pageSize);
+        return activityService.getJoinedActivities(user);
     }
 
     @GET

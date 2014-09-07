@@ -3,6 +3,7 @@ package org.collaborative.cycling.services;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.collaborative.cycling.Utilities;
@@ -89,7 +90,15 @@ public class ActivityService {
 //    TODO: maybe add pagination
     public List<ActivitySearchResult> searchActivitiesToJoin(User user, String query) {
         List<ActivityRecord> activityRecordList = activityRepository.getActivitiesByName(user.getEmail(), String.format("%%%s%%", query));
-        for (ActivityRecord activityRecord : activityRecordList) {
+
+        Iterator<ActivityRecord> iterator = activityRecordList.iterator();
+        while (iterator.hasNext()) {
+            ActivityRecord activityRecord = iterator.next();
+
+            if (activityRecord.getActivityAccessType() == ActivityAccessType.PRIVATE) {
+                iterator.remove();
+            }
+
             List<UserActivityRecord> joinedUsers = activityRecord.getJoinedUserActivityRecordList();
             if (joinedUsers == null) {
                 continue;
@@ -97,7 +106,7 @@ public class ActivityService {
 
             for (UserActivityRecord joinedUser : joinedUsers) {
                 if (joinedUser.getUser().getEmail().equals(user.getEmail())) {
-                    activityRecordList.remove(activityRecord);
+                    iterator.remove();
                 }
             }
         }
@@ -122,6 +131,24 @@ public class ActivityService {
 
         PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.DESC, "createdDate");
         List<UserActivityRecord> userActivityRecordList = userActivityRepository.getUserActivitiesByPage(user.getEmail(), pageRequest);
+
+        for (UserActivityRecord userActivityRecord : userActivityRecordList) {
+            JoinedActivity joinedActivity = modelMapper.map(userActivityRecord.getActivity(), JoinedActivity.class);
+            joinedActivity.setJoinedStatus(userActivityRecord.getJoinedStatus());
+
+            joinedActivityList.add(joinedActivity);
+        }
+
+        return joinedActivityList;
+    }
+
+    public List<JoinedActivity> getJoinedActivities(User user) {
+        List<JoinedActivity> joinedActivityList = new ArrayList<>();
+        if (user == null) {
+            return joinedActivityList;
+        }
+
+        List<UserActivityRecord> userActivityRecordList = userActivityRepository.getUserActivities(user.getEmail());
 
         for (UserActivityRecord userActivityRecord : userActivityRecordList) {
             JoinedActivity joinedActivity = modelMapper.map(userActivityRecord.getActivity(), JoinedActivity.class);
@@ -194,29 +221,6 @@ public class ActivityService {
 
         PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.DESC, "createdDate");
         return activityRepository.getActivitiesByPage(user.getEmail(), pageRequest);
-    }
-
-    private List<ActivityRecord> getJoinedActivityRecords(User user, int pageNumber, int pageSize) {
-        List<ActivityRecord> activityRecordList = new ArrayList<>();
-        if (user == null) {
-            return activityRecordList;
-        }
-
-        if (pageNumber <= 0) {
-            pageNumber = 1;
-        }
-
-        if (pageSize <= 0) {
-            pageSize = DEFAULT_PAGE_SIZE;
-        }
-
-        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.DESC, "createdDate");
-        List<UserActivityRecord> userActivityRecordList = userActivityRepository.getUserActivitiesByPage(user.getEmail(), pageRequest);
-        for (UserActivityRecord userActivityRecord : userActivityRecordList) {
-            activityRecordList.add(userActivityRecord.getActivity());
-        }
-
-        return activityRecordList;
     }
 
     private String getActivityName(UserRecord userRecord, Activity activity) {

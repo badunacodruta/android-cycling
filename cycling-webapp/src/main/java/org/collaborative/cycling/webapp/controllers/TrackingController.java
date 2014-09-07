@@ -49,10 +49,13 @@ public class TrackingController {
         HttpSession session = request.getSession(true);
         User user = Utils.getUser(session);
 
-        if (coordinates.getDate() == null) {
-            coordinates.setDate(new Date());
+        ProgressStatus progressStatus = userActivityService.getProgressStatusForUser(user, activityId);
+        if (progressStatus != ProgressStatus.FINISHED) {
+            if (coordinates.getDate() == null) {
+                coordinates.setDate(new Date());
+            }
+            userActivityService.saveJoinedUser(user, activityId, null, null, coordinates);
         }
-        userActivityService.saveJoinedUser(user, activityId, null, null, coordinates);
 
         return getUsersForActivityAndUser(activityId, user);
     }
@@ -63,7 +66,7 @@ public class TrackingController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public List<JoinedUser> getUsersForActivity(@QueryParam("activityId") long activityId,
-                                   @Context HttpServletRequest request) {
+                                                @Context HttpServletRequest request) {
         logger.debug("get users for activity -- activityId:{}", activityId);
 
         HttpSession session = request.getSession(true);
@@ -88,13 +91,67 @@ public class TrackingController {
     }
 
     @GET
+    @Path("/start")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void start(long activityId,
+                      @Context HttpServletRequest request) {
+        logger.debug("start activity -- activityId:{}", activityId);
+
+        HttpSession session = request.getSession(true);
+        User user = Utils.getUser(session);
+
+        if (userActivityService.isJoinedUser(user, activityId)) {
+            userActivityService.saveJoinedUser(user, activityId, ProgressStatus.ACTIVE, null);
+        }
+    }
+
+    @GET
     @Path("/finish")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public void finish(long activityId){
+    public void finish(long activityId,
+                       @Context HttpServletRequest request) {
+        logger.debug("finish activity -- activityId:{}", activityId);
 
-        //TODO: ignore any new tracking calls ? or do nothing
+        HttpSession session = request.getSession(true);
+        User user = Utils.getUser(session);
 
+        if (userActivityService.isJoinedUser(user, activityId)) {
+            userActivityService.saveJoinedUser(user, activityId, ProgressStatus.FINISHED, null);
+        }
+    }
+
+    @GET
+    @Path("/pause")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void pause(long activityId,
+                       @Context HttpServletRequest request) {
+        logger.debug("pause activity -- activityId:{}", activityId);
+
+        HttpSession session = request.getSession(true);
+        User user = Utils.getUser(session);
+
+        if (userActivityService.isJoinedUser(user, activityId)) {
+            userActivityService.saveJoinedUser(user, activityId, ProgressStatus.PAUSED, null);
+        }
+    }
+
+    @GET
+    @Path("/resume")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void resume(long activityId,
+                       @Context HttpServletRequest request) {
+        logger.debug("resume activity -- activityId:{}", activityId);
+
+        HttpSession session = request.getSession(true);
+        User user = Utils.getUser(session);
+
+        if (userActivityService.isJoinedUser(user, activityId)) {
+            userActivityService.saveJoinedUser(user, activityId, ProgressStatus.ACTIVE, null);
+        }
     }
 }
 

@@ -1,11 +1,55 @@
 package org.collaborative.cycling.models;
 
+import org.collaborative.cycling.Utilities;
+
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class JoinedActivity extends Activity implements Serializable {
+public class JoinedActivity implements Serializable {
+    private long id;
+    private String name;
+    private User owner;
+    private List<Coordinates> coordinates;
+    private Date startDate;
     private JoinedStatus joinedStatus;
+
+    public JoinedActivity() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
     public JoinedStatus getJoinedStatus() {
         return joinedStatus;
@@ -13,5 +57,16 @@ public class JoinedActivity extends Activity implements Serializable {
 
     public void setJoinedStatus(JoinedStatus joinedStatus) {
         this.joinedStatus = joinedStatus;
+    }
+
+    public String getCoordinates() {
+        return Utilities.serialize(coordinates);
+    }
+
+    public void setCoordinates(String coordinates) throws IOException {
+        if (coordinates == null) {
+            return;
+        }
+        this.coordinates = Utilities.deserialize(coordinates, new ArrayList<Coordinates>().getClass());
     }
 }
