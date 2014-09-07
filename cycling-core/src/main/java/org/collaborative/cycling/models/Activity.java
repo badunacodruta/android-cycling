@@ -1,9 +1,12 @@
 package org.collaborative.cycling.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.collaborative.cycling.Utilities;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,11 +17,13 @@ public class Activity implements Serializable {
     private User owner;
     private ActivityAccessType activityAccessType;
     private List<Coordinates> coordinates;
-    private Date startDate;
     private List<JoinedUser> joinedUsers;
     private Date createdDate;
     private Date updatedDate;
     private ProgressStatus progressStatus;
+
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
+    private Date startDate;
 
     public Activity() {
     }

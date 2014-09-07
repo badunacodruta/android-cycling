@@ -1,5 +1,7 @@
 package org.collaborative.cycling.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,7 +12,9 @@ public class ActivitySummary implements Serializable {
     private Date createdDate;
     private Date updatedDate;
     private ProgressStatus progressStatus;
-//    TODO: add start date here and in the web UI
+
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
+    private Date startDate;
 
     public ActivitySummary() {
     }
@@ -61,5 +65,13 @@ public class ActivitySummary implements Serializable {
 
     public void setProgressStatus(ProgressStatus progressStatus) {
         this.progressStatus = progressStatus;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 }

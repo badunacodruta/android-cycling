@@ -10,6 +10,7 @@
     <link href="../css/bootstrap/prettyPhoto.css" rel="stylesheet">
     <link href="../css/bootstrap/animate.css" rel="stylesheet">
     <link href="../css/bootstrap/main.css" rel="stylesheet">
+    <link href="../css/bootstrap/datepicker.css" rel="stylesheet">
 
     <link href="../css/commons.css" rel="stylesheet">
     <link href="../css/create-activity.css" rel="stylesheet">
@@ -22,6 +23,7 @@
     <![endif]-->
 
     <script src="../js/bootstrap/jquery.js"></script>
+    <script src="../js/bootstrap/datepicker.js"></script>
 
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <script type="text/javascript"
@@ -113,7 +115,22 @@
                 </div>
                 <br>
 
-                <!--TODO: add start date-->
+
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-7">
+                        <div class="input-group">
+                            <span class="input-group-addon">Start date</span>
+                            <div class="input-group date">
+                                <input type="text" class="form-control">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                    </div>
+                </div>
+                <br>
 
 
                 <div class="row">
@@ -217,10 +234,19 @@
     </div>
 </footer><!--/#footer-->
 
-<script src="../js/bootstrap/jquery.js"></script>
+<!--<script src="../js/bootstrap/jquery.js"></script>-->
 <script src="../js/bootstrap/bootstrap.min.js"></script>
 <script src="../js/bootstrap/jquery.prettyPhoto.js"></script>
 <script src="../js/bootstrap/main.js"></script>
+
+
+<script>
+    $('.input-group.date').datepicker({
+        todayHighlight: true,
+        format: 'yyyy/mm/dd',
+    });
+</script>
+
 
 </body>
 </html>

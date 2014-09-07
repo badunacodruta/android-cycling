@@ -1,5 +1,6 @@
 package org.collaborative.cycling.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.collaborative.cycling.Utilities;
 
 import java.io.IOException;
@@ -11,10 +12,13 @@ import java.util.List;
 public class ActivitySearchResult implements Serializable {
     private long id;
     private String name;
-    private Date startDate;
     private User owner;
     private List<Coordinates> coordinates;
     private ActivityAccessType activityAccessType;
+
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
+    private Date startDate;
+
 
     public ActivitySearchResult() {
     }

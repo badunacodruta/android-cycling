@@ -65,6 +65,9 @@ public class ActivityService {
         if (activity.getCoordinates() != null) {
             activityRecord.setCoordinates(activity.getCoordinates());
         }
+        if (activity.getStartDate() != null) {
+            activityRecord.setStartDate(activity.getStartDate());
+        }
 
         activityRecord.setOwner(userRecord);
         activityRecord.setUpdatedDate(currentDate);

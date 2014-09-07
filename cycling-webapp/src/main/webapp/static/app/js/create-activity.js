@@ -104,10 +104,12 @@ function changeAddPins() {
 function saveActivity() {
 
     var activityName = $("#activity-name").val();
+    var startDate = $('.date input').val();
     var accessType = getAccessType();
 
     var activity = {};
     activity.name = activityName;
+    activity.startDate = startDate;
     activity.activityAccessType = accessType;
     activity.coordinates = JSON.stringify(coordinatesForTrack);
 
