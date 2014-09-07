@@ -65,7 +65,7 @@ public class UserActivityService {
         userActivityRecord.setUpdatedDate(currentDate);
 
         userActivityRecord = userActivityRepository.save(userActivityRecord);
-        return new JoinRequest(userActivityRecord.getId(), user, activityId, userActivityRecord.getJoinedStatus());
+        return new JoinRequest(userActivityRecord.getId(), user, activityRecord.getName(), userActivityRecord.getJoinedStatus(), activityRecord.getStartDate());
     }
 
     public boolean acceptJoinRequest(User user, long userActivityId) {
@@ -117,9 +117,10 @@ public class UserActivityService {
 
                 if (joinedUserActivityRecord.getJoinedStatus() == JoinedStatus.PENDING) {
                     User joinedUser = modelMapper.map(joinedUserActivityRecord.getUser(), User.class);
-                    long activityId = joinedUserActivityRecord.getActivity().getId();
+                    String activityName = joinedUserActivityRecord.getActivity().getName();
+                    Date startDate = joinedUserActivityRecord.getActivity().getStartDate();
                     JoinedStatus joinedStatus = joinedUserActivityRecord.getJoinedStatus();
-                    JoinRequest joinRequest = new JoinRequest(joinedUserActivityRecord.getId(), joinedUser, activityId, joinedStatus);
+                    JoinRequest joinRequest = new JoinRequest(joinedUserActivityRecord.getId(), joinedUser, activityName, joinedStatus, startDate);
                     joinRequestList.add(joinRequest);
                 }
             }
@@ -152,9 +153,10 @@ public class UserActivityService {
             }
 
             User joinedUser = modelMapper.map(joinedUserActivityRecord.getUser(), User.class);
-            long activityId = joinedUserActivityRecord.getActivity().getId();
+            String activityName = joinedUserActivityRecord.getActivity().getName();
+            Date startDate = joinedUserActivityRecord.getActivity().getStartDate();
             JoinedStatus joinedStatus = joinedUserActivityRecord.getJoinedStatus();
-            JoinRequest joinRequest = new JoinRequest(joinedUserActivityRecord.getId(), joinedUser, activityId, joinedStatus);
+            JoinRequest joinRequest = new JoinRequest(joinedUserActivityRecord.getId(), joinedUser, activityName, joinedStatus, startDate);
             joinRequestList.add(joinRequest);
         }
 
@@ -258,4 +260,6 @@ public class UserActivityService {
 
         return false;
     }
+
+
 }

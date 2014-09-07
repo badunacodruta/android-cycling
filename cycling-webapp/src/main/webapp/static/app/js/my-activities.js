@@ -49,6 +49,7 @@ function populateTableWithActivities(response) {
                                             <td" + onClick + ">" + activity.activityAccessType + "</td>\
                                             <td" + onClick + ">" +  new Date(activity.createdDate).yyyymmdd() + "</td>\
                                             <td" + onClick + ">" + new Date(lastUpdateDate).yyyymmdd() + "</td>\
+                                            <td" + onClick + ">" + new Date(activity.startDate).yyyymmdd() + "</td>\
                                             <td" + onClick + ">" + activity.progressStatus + "</td>\
                                             <td class='glyphicon glyphicon-trash' onclick='deleteActivity(" + activity.id + ")'></td>\
                                         </tr>"

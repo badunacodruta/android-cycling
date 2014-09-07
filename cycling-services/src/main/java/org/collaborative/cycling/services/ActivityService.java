@@ -51,6 +51,12 @@ public class ActivityService {
         if (activityRecord == null) {
             activityRecord = new ActivityRecord();
             activityRecord.setCreatedDate(currentDate);
+            List<ActivityRecord> createdActivityRecordList = userRecord.getCreatedActivityRecordList();
+            if (createdActivityRecordList == null) {
+                createdActivityRecordList = new ArrayList<>();
+            }
+            createdActivityRecordList.add(activityRecord);
+            userRecord.setCreatedActivityRecordList(createdActivityRecordList);
         } else {
             if (!activityRecord.getOwner().getEmail().equals(user.getEmail())
                     || activityRecord.isDeleted()) {

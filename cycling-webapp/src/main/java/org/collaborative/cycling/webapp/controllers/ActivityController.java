@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import java.util.Date;
 import java.util.List;
 
 @Path(ActivityController.MAPPING)
@@ -43,6 +44,7 @@ public class ActivityController {
         User user = Utils.getUser(session);
 
         Activity activity = new Activity();
+        activity.setStartDate(new Date());
         Activity savedActivity = activityService.saveActivity(user, activity);
         return userActivityService.saveJoinedUser(user, savedActivity.getId(), ProgressStatus.FINISHED, JoinedStatus.MINE, coordinates);
     }

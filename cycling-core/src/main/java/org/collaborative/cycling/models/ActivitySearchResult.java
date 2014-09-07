@@ -19,7 +19,6 @@ public class ActivitySearchResult implements Serializable {
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
     private Date startDate;
 
-
     public ActivitySearchResult() {
     }
 

@@ -1,21 +1,29 @@
 package org.collaborative.cycling.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
+import java.util.Date;
 
 public class JoinRequest implements Serializable {
     private long id;
     private User user;
-    private long activityId;
+    private String activityName;
     private JoinedStatus joinedStatus;
+
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
+    private Date startDate;
+
 
     public JoinRequest() {
     }
 
-    public JoinRequest(long id, User user, long activityId, JoinedStatus joinedStatus) {
+    public JoinRequest(long id, User user, String activityName, JoinedStatus joinedStatus, Date startDate) {
         this.id = id;
         this.user = user;
-        this.activityId = activityId;
+        this.activityName = activityName;
         this.joinedStatus = joinedStatus;
+        this.startDate = startDate;
     }
 
     public long getId() {
@@ -34,19 +42,27 @@ public class JoinRequest implements Serializable {
         this.user = user;
     }
 
-    public long getActivityId() {
-        return activityId;
-    }
-
-    public void setActivityId(long activityId) {
-        this.activityId = activityId;
-    }
-
     public JoinedStatus getJoinedStatus() {
         return joinedStatus;
     }
 
     public void setJoinedStatus(JoinedStatus joinedStatus) {
         this.joinedStatus = joinedStatus;
+    }
+
+    public String getActivityName() {
+        return activityName;
+    }
+
+    public void setActivityName(String activityName) {
+        this.activityName = activityName;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 }

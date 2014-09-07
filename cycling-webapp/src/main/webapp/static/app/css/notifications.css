@@ -1,0 +1,38 @@
+
+html,body{
+    height:100%;
+}
+
+body{
+    padding-top:50px;
+}
+
+#main-slider {
+    min-height: 100%;
+}
+
+.panel {
+    text-align: center;
+    width: 70%;
+    min-width: 200px;
+    margin: auto;
+}
+
+th {text-align:center}
+
+.table-hover tbody tr:hover > td {
+    cursor: pointer
+}
+
+.user-icon {
+    width: 60px;
+    height: 60px;
+}
+
+td {
+    display: table-cell !important;
+}
+
+.hover {
+    cursor: pointer;
+}
