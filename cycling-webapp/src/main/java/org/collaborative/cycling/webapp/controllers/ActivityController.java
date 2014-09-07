@@ -34,7 +34,9 @@ public class ActivityController {
     @Path(MAPPING_VERSION + "solo/activity/{distance}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public void saveSoloActivity(@PathParam("distance") String distance, String coordinates, @Context HttpServletRequest request) {
+    public boolean saveSoloActivity(@PathParam("distance") String distance,
+                                 String coordinates,
+                                 @Context HttpServletRequest request) {
         logger.debug("save solo activity -- distance:{}, coordinates:{}", distance, coordinates);
 
         HttpSession session = request.getSession(true);
@@ -42,7 +44,7 @@ public class ActivityController {
 
         Activity activity = new Activity();
         Activity savedActivity = activityService.saveActivity(user, activity);
-        userActivityService.saveJoinedUser(user, savedActivity.getId(), ProgressStatus.FINISHED, JoinedStatus.MINE, coordinates);
+        return userActivityService.saveJoinedUser(user, savedActivity.getId(), ProgressStatus.FINISHED, JoinedStatus.MINE, coordinates);
     }
 
     @POST
@@ -58,6 +60,7 @@ public class ActivityController {
         return activityService.saveActivity(user, activity);
     }
 
+//    TODO: limit the page size
     @GET
     @Path(MAPPING_VERSION)
     @Produces(MediaType.APPLICATION_JSON)
@@ -155,5 +158,19 @@ public class ActivityController {
         User user = Utils.getUser(session);
 
         return userActivityService.joinActivity(user, activityId);
+    }
+
+    @GET
+    @Path(MAPPING_VERSION + "search")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public List<ActivitySearchResult> searchActivitiesToJoin(@QueryParam("query") String query,
+                                                        @Context HttpServletRequest request) {
+        logger.debug("search activities to join -- query:{}", query);
+
+        HttpSession session = request.getSession(true);
+        User user = Utils.getUser(session);
+
+        return activityService.searchActivitiesToJoin(user, query);
     }
 }

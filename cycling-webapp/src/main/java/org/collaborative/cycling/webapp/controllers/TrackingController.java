@@ -6,11 +6,16 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import org.collaborative.cycling.models.Coordinates;
-import org.collaborative.cycling.models.User;
+import org.collaborative.cycling.Utilities;
+import org.collaborative.cycling.models.*;
+import org.collaborative.cycling.services.ActivityService;
 import org.collaborative.cycling.services.UserActivityService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 @Path(TrackingController.MAPPING)
@@ -21,13 +26,16 @@ public class TrackingController {
     @Autowired
     private UserActivityService userActivityService;
 
+    @Autowired
+    private ActivityService activityService;
+
     public static final String MAPPING = "/tracking";
     public static final String MAPPING_VERSION = "/";
 
     public TrackingController() {
     }
 
-    //    TODO: update path and params
+//    TODO: update path and params
     @POST
     @Path(MAPPING_VERSION + "position/{activityId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -40,17 +48,36 @@ public class TrackingController {
         HttpSession session = request.getSession(true);
         User user = Utils.getUser(session);
 
-        return userActivityService.updatePosition(user, activityId, coordinates);
+        if (coordinates.getDate() == null) {
+            coordinates.setDate(new Date());
+        }
+        return userActivityService.saveJoinedUser(user, activityId, null, null, coordinates);
     }
 
+//    TODO: maybe add pagination for the users
+    @GET
+    @Path(MAPPING_VERSION + "users")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public List<JoinedUser> getUsersForActivity(@QueryParam("activityId") long activityId,
+                                   @Context HttpServletRequest request) {
+        logger.debug("get users for activity -- activityId:{}", activityId);
 
-// return list of:
-//    public String email;
-//    public double lat;
-//    public double lng;
-//    public long distanceInMeters;
-//    public long distanceInTime;
+        HttpSession session = request.getSession(true);
+        User user = Utils.getUser(session);
 
+        Activity activity = activityService.getActivity(user, activityId);
+        List<JoinedUser> joinedUsers = activity.getJoinedUsers();
 
+        //remove current user
+        for (JoinedUser joinedUser : joinedUsers) {
+            if (joinedUser.getUser().getEmail().equals(user.getEmail())) {
+                joinedUsers.remove(joinedUser);
+                return joinedUsers;
+            }
+        }
+
+        return joinedUsers;
+    }
 }
 

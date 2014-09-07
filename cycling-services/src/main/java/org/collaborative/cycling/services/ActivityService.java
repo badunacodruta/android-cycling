@@ -86,6 +86,26 @@ public class ActivityService {
         return modelMapper.map(activityRecordList, activityInfoListType);
     }
 
+//    TODO: maybe add pagination
+    public List<ActivitySearchResult> searchActivitiesToJoin(User user, String query) {
+        List<ActivityRecord> activityRecordList = activityRepository.getActivitiesByName(user.getEmail(), String.format("%%%s%%", query));
+        for (ActivityRecord activityRecord : activityRecordList) {
+            List<UserActivityRecord> joinedUsers = activityRecord.getJoinedUserActivityRecordList();
+            if (joinedUsers == null) {
+                continue;
+            }
+
+            for (UserActivityRecord joinedUser : joinedUsers) {
+                if (joinedUser.getUser().getEmail().equals(user.getEmail())) {
+                    activityRecordList.remove(activityRecord);
+                }
+            }
+        }
+
+        Type activityInfoListType = new TypeToken<List<ActivitySearchResult>>(){}.getType();
+        return modelMapper.map(activityRecordList, activityInfoListType);
+    }
+
     public List<JoinedActivity> getJoinedActivities(User user, int pageNumber, int pageSize) {
         List<JoinedActivity> joinedActivityList = new ArrayList<>();
         if (user == null) {

@@ -4,6 +4,7 @@ package org.collaborative.cycling.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Coordinates implements Serializable {
 //    TODO: check this for the Android application
@@ -12,12 +13,20 @@ public class Coordinates implements Serializable {
     @JsonProperty("B")
     private double longitude;
 
+//    TODO: json prop
+    private Date date;
+
     public Coordinates() {
     }
 
     public Coordinates(double latitude, double longitude) {
+        this(latitude, longitude, null);
+    }
+
+    public Coordinates(double latitude, double longitude, Date date) {
         this.latitude = latitude;
         this.longitude = longitude;
+        this.date = date;
     }
 
     public double getLatitude() {
@@ -36,11 +45,20 @@ public class Coordinates implements Serializable {
         this.longitude = longitude;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     @Override
     public String toString() {
         return "Coordinates{" +
                 "latitude=" + latitude +
                 ", longitude=" + longitude +
+                ", date=" + date +
                 '}';
     }
 }

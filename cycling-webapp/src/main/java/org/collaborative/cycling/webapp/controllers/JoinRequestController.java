@@ -63,6 +63,7 @@ public class JoinRequestController {
         return userActivityService.declineJoinRequest(user, joinRequestId);
     }
 
+//    TODO: maybe add pagination for join requests
     @GET
     @Path(MAPPING_VERSION)
     @Produces(MediaType.APPLICATION_JSON)

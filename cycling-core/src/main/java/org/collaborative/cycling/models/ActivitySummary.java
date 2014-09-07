@@ -10,6 +10,7 @@ public class ActivitySummary implements Serializable {
     private Date createdDate;
     private Date updatedDate;
     private ProgressStatus progressStatus;
+//    TODO: add start date here and in the web UI
 
     public ActivitySummary() {
     }

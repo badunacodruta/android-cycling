@@ -161,48 +161,43 @@ public class UserActivityService {
         return joinRequestList;
     }
 
-    public void saveJoinedUser(User user, long activityId, ProgressStatus progressStatus, JoinedStatus joinedStatus, String coordinates) {
+    public boolean saveJoinedUser(User user, long activityId, ProgressStatus progressStatus, JoinedStatus joinedStatus, String coordinates) {
         if (user == null) {
-            return;
+            return false;
         }
 
         UserRecord userRecord = userRepository.findOne(user.getEmail());
         if (userRecord == null) {
-            return;
+            return false;
         }
 
         ActivityRecord activityRecord = activityRepository.findOne(activityId);
         if (activityRecord == null) {
-            return;
+            return false;
         }
 
         UserActivityRecord userActivityRecord = activityRecord.updateJoinedUser(userRecord, progressStatus, joinedStatus, coordinates);
         userActivityRepository.save(userActivityRecord);
+        return true;
     }
 
-    public void saveJoinedUser(User user, long activityId, ProgressStatus progressStatus, JoinedStatus joinedStatus, Coordinates coordinates) {
+    public boolean saveJoinedUser(User user, long activityId, ProgressStatus progressStatus, JoinedStatus joinedStatus, Coordinates coordinates) {
         if (user == null) {
-            return;
+            return false;
         }
 
         UserRecord userRecord = userRepository.findOne(user.getEmail());
         if (userRecord == null) {
-            return;
+            return false;
         }
 
         ActivityRecord activityRecord = activityRepository.findOne(activityId);
         if (activityRecord == null) {
-            return;
+            return false;
         }
 
         UserActivityRecord userActivityRecord = activityRecord.updateJoinedUser(userRecord, progressStatus, joinedStatus, coordinates);
         userActivityRepository.save(userActivityRecord);
-    }
-
-    public boolean updatePosition(User user, long activityId, Coordinates coordinate) {
-
-//TODO
-
-        return false;
+        return true;
     }
 }

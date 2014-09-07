@@ -5,8 +5,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.collaborative.cycling.models.Coordinates;
 
 import java.io.IOException;
+import java.util.List;
 
 
 public class Utilities {
@@ -25,21 +27,6 @@ public class Utilities {
                 .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
                 .withCreatorVisibility(JsonAutoDetect.Visibility.NONE));
     }
-
-//    public static boolean isNullOrEmpty(String value) {
-//        return value == null || value.length() == 0;
-//    }
-
-//    public static void createDirectoryIfDoesNotExist(String path) {
-//        File file = new File(path);
-//        if (!file.exists()) {
-//            if (!file.mkdirs()) {
-//                throw new RuntimeException("Could not create directory");
-//            }
-//        } else if (!file.isDirectory()) {
-//            throw new RuntimeException("Could not create directory because path already exists and it is not a directory");
-//        }
-//    }
 
     public static String serialize(Object object) {
         try {
