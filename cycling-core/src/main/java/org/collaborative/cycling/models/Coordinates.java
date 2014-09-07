@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Coordinates implements Serializable {
-//    TODO: check this for the Android application
+//    TODO: modify from k and B to lat and lng -> web + app
     @JsonProperty("k")
     private double latitude;
     @JsonProperty("B")

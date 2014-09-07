@@ -96,7 +96,7 @@ public class JoinRequestController {
         //TODO: this is the list of rides: MY rides + All rides I`ve clicked join ( accepted or not )
 
         return Arrays.asList(
-            new JoinedRides("Name1", new Date(), JoinedRides.JoinedStatus.MINE, Arrays.asList(
+            new JoinedRides("Name1", new Date(122222l), JoinedRides.JoinedStatus.MINE, Arrays.asList(
                 new Pair<>(10d,10d),
                 new Pair<>(20d,10d),
                 new Pair<>(20d,20d),

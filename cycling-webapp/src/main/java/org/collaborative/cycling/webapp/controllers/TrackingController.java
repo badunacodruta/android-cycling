@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class TrackingController {
     @Path(MAPPING_VERSION + "position/{activityId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public boolean updatePosition(@PathParam("activityId") long activityId,
+    public List<JoinedUser> updatePosition(@PathParam("activityId") long activityId,
                                   Coordinates coordinates,
                                   @Context HttpServletRequest request) {
         logger.debug("update position -- activityId:{}, position:{}", activityId, coordinates);
@@ -51,7 +52,9 @@ public class TrackingController {
         if (coordinates.getDate() == null) {
             coordinates.setDate(new Date());
         }
-        return userActivityService.saveJoinedUser(user, activityId, null, null, coordinates);
+        userActivityService.saveJoinedUser(user, activityId, null, null, coordinates);
+
+        return getUsersForActivityAndUser(activityId, user);
     }
 
 //    TODO: maybe add pagination for the users
@@ -66,6 +69,10 @@ public class TrackingController {
         HttpSession session = request.getSession(true);
         User user = Utils.getUser(session);
 
+        return getUsersForActivityAndUser(activityId, user);
+    }
+
+    private List<JoinedUser> getUsersForActivityAndUser(long activityId, User user) {
         Activity activity = activityService.getActivity(user, activityId);
         List<JoinedUser> joinedUsers = activity.getJoinedUsers();
 
@@ -78,6 +85,16 @@ public class TrackingController {
         }
 
         return joinedUsers;
+    }
+
+    @GET
+    @Path("/finish")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void finish(long activityId){
+
+        //TODO: ignore any new tracking calls ? or do nothing
+
     }
 }
 
