@@ -1,13 +1,14 @@
 package org.collaborative.cycling.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.collaborative.cycling.Utilities;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import org.collaborative.cycling.Utilities;
 
 public class ActivitySearchResult implements Serializable {
     private long id;
@@ -62,8 +63,8 @@ public class ActivitySearchResult implements Serializable {
         this.activityAccessType = activityAccessType;
     }
 
-    public String getCoordinates() {
-        return Utilities.serialize(coordinates);
+    public List<Coordinates> getCoordinates() {
+        return coordinates;
     }
 
     public void setCoordinates(String coordinates) throws IOException {

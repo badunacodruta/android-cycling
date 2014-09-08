@@ -15,6 +15,6 @@ public interface ActivityRepository extends JpaRepository<ActivityRecord, Long> 
     @Query("select count(a) from ActivityRecord a where a.owner.email = ?1 and a.deleted = false")
     int getActivitiesCount(String email);
 
-    @Query("select a from ActivityRecord a where a.owner.email = ?1 and a.deleted = false and a.name like ?2 order by a.name")
+    @Query("select a from ActivityRecord a where not a.owner.email = ?1 and a.deleted = false and a.name like ?2 order by a.name")
     List<ActivityRecord> getActivitiesByName(String email, String name);
 }

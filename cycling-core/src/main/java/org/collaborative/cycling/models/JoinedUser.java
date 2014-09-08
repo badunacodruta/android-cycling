@@ -1,11 +1,11 @@
 package org.collaborative.cycling.models;
 
-import org.collaborative.cycling.Utilities;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.collaborative.cycling.Utilities;
 
 public class JoinedUser implements Serializable {
     private User user;
@@ -16,6 +16,12 @@ public class JoinedUser implements Serializable {
     public JoinedUser() {
     }
 
+    public JoinedUser(User user, JoinedStatus joinedStatus, ProgressStatus progressStatus, List<Coordinates> coordinates) throws IOException {
+        this.user = user;
+        this.joinedStatus = joinedStatus;
+        this.progressStatus = progressStatus;
+        this.coordinates = coordinates;
+    }
     public JoinedUser(User user, JoinedStatus joinedStatus, ProgressStatus progressStatus, String coordinates) throws IOException {
         this.user = user;
         this.joinedStatus = joinedStatus;
@@ -47,8 +53,8 @@ public class JoinedUser implements Serializable {
         this.progressStatus = progressStatus;
     }
 
-    public String getCoordinates() {
-        return Utilities.serialize(coordinates);
+    public List<Coordinates> getCoordinates() {
+        return coordinates;
     }
 
     public void setCoordinates(String coordinates) throws IOException {

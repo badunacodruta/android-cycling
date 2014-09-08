@@ -1,7 +1,5 @@
 package org.collaborative.cycling.webapp.controllers;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +13,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import org.collaborative.cycling.models.*;
+import org.collaborative.cycling.models.JoinRequest;
+import org.collaborative.cycling.models.JoinRequestType;
+import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.services.UserActivityService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +61,7 @@ public class JoinRequestController {
         return userActivityService.declineJoinRequest(user, joinRequestId);
     }
 
-//    TODO: maybe add pagination for join requests
+    //    TODO: maybe add pagination for join requests
     @GET
     @Path(MAPPING_VERSION)
     @Produces(MediaType.APPLICATION_JSON)
