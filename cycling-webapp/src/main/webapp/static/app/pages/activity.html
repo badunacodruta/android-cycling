@@ -10,6 +10,7 @@
     <link href="../css/bootstrap/prettyPhoto.css" rel="stylesheet">
     <link href="../css/bootstrap/animate.css" rel="stylesheet">
     <link href="../css/bootstrap/main.css" rel="stylesheet">
+    <link href="../css/bootstrap/datepicker.css" rel="stylesheet">
 
     <link href="../css/commons.css" rel="stylesheet">
     <link href="../css/activity.css" rel="stylesheet">
@@ -22,6 +23,7 @@
     <![endif]-->
 
     <script src="../js/bootstrap/jquery.js"></script>
+    <script src="../js/bootstrap/datepicker.js"></script>
 
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <script type="text/javascript"
@@ -31,6 +33,7 @@
     <div id="fb-root"></div>
     <script src="../js/constants.js"></script>
     <script src="../js/commons.js"></script>
+    <script src="../js/create-activity.js"></script>
     <script src="../js/activity.js"></script>
 
     <script src="../js/bootstrap/bootstrap-toggle.min.js"></script>
@@ -90,7 +93,8 @@
                 <div class="row">
                     <div class="col-xs-1"></div>
                     <div class="col-xs-7">
-                        <h2>Edit activity</h2>
+                        <h2>Activity Details</h2>
+                        <h5 class="edit">Not started yet</h5>
                         <hr>
                     </div>
                     <div class="col-xs-2"></div>
@@ -98,7 +102,6 @@
 
                 <br>
                 <br>
-
 
                 <div class="row">
                     <div class="col-xs-1"></div>
@@ -108,14 +111,31 @@
                             <input id="activity-name" type="text" class="form-control" placeholder="activity name">
                         </div>
                     </div>
-                    <div class="col-xs-2">
-                        <button id="save-activity-button" type="button" class="btn btn-success" onclick="saveActivity()">Save</button>
+                    <div class="col-xs-2 edit">
+                        <button id="create-activity-button" type="button" class="btn btn-success" onclick="saveActivity()">Save</button>
                     </div>
                 </div>
                 <br>
 
 
                 <div class="row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-7">
+                        <div class="input-group">
+                            <span class="input-group-addon">Start date</span>
+                            <div class="input-group date">
+                                <input id="start-date" type="text" class="form-control">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                    </div>
+                </div>
+                <br>
+
+
+                <div class="row edit">
                     <div class="col-xs-1"></div>
                     <div class="col-xs-6">
                         <div class="col-xs-5">
@@ -134,10 +154,10 @@
                     </div>
                     <div class="col-xs-3"></div>
                 </div>
-                <br>
+                <br class="edit">
 
 
-                <div class="row">
+                <div class="row edit">
                     <div class="col-xs-1"></div>
                     <div class="col-xs-6">
                         <div class="col-xs-5">
@@ -156,10 +176,52 @@
                     </div>
                     <div class="col-xs-3"></div>
                 </div>
-                <br>
+                <br class="edit">
+
+                <div class="row watch" style="display: none">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-6">
+                        <div class="col-xs-5">
+                            <label class="control-label">Display track</label>
+                        </div>
+                        <div class="col-xs-5">
+                            <div id="display-track-switch" class="toggle btn btn-primary" data-toggle="toggle" onclick="changeDisplayTrack()">
+                                <input type="checkbox" checked>
+                                <div class="toggle-group">
+                                    <label class="toggle-on btn btn-primary">On</label>
+                                    <label class="toggle-off btn active">Off</label>
+                                    <span class="toggle-handle btn"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3"></div>
+                </div>
+                <br class="watch">
+
+                <div class="row watch" style="display: none">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-6">
+                        <div class="col-xs-5">
+                            <label class="control-label">Display participants</label>
+                        </div>
+                        <div class="col-xs-5">
+                            <div id="display-participants-switch" class="toggle btn btn-primary" data-toggle="toggle" onclick="onclickChangeDisplayParticipants()">
+                                <input type="checkbox" checked>
+                                <div class="toggle-group">
+                                    <label class="toggle-on btn btn-primary">On</label>
+                                    <label class="toggle-off btn active">Off</label>
+                                    <span class="toggle-handle btn"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3"></div>
+                </div>
+                <br class="watch">
 
 
-                <div class="row">
+                <div class="row edit">
                     <div class="col-xs-1"></div>
                     <div class="col-xs-6">
 
@@ -168,13 +230,13 @@
                         </div>
                         <div class="col-xs-5">
                             <div class="btn-group">
-                                <button id="clear-track-button" type="button" class="btn btn-default" onclick="clearAllPins()">Clear all pins</button>
+                                <button id="clear-track-button" type="button" class="btn btn-default" onclick="clearAllPins()">Clear track</button>
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-3"></div>
                 </div>
-                <br>
+                <br class="edit">
 
 
                 <div class="row">
@@ -184,9 +246,6 @@
                     </div>
                 </div>
                 <br>
-
-
-
 
                 <div class="row">
                     <div class="col-xs-1"></div>
@@ -219,10 +278,19 @@
     </div>
 </footer><!--/#footer-->
 
-<script src="../js/bootstrap/jquery.js"></script>
+<!--<script src="../js/bootstrap/jquery.js"></script>-->
 <script src="../js/bootstrap/bootstrap.min.js"></script>
 <script src="../js/bootstrap/jquery.prettyPhoto.js"></script>
 <script src="../js/bootstrap/main.js"></script>
+
+
+<script>
+    $('.input-group.date').datepicker({
+        todayHighlight: true,
+        format: 'yyyy/mm/dd'
+    });
+</script>
+
 
 </body>
 </html>

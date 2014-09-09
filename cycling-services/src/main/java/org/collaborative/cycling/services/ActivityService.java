@@ -1,10 +1,7 @@
 package org.collaborative.cycling.services;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.collaborative.cycling.Utilities;
 import org.collaborative.cycling.models.*;
@@ -51,9 +48,9 @@ public class ActivityService {
         if (activityRecord == null) {
             activityRecord = new ActivityRecord();
             activityRecord.setCreatedDate(currentDate);
-            List<ActivityRecord> createdActivityRecordList = userRecord.getCreatedActivityRecordList();
+            Set<ActivityRecord> createdActivityRecordList = userRecord.getCreatedActivityRecordList();
             if (createdActivityRecordList == null) {
-                createdActivityRecordList = new ArrayList<>();
+                createdActivityRecordList = new HashSet<>();
             }
             createdActivityRecordList.add(activityRecord);
             userRecord.setCreatedActivityRecordList(createdActivityRecordList);
@@ -108,7 +105,7 @@ public class ActivityService {
                 iterator.remove();
             }
 
-            List<UserActivityRecord> joinedUsers = activityRecord.getJoinedUserActivityRecordList();
+            Set<UserActivityRecord> joinedUsers = activityRecord.getJoinedUserActivityRecordList();
             if (joinedUsers == null) {
                 continue;
             }
@@ -245,5 +242,15 @@ public class ActivityService {
         }
 
         return name;
+    }
+
+    public boolean isStartable(long activityId) {
+        ActivityRecord activityRecord = activityRepository.findOne(activityId);
+        if (activityRecord == null || activityRecord.isDeleted()) {
+            return false;
+        }
+
+        Date startDate = activityRecord.getStartDate();
+        return startDate.before(new Date());
     }
 }

@@ -122,7 +122,7 @@
                         <div class="input-group">
                             <span class="input-group-addon">Start date</span>
                             <div class="input-group date">
-                                <input type="text" class="form-control">
+                                <input id="start-date" type="text" class="form-control">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                             </div>
                         </div>
@@ -186,7 +186,7 @@
                         </div>
                         <div class="col-xs-5">
                             <div class="btn-group">
-                                <button id="clear-track-button" type="button" class="btn btn-default" onclick="clearAllPins()">Clear all pins</button>
+                                <button id="clear-track-button" type="button" class="btn btn-default" onclick="clearAllPins()">Clear track</button>
                             </div>
                         </div>
                     </div>
@@ -243,7 +243,7 @@
 <script>
     $('.input-group.date').datepicker({
         todayHighlight: true,
-        format: 'yyyy/mm/dd',
+        format: 'yyyy/mm/dd'
     });
 </script>
 

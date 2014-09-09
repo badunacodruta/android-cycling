@@ -17,7 +17,6 @@ function getRequests() {
 }
 
 function updateRequests(response) {
-    console.log(response);
     requests = response;
 
     populateTableWithRequests();
@@ -47,8 +46,6 @@ function populateTableWithRequests() {
 }
 
 function acceptRequest(requestId) {
-    console.log("accept " + requestId);
-
     $.ajax({
         type: "POST",
         url: "/api/v1/requests/accept",
@@ -60,8 +57,6 @@ function acceptRequest(requestId) {
 }
 
 function declineRequest(requestId) {
-    console.log("decline " + requestId);
-
     $.ajax({
         type: "POST",
         url: "/api/v1/requests/decline",

@@ -11,7 +11,7 @@ public class JoinedUser implements Serializable {
     private User user;
     private JoinedStatus joinedStatus;
     private ProgressStatus progressStatus;
-    private List<Coordinates> coordinates;
+    private List<Coordinates> coordinates = new ArrayList<>();
 
     public JoinedUser() {
     }

@@ -103,8 +103,8 @@ function changeAddPins() {
 //TODO: verify the name of the activity is unique and display en error message
 function saveActivity() {
 
-    var activityName = $("#activity-name").val();
-    var startDate = $('.date input').val();
+    var activityName = $('#activity-name').val();
+    var startDate = $('#start-date').val();
     var accessType = getAccessType();
 
     var activity = {};
@@ -112,6 +112,11 @@ function saveActivity() {
     activity.startDate = startDate;
     activity.activityAccessType = accessType;
     activity.coordinates = JSON.stringify(coordinatesForTrack);
+
+
+    if (typeof activityId != 'undefined') {
+        activity.id = activityId;
+    }
 
     $.ajax({
         type: "POST",
@@ -132,9 +137,7 @@ function getAccessType() {
 }
 
 function displaySuccessMessage(response) {
-    console.log(response);
-
-    var message = "Activity " + response.name + " has been successfully created";
+    var message = "Activity " + response.name + " has been successfully saved";
 
     $("#success-message").text(message);
     $("#success-message").show();

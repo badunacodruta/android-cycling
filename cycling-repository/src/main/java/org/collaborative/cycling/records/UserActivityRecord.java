@@ -30,7 +30,7 @@ public class UserActivityRecord {
     private JoinedStatus joinedStatus = JoinedStatus.PENDING;
 
     @Column(name = "coordinates", length = 50000)
-    private String coordinates;
+    private String coordinates = "[]";
 
     @Column(name = "deleted", nullable = false)
     private boolean deleted;

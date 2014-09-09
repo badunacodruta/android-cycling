@@ -35,7 +35,7 @@ public class ActivityRecord {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "activity")
     @OrderBy("created_date desc")
-    private List<UserActivityRecord> joinedUserActivityRecordList;
+    private Set<UserActivityRecord> joinedUserActivityRecordList;
 
     @Column(name = "deleted", nullable = false)
     private boolean deleted;
@@ -133,17 +133,17 @@ public class ActivityRecord {
         this.startDate = startDate;
     }
 
-    public List<UserActivityRecord> getJoinedUserActivityRecordList() {
+    public Set<UserActivityRecord> getJoinedUserActivityRecordList() {
         return joinedUserActivityRecordList;
     }
 
-    public void setJoinedUserActivityRecordList(List<UserActivityRecord> joinedUserActivityRecordList) {
+    public void setJoinedUserActivityRecordList(Set<UserActivityRecord> joinedUserActivityRecordList) {
         this.joinedUserActivityRecordList = joinedUserActivityRecordList;
     }
 
     public void addJoinedUserActivityRecord(UserActivityRecord joinedUserActivityRecord) {
         if (joinedUserActivityRecordList == null) {
-            joinedUserActivityRecordList = new ArrayList<>();
+            joinedUserActivityRecordList = new HashSet<>();
         }
         joinedUserActivityRecordList.add(joinedUserActivityRecord);
     }
@@ -204,7 +204,7 @@ public class ActivityRecord {
         }
 
         UserActivityRecord newJoinedUser = null;
-        List<UserActivityRecord> joinedUsers = getJoinedUserActivityRecordList();
+        Set<UserActivityRecord> joinedUsers = getJoinedUserActivityRecordList();
         if (joinedUsers != null) {
             for (UserActivityRecord joinedUser : joinedUsers) {
                 if (joinedUser.getUser().getEmail().equals(userRecord.getEmail())) {

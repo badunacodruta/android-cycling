@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public class UserActivityService {
 
@@ -43,7 +44,7 @@ public class UserActivityService {
 
         UserActivityRecord userActivityRecord = null;
 
-        List<UserActivityRecord> joinedUserActivityRecordList = userRecord.getJoinedUserActivityRecordList();
+        Set<UserActivityRecord> joinedUserActivityRecordList = userRecord.getJoinedUserActivityRecordList();
         for (UserActivityRecord joinedUserActivityRecord : joinedUserActivityRecordList) {
             if (joinedUserActivityRecord.getActivity().getId() == activityId) {
                 userActivityRecord = joinedUserActivityRecord;
@@ -109,10 +110,10 @@ public class UserActivityService {
             return joinRequestList;
         }
 
-        List<ActivityRecord> createdActivityRecordList = userRecord.getCreatedActivityRecordList();
+        Set<ActivityRecord> createdActivityRecordList = userRecord.getCreatedActivityRecordList();
         for (ActivityRecord createdActivityRecord : createdActivityRecordList) {
 
-            List<UserActivityRecord> joinedUserActivityRecordList = createdActivityRecord.getJoinedUserActivityRecordList();
+            Set<UserActivityRecord> joinedUserActivityRecordList = createdActivityRecord.getJoinedUserActivityRecordList();
             for (UserActivityRecord joinedUserActivityRecord : joinedUserActivityRecordList) {
 
                 if (joinedUserActivityRecord.getJoinedStatus() == JoinedStatus.PENDING) {
@@ -145,7 +146,7 @@ public class UserActivityService {
             return joinRequestList;
         }
 
-        List<UserActivityRecord> joinedUserActivityRecordList = userRecord.getJoinedUserActivityRecordList();
+        Set<UserActivityRecord> joinedUserActivityRecordList = userRecord.getJoinedUserActivityRecordList();
         for (UserActivityRecord joinedUserActivityRecord : joinedUserActivityRecordList) {
 
             if (filterJoinedStatus != null && joinedUserActivityRecord.getJoinedStatus() != filterJoinedStatus) {
@@ -251,7 +252,7 @@ public class UserActivityService {
             return false;
         }
 
-        List<UserActivityRecord> joinedUsers = activityRecord.getJoinedUserActivityRecordList();
+        Set<UserActivityRecord> joinedUsers = activityRecord.getJoinedUserActivityRecordList();
         for (UserActivityRecord joinedUser : joinedUsers) {
             if (joinedUser.getActivity().getId() == activityId) {
                 return joinedUser.getJoinedStatus() == JoinedStatus.ACCEPTED ? true : false;

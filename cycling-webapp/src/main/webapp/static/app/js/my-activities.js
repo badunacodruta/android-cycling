@@ -34,8 +34,6 @@ function getActivities(response) {
 function populateTableWithActivities(response) {
     $("#activities-table tr td").remove();
 
-    console.log(response);
-
     for (var i = 0; i < response.length; i++) {
         var activity = response[i];
         var lastUpdateDate = activity.createdDate;

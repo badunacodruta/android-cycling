@@ -101,7 +101,9 @@ public class TrackingController {
         HttpSession session = request.getSession(true);
         User user = Utils.getUser(session);
 
-        if (userActivityService.isJoinedUser(user, activityId)) {
+        if (userActivityService.isJoinedUser(user, activityId) &&
+                userActivityService.getProgressStatusForUser(user, activityId) == ProgressStatus.NOT_STARTED &&
+                activityService.isStartable(activityId)) {
             userActivityService.saveJoinedUser(user, activityId, ProgressStatus.ACTIVE, null);
         }
     }
@@ -117,7 +119,9 @@ public class TrackingController {
         HttpSession session = request.getSession(true);
         User user = Utils.getUser(session);
 
-        if (userActivityService.isJoinedUser(user, activityId)) {
+        ProgressStatus progressStatus = userActivityService.getProgressStatusForUser(user, activityId);
+        if (userActivityService.isJoinedUser(user, activityId) &&
+                (progressStatus == ProgressStatus.ACTIVE || progressStatus == ProgressStatus.PAUSED)) {
             userActivityService.saveJoinedUser(user, activityId, ProgressStatus.FINISHED, null);
         }
     }
@@ -133,7 +137,8 @@ public class TrackingController {
         HttpSession session = request.getSession(true);
         User user = Utils.getUser(session);
 
-        if (userActivityService.isJoinedUser(user, activityId)) {
+        if (userActivityService.isJoinedUser(user, activityId) &&
+                userActivityService.getProgressStatusForUser(user, activityId) == ProgressStatus.ACTIVE) {
             userActivityService.saveJoinedUser(user, activityId, ProgressStatus.PAUSED, null);
         }
     }
@@ -149,7 +154,8 @@ public class TrackingController {
         HttpSession session = request.getSession(true);
         User user = Utils.getUser(session);
 
-        if (userActivityService.isJoinedUser(user, activityId)) {
+        if (userActivityService.isJoinedUser(user, activityId) &&
+                userActivityService.getProgressStatusForUser(user, activityId) == ProgressStatus.PAUSED) {
             userActivityService.saveJoinedUser(user, activityId, ProgressStatus.ACTIVE, null);
         }
     }

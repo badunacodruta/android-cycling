@@ -5,6 +5,7 @@ import org.collaborative.cycling.models.ProgressStatus;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -19,11 +20,11 @@ public class UserRecord {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
     @OrderBy("created_date desc")
-    private List<ActivityRecord> createdActivityRecordList;
+    private Set<ActivityRecord> createdActivityRecordList;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     @OrderBy("created_date desc")
-    private List<UserActivityRecord> joinedUserActivityRecordList;
+    private Set<UserActivityRecord> joinedUserActivityRecordList;
 
     @Column(name = "untitled_activities_index", nullable = false)
     private long untitledActivitiesIndex;
@@ -99,19 +100,19 @@ public class UserRecord {
         this.untitledActivitiesIndex = untitledActivitiesIndex;
     }
 
-    public List<ActivityRecord> getCreatedActivityRecordList() {
+    public Set<ActivityRecord> getCreatedActivityRecordList() {
         return createdActivityRecordList;
     }
 
-    public void setCreatedActivityRecordList(List<ActivityRecord> createdActivityRecordList) {
+    public void setCreatedActivityRecordList(Set<ActivityRecord> createdActivityRecordList) {
         this.createdActivityRecordList = createdActivityRecordList;
     }
 
-    public List<UserActivityRecord> getJoinedUserActivityRecordList() {
+    public Set<UserActivityRecord> getJoinedUserActivityRecordList() {
         return joinedUserActivityRecordList;
     }
 
-    public void setJoinedUserActivityRecordList(List<UserActivityRecord> joinedUserActivityRecordList) {
+    public void setJoinedUserActivityRecordList(Set<UserActivityRecord> joinedUserActivityRecordList) {
         this.joinedUserActivityRecordList = joinedUserActivityRecordList;
     }
 
