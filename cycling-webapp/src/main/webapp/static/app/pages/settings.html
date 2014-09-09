@@ -12,7 +12,8 @@
     <link href="../css/bootstrap/main.css" rel="stylesheet">
 
     <link href="../css/commons.css" rel="stylesheet">
-    <link href="../css/notifications.css" rel="stylesheet">
+    <link href="../css/activity.css" rel="stylesheet">
+
 
     <!--[if lt IE 9]>
     <script src="../js/bootstrap/html5shiv.js"></script>
@@ -21,10 +22,14 @@
 
     <script src="../js/bootstrap/jquery.js"></script>
 
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDz85XKkds2nz_CK-BNJxXX7-gvlb2IJAs">
+    </script>
+
     <div id="fb-root"></div>
     <script src="../js/constants.js"></script>
     <script src="../js/commons.js"></script>
-    <script src="../js/notifications.js"></script>
 
 </head><!--/head-->
 <body>
@@ -39,6 +44,7 @@
             <p class="title">Bike<span class="title green">Route</span></p>
         </div>
 
+
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
 
@@ -51,8 +57,8 @@
                     </ul>
                 </li>
 
-                <li class="active"><a href="notifications.html">Notifications</a></li>
-                <li><a href="settings.html">Settings</a></li>
+                <li><a href="notifications.html">Notifications</a></li>
+                <li class="active"><a href="settings.html">Settings</a></li>
                 <li><a href="my-account.html">My account</a></li>
                 <li><a href="contact.html">Contact</a></li>
 
@@ -68,37 +74,29 @@
     </div>
 </header><!--/header-->
 
+
 <section id="main-slider">
 
 
-    <div class="panel panel-default">
+    <div class="container-fluid" id="main">
+        <div class="row">
+            <div class="col-xs-6" id="left">
 
-        <div class="panel-heading">List of join requests</div>
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-7">
+                        <h2>Settings</h2>
+                        <h5 class="edit">Not implemented yet</h5>
+                        <hr>
+                    </div>
+                    <div class="col-xs-2"></div>
+                </div>
 
-        <div class="panel-body">
-            <div id="error-message" class="alert alert-danger" role="alert" style="display: none"></div>
+                <br>
+                <br>
+
         </div>
-
-
-        <!-- Table -->
-        <table id="requests-table" class="table table-striped" data-toggle="table" data-pagination="true" data-search="true">
-            <tr>
-                <th>Activity Name</th>
-                <th>Start date</th>
-                <th>User email</th>
-                <th>User icon</th>
-                <th>Accept</th>
-                <th>Decline</th>
-            </tr>
-        </table>
-
-        <ul class="pager">
-            <li id="previous-page"><a href="#" onclick="previousPage()">Previous</a></li>
-            <li id="next-page"><a href="#" onclick="nextPage()">Next</a></li>
-        </ul>
-
     </div>
-
 
 </section><!--/#main-slider-->
 
