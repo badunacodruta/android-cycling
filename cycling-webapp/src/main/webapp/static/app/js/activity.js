@@ -124,14 +124,22 @@ function hideParticipants() {
     participantMarkers = [];
 }
 
+var bounds;
 function displayParticipants() {
     if (!activity || !map || !activity.joinedUsers) {
         return;
     }
 
     hideParticipants();
+    bounds = new google.maps.LatLngBounds();
+
     for (var i = 0; i < activity.joinedUsers.length; i++) {
-        addParticipant(activity.joinedUsers[i]);
+        var coord = addParticipant(activity.joinedUsers[i]);
+        bounds.extend(coord);
+    }
+
+    if (activity.joinedUsers.length > 0) {
+        map.fitBounds(bounds);
     }
 }
 
@@ -148,6 +156,8 @@ function addParticipant(participant) {
     participantMarkers.push(marker);
 
     addViewParticipantEvent(marker, participant.user);
+
+    return coordinates;
 }
 
 function addViewParticipantEvent(marker, user) {

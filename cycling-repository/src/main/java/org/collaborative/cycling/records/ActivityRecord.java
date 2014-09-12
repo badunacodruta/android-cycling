@@ -27,8 +27,12 @@ public class ActivityRecord {
     @Column(name = "activity_access_type", nullable = false)
     private ActivityAccessType activityAccessType = ActivityAccessType.PRIVATE;
 
-    @Column(name = "coordinates", nullable = false, length = 50000)
-    private String coordinates = "[]";
+//    @Lob
+//    @Column(name = "coordinates", nullable = false, length = 50 * Integer.MAX_VALUE)
+//    private String coordinates = "[]";
+
+    @Lob
+    private byte[] coordinates;// = new byte[0];
 
     @Column(name = "start_date")
     private Date startDate;
@@ -85,11 +89,11 @@ public class ActivityRecord {
     }
 
     public String getCoordinates() {
-        return coordinates;
+        return new String(coordinates);
     }
 
     public void setCoordinates(String coordinates) {
-        this.coordinates = coordinates;
+        this.coordinates = coordinates.getBytes();
     }
 
     public boolean isDeleted() {
@@ -179,6 +183,40 @@ public class ActivityRecord {
 
     public List<JoinedUser> getJoinedUsers() throws IOException {
         List<JoinedUser> joinedUserList = new ArrayList<>();
+
+
+//        List<Coordinates> coords = new ArrayList<>();
+//        coords.add(new Coordinates(44.45216343349134, 26.092872619628906));
+//        JoinedUser joinedUser = new JoinedUser(new User("mihai.iancu@facebook.com", "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfa1/v/t1.0-1/c5.0.191.191/1780731_10203168965454566_1700853055_n.jpg?oh=8537b9730cfa0676d4db6fedd5bce62c&oe=5498A777&__gda__=1419690458_7ab9c30e99c95e1f3ac4b64bf685fa13"),
+//                JoinedStatus.ACCEPTED, ProgressStatus.ACTIVE, coords);
+//        joinedUserList.add(joinedUser);
+//
+//        coords = new ArrayList<>();
+//        coords.add(new Coordinates(44.45155074044464, 26.117076873779297));
+//        joinedUser = new JoinedUser(new User("mihai.ciorobea@facebook.com", "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpf1/v/t1.0-1/c2.244.716.716/s320x320/1908295_513120792127754_6984548125146923198_n.jpg?oh=6313d76d9e0263d15346ff52756bfb91&oe=54CCEFC7&__gda__=1419372551_2999a34d28fb29dbabd8d78e6066cd55"),
+//                JoinedStatus.ACCEPTED, ProgressStatus.ACTIVE, coords);
+//        joinedUserList.add(joinedUser);
+//
+//        coords = new ArrayList<>();
+//        coords.add(new Coordinates(44.44150165738184, 26.132183074951172));
+//        joinedUser = new JoinedUser(new User("baduna.codruta@facebook.com", "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpf1/v/t1.0-1/c124.0.320.320/p320x320/10690038_643869415731523_2162529210250925525_n.jpg?oh=813fbfd6c4b7d02ac5b64bfacb79dde9&oe=54993FAF&__gda__=1419349241_fb38277b1087a91d1c60db128dc78a7c"),
+//                JoinedStatus.ACCEPTED, ProgressStatus.ACTIVE, coords);
+//        joinedUserList.add(joinedUser);
+//
+//        coords = new ArrayList<>();
+//        coords.add(new Coordinates(44.42286951643662, 26.137847900390625));
+//        joinedUser = new JoinedUser(new User("sinziana.gafitanu@facebook.com", "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xaf1/v/t1.0-1/c0.0.320.320/p320x320/10001401_710193512336982_597377808_n.jpg?oh=21a1a378670930ebac0fc29bec9fd86c&oe=549FE7E5&__gda__=1419815542_cf0b7802a94271162bc5f8422a90de93"),
+//                JoinedStatus.ACCEPTED, ProgressStatus.ACTIVE, coords);
+//        joinedUserList.add(joinedUser);
+//
+//        coords = new ArrayList<>();
+//        coords.add(new Coordinates(44.43978578749888, 26.134586334228516));
+//        joinedUser = new JoinedUser(new User("caldaruse.andrei@yahoo.com", "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpf1/v/t1.0-1/p320x320/10593133_679167158834145_7839390874062204972_n.jpg?oh=4766e6221a2a733999c1cacc24005c54&oe=549EE38D&__gda__=1418295659_fbe64727f8fd29950d11b80b812b5046"),
+//                JoinedStatus.ACCEPTED, ProgressStatus.ACTIVE, coords);
+//        joinedUserList.add(joinedUser);
+//
+
+
 
         if (joinedUserActivityRecordList == null || joinedUserActivityRecordList.isEmpty()) {
             return joinedUserList;

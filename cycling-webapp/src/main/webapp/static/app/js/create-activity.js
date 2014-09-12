@@ -64,8 +64,18 @@ function recreateTrack() {
     polyline = new google.maps.Polyline({
         path: coordinatesForTrack,
         map: map,
-        strokeColor: "#ff0000"
+        strokeColor: "#ff0000",
+        strokeOpacity: .7,
+        strokeWeight: 4
     });
+
+    if (coordinatesForTrack.length > 0) {
+        var bounds = new google.maps.LatLngBounds();
+        for (var i = 0; i < coordinatesForTrack.length; i++) {
+            bounds.extend(coordinatesForTrack[i]);
+        }
+        map.fitBounds(bounds);
+    }
 }
 
 function clearTrack() {
@@ -74,12 +84,20 @@ function clearTrack() {
     }
 }
 
+function clearFile() {
+    var fileInput = $('#fileInput');
+    if (fileInput.length > 0) {
+        fileInput[0].value = "";
+    }
+}
+
 function clearAllPins() {
+    clearFile();
     clearTrack();
 
     var markerIds = Object.keys(markersByUnigueId);
     for (i = 0; i < markerIds.length; i++) {
-        var markerId = markerIds[i]
+        var markerId = markerIds[i];
         markersByUnigueId[markerId].setMap(null);
     }
 
