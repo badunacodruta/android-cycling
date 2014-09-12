@@ -46,8 +46,6 @@ public class TrackingController {
     public TrackingController() {
     }
 
-    static int index = 1;
-
     //    TODO: update path and params
     @POST
     @Path(MAPPING_VERSION + "position/{activityId}")
@@ -69,20 +67,7 @@ public class TrackingController {
             userActivityService.saveJoinedUser(user, activityId, null, null, coordinates);
         }
 
-        List<JoinedUser> usersForActivityAndUser = getUsersForActivityAndUser(activityId, user);
-        String imageUrl = "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpf1/v/t1.0-1/c0.20.60.60/p60x60/1908295_513120792127754_6984548125146923198_n.jpg?oh=748bb67ce1f2e65e9c6b17738ade54db&oe=549B7E58&__gda__=1418464781_cd8550577060ab6698b4dd640767bffe";
-        usersForActivityAndUser.addAll(Arrays.asList(new JoinedUser(new User("a@b.com", imageUrl),
-                                                                    JoinedStatus.ACCEPTED,
-                                                                    ProgressStatus.ACTIVE,
-                                                                    Arrays.asList(
-                                                                        new Coordinates(44.4 + 0.1 * index, 26.0),
-                                                                        new Coordinates(44.4 + 0.1 * (index+1), 26.0),
-                                                                        new Coordinates(44.4 + 0.1 * (index+2), 26.0)
-                                                                    )
-        )));
-        index++;
-
-        return usersForActivityAndUser;
+        return getUsersForActivityAndUser(activityId, user);
     }
 
     //    TODO: maybe add pagination for the users
