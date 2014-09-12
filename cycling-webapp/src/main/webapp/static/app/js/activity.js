@@ -5,6 +5,7 @@ var activityId = getActivityIdFromUrl();
 var activity;
 var participantMarkers = [];
 
+var setedBounds = false;
 
 function getActivityIdFromUrl() {
     return window.location.href.split("?")[1].split("=")[1];
@@ -138,8 +139,9 @@ function displayParticipants() {
         bounds.extend(coord);
     }
 
-    if (activity.joinedUsers.length > 0) {
+    if (!setedBounds && activity.joinedUsers.length > 0) {
         map.fitBounds(bounds);
+        setedBounds = true;
     }
 }
 
