@@ -120,6 +120,7 @@ function changeAddPins() {
 
 //TODO: verify the name of the activity is unique and display en error message
 function saveActivity() {
+    hideMessages();
 
     var activityName = $('#activity-name').val();
     var startDate = $('#start-date').val();
@@ -140,7 +141,7 @@ function saveActivity() {
         type: "POST",
         url: "/api/v1/activities",
         data: JSON.stringify(activity),
-        success: displaySuccessMessage,
+        success: showSuccessMessage,
         error: function() { displayErrorMessage("An error has occurred while trying to create the activity!") },
         contentType: "application/json"
     });
@@ -154,11 +155,10 @@ function getAccessType() {
     }
 }
 
-function displaySuccessMessage(response) {
+function showSuccessMessage(response) {
     var message = "Activity " + response.name + " has been successfully saved";
 
-    $("#success-message").text(message);
-    $("#success-message").show();
+    displaySuccessMessage(message);
 
     setTimeout(function()
         { location.reload(); }

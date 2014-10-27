@@ -5,7 +5,7 @@ var activityId = getActivityIdFromUrl();
 var activity;
 var participantMarkers = [];
 
-var setedBounds = false;
+var setBounds = false;
 
 function getActivityIdFromUrl() {
     return window.location.href.split("?")[1].split("=")[1];
@@ -139,9 +139,9 @@ function displayParticipants() {
         bounds.extend(coord);
     }
 
-    if (!setedBounds && activity.joinedUsers.length > 0) {
+    if (!setBounds && activity.joinedUsers.length > 0) {
         map.fitBounds(bounds);
-        setedBounds = true;
+        setBounds = true;
     }
 }
 
@@ -178,3 +178,5 @@ function addViewParticipantEvent(marker, user) {
         infowindow.open(map,marker);
     });
 };
+
+//TODO: when updating the participants position, keep the info windows open

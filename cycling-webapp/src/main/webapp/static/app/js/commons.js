@@ -1,5 +1,8 @@
 
-//======= load facebook sdk =============
+//======= facebook related =============
+//check if the user is logged in and retrieve it's facebook username
+//this should be done for every page except the login page
+
 window.fbAsyncInit = function() {
     FB.init({
         appId   : facebookAppId,
@@ -13,35 +16,36 @@ window.fbAsyncInit = function() {
     checkLoginState();
 };
 
+function checkLoginState() {
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+}
+
+function statusChangeCallback(response) {
+  if (response.status === 'connected') {
+    fetchFBInfo();
+  } else {
+    alert('Please log in first!');
+  }
+}
+
+function fetchFBInfo() {
+  FB.api('/me', function(response) {
+    $('#username').text(response.name + " ");
+  });
+}
+
 (function() {
     var e = document.createElement('script');
     e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
     e.async = true;
     document.getElementById('fb-root').appendChild(e);
-
 }());
 //=========================================
 
 
-function fetchFBInfo() {
-    FB.api('/me', function(response) {
-        $('#username').text(response.name + " ");
-    });
-}
-
-function statusChangeCallback(response) {
-    if (response.status === 'connected') {
-        fetchFBInfo();
-    } else {
-        alert('Please log in first!');
-    }
-}
-
-function checkLoginState() {
-    FB.getLoginStatus(function(response) {
-        statusChangeCallback(response);
-    });
-}
+//======= login/logout related =============
 
 function goToLoginPage() {
     window.location.href = "login.html";
@@ -57,6 +61,10 @@ function logout() {
         goToLoginPage();
     });
 }
+//=========================================
+
+
+//======= maps related =============
 
 function createMap() {
     var latlng = new google.maps.LatLng(44.4325, 26.1039);
@@ -68,12 +76,39 @@ function createMap() {
 
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 };
+//=========================================
 
+
+//======= success/error messages =============
 
 function displayErrorMessage(message) {
     $("#error-message").text(message);
     $("#error-message").show();
 }
+
+function hideErrorMessage() {
+  $("#error-message").text("");
+  $("#error-message").hide();
+}
+
+function displaySuccessMessage(message) {
+  $("#success-message").text(message);
+  $("#success-message").show();
+}
+
+function hideSuccessMessage() {
+  $("#success-message").text("");
+  $("#success-message").hide();
+}
+
+function hideMessages() {
+  hideSuccessMessage();
+  hideErrorMessage();
+}
+//=========================================
+
+
+//======= date related =============
 
 Date.prototype.yyyymmdd = function() {
     var yyyy = this.getFullYear().toString();
@@ -86,3 +121,4 @@ function getDate() {
     d = new Date();
     return d.yyyymmdd();
 }
+//=========================================
