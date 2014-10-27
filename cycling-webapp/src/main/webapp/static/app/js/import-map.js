@@ -7,8 +7,6 @@ window.onload = function() {
         var textType = /gpx/;
         fileDisplayArea.innerText = "";
 
-
-//        if (file.type.match(textType)) {
         if (file.name.match(textType)) {
             var reader = new FileReader();
 
@@ -25,24 +23,12 @@ window.onload = function() {
 
 function createTrackFromImportedXml(xml) {
     var points = [];
-//    var bounds = new google.maps.LatLngBounds();
     $(xml).find("trkpt").each(function () {
         var lat = $(this).attr("lat");
         var lon = $(this).attr("lon");
         var p = new google.maps.LatLng(lat, lon);
         points.push(p);
-//        bounds.extend(p);
     });
-//    var poly = new google.maps.Polyline({
-//        // use your own style here
-//        path: points,
-//        strokeColor: "#ff0000",
-//        strokeOpacity: .7,
-//        strokeWeight: 4
-//    });
-//    poly.setMap(map);
-//    // fit bounds to track
-//    map.fitBounds(bounds);
 
     coordinatesForTrack = points;
     recreateTrack(true);

@@ -146,7 +146,6 @@ function displayParticipants() {
 }
 
 function addParticipant(participant) {
-//    var point = JSON.parse(participant.coordinates).pop();
     var point = participant.coordinates.pop();
     var coordinates = getLatLng(point.k, point.B);
 
