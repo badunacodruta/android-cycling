@@ -45,5 +45,5 @@ function createTrackFromImportedXml(xml) {
 //    map.fitBounds(bounds);
 
     coordinatesForTrack = points;
-    recreateTrack();
+    recreateTrack(true);
 }

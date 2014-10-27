@@ -58,7 +58,7 @@ function removeMarker(markerId) {
 
 var polyline;
 
-function recreateTrack() {
+function recreateTrack(fitBounds) {
     clearTrack();
 
     polyline = new google.maps.Polyline({
@@ -69,7 +69,7 @@ function recreateTrack() {
         strokeWeight: 4
     });
 
-    if (coordinatesForTrack.length > 0) {
+    if (fitBounds && coordinatesForTrack.length > 0) {
         var bounds = new google.maps.LatLngBounds();
         for (var i = 0; i < coordinatesForTrack.length; i++) {
             bounds.extend(coordinatesForTrack[i]);

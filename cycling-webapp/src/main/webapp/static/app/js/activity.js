@@ -67,7 +67,7 @@ function drawTrack() {
         coordinatesForTrack.push(getLatLng(parsedCoordinate.k, parsedCoordinate.B));
     }
 
-    recreateTrack();
+    recreateTrack(true);
 }
 
 function enableEditActivity() {
