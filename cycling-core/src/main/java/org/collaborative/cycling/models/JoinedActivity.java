@@ -18,7 +18,7 @@ public class JoinedActivity implements Serializable {
     private List<Coordinates> coordinates;
     private JoinedStatus joinedStatus;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd HH:mm")
     private Date startDate;
 
     public JoinedActivity() {

@@ -1,7 +1,6 @@
 package org.collaborative.cycling.webapp.controllers;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -19,12 +18,12 @@ import javax.ws.rs.core.MediaType;
 
 import org.collaborative.cycling.models.Activity;
 import org.collaborative.cycling.models.Coordinates;
-import org.collaborative.cycling.models.JoinedStatus;
 import org.collaborative.cycling.models.JoinedUser;
 import org.collaborative.cycling.models.ProgressStatus;
 import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.services.ActivityService;
 import org.collaborative.cycling.services.UserActivityService;
+import org.collaborative.cycling.webapp.Utils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 

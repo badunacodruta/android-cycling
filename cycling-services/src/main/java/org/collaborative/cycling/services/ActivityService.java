@@ -75,10 +75,13 @@ public class ActivityService {
         activityRecord.setOwner(userRecord);
         activityRecord.setUpdatedDate(currentDate);
 
+        activityRecord.setCreatedDate(new Date());
         activityRecord = activityRepository.save(activityRecord);
         userActivityRepository.save(activityRecord.updateJoinedUser(userRecord, JoinedStatus.MINE));
 
         return modelMapper.map(activityRecord, Activity.class);
+
+//        TODO: fix the date edit problem
     }
 
     public List<Activity> getActivities(User user, int pageNumber, int pageSize) {

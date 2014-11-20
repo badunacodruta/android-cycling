@@ -9,12 +9,14 @@ public class ActivitySummary implements Serializable {
     private long id;
     private String name;
     private ActivityAccessType activityAccessType;
-    private Date createdDate;
-    private Date updatedDate;
     private ProgressStatus progressStatus;
 
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd HH:mm")
     private Date startDate;
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
+    private Date createdDate;
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
+    private Date updatedDate;
 
     public ActivitySummary() {
     }
@@ -43,22 +45,6 @@ public class ActivitySummary implements Serializable {
         this.activityAccessType = activityAccessType;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
-    }
-
     public ProgressStatus getProgressStatus() {
         return progressStatus;
     }
@@ -73,5 +59,21 @@ public class ActivitySummary implements Serializable {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
     }
 }

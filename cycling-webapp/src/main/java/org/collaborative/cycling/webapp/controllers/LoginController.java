@@ -2,6 +2,7 @@ package org.collaborative.cycling.webapp.controllers;
 
 import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.services.UserService;
+import org.collaborative.cycling.webapp.Utils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -5,8 +5,6 @@ import org.collaborative.cycling.Utilities;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,12 +16,14 @@ public class Activity implements Serializable {
     private ActivityAccessType activityAccessType;
     private List<Coordinates> coordinates;
     private List<JoinedUser> joinedUsers;
-    private Date createdDate;
-    private Date updatedDate;
     private ProgressStatus progressStatus;
 
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd HH:mm")
     private Date startDate;
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
+    private Date createdDate;
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
+    private Date updatedDate;
 
     public Activity() {
     }
@@ -60,20 +60,28 @@ public class Activity implements Serializable {
         this.activityAccessType = activityAccessType;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
     public List<JoinedUser> getJoinedUsers() {
         return joinedUsers;
     }
 
     public void setJoinedUsers(List<JoinedUser> joinedUsers) {
         this.joinedUsers = joinedUsers;
+    }
+
+    public ProgressStatus getProgressStatus() {
+        return progressStatus;
+    }
+
+    public void setProgressStatus(ProgressStatus progressStatus) {
+        this.progressStatus = progressStatus;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
     public Date getCreatedDate() {
@@ -90,14 +98,6 @@ public class Activity implements Serializable {
 
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
-    }
-
-    public ProgressStatus getProgressStatus() {
-        return progressStatus;
-    }
-
-    public void setProgressStatus(ProgressStatus progressStatus) {
-        this.progressStatus = progressStatus;
     }
 
     public String getCoordinates() {

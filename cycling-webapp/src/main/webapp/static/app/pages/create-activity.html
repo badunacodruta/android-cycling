@@ -38,6 +38,9 @@
 
     <script src="../js/bootstrap/bootstrap-toggle.min.js"></script>
 
+    <link rel="stylesheet" type="text/css" href="../datetimepicker/datetimepicker-master/jquery.datetimepicker.css" />
+    <script src="../datetimepicker/datetimepicker-master/jquery.datetimepicker.js"></script>
+
 </head><!--/head-->
 <body>
 
@@ -124,7 +127,9 @@
                             <span class="input-group-addon">Start date</span>
                             <div class="input-group date">
                                 <input id="start-date" type="text" class="form-control">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                <!--<input id="start-date" type="text" class="form-control">-->
+                                <!--<span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>-->
+                                <span class="input-group-addon"></span>
                             </div>
                         </div>
                     </div>
@@ -132,7 +137,6 @@
                     </div>
                 </div>
                 <br>
-
 
                 <div class="row">
                     <div class="col-xs-1"></div>
@@ -266,10 +270,11 @@
 
 
 <script>
-    $('.input-group.date').datepicker({
-        todayHighlight: true,
-        format: 'yyyy/mm/dd'
-    });
+//    $('.input-group.date').datepicker({
+//        todayHighlight: true,
+//        format: 'yyyy/mm/dd'
+//    });
+    $('#start-date').datetimepicker();
 </script>
 
 

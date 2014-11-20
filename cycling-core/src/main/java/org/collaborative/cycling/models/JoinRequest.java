@@ -11,7 +11,7 @@ public class JoinRequest implements Serializable {
     private String activityName;
     private JoinedStatus joinedStatus;
 
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd HH:mm")
     private Date startDate;
 
 

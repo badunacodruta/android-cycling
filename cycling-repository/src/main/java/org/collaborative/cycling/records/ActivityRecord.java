@@ -212,9 +212,9 @@ public class ActivityRecord {
 //        coords = new ArrayList<>();
 //        coords.add(new Coordinates(44.43978578749888, 26.134586334228516));
 //        joinedUser = new JoinedUser(new User("caldaruse.andrei@yahoo.com", "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpf1/v/t1.0-1/p320x320/10593133_679167158834145_7839390874062204972_n.jpg?oh=4766e6221a2a733999c1cacc24005c54&oe=549EE38D&__gda__=1418295659_fbe64727f8fd29950d11b80b812b5046"),
-//                JoinedStatus.ACCEPTED, ProgressStatus.ACTIVE, coords);
+//                JoinedStatus.ACCEPTED, ProgressStatus.NOT_STARTED, coords);
 //        joinedUserList.add(joinedUser);
-//
+
 
 
 

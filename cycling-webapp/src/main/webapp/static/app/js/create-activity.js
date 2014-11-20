@@ -119,6 +119,7 @@ function changeAddPins() {
 
 
 //TODO: verify the name of the activity is unique and display en error message
+//TODO: verify the required fields
 function saveActivity() {
     hideMessages();
 

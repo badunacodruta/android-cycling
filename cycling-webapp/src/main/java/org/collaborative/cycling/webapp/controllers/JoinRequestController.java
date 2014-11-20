@@ -17,6 +17,7 @@ import org.collaborative.cycling.models.JoinRequest;
 import org.collaborative.cycling.models.JoinRequestType;
 import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.services.UserActivityService;
+import org.collaborative.cycling.webapp.Utils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 

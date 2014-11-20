@@ -3,9 +3,11 @@ google.maps.event.addDomListener(window, 'load', displayParticipants);
 
 var activityId = getActivityIdFromUrl();
 var activity;
-var participantMarkers = [];
+var participants = [];
 
 var setBounds = false;
+
+//TODO add upload track to edit also
 
 function getActivityIdFromUrl() {
     return window.location.href.split("?")[1].split("=")[1];
@@ -16,7 +18,7 @@ $(document).ready(function() {
 
     setInterval(function() {
         getActivity(updateParticipants);
-    },2000);
+    },5000);
 });
 
 function getActivity(onSuccess) {
@@ -101,6 +103,7 @@ function updateParticipants(activityResponse) {
     changeDisplayParticipants();
 }
 
+//TODO check the problem with the change display participants button (on mouse out or smth)
 function onclickChangeDisplayParticipants() {
     if ($('#display-participants-switch').hasClass('btn-primary')) {
         hideParticipants();
@@ -118,12 +121,11 @@ function changeDisplayParticipants() {
 }
 
 function hideParticipants() {
-    for (var i = 0; i < participantMarkers.length; i++) {
-        participantMarkers[i].setMap(null);
+    for (var i = 0; i < participants.length; i++) {
+        participants[i].marker.setMap(null);
     }
-
-    participantMarkers = [];
 }
+
 
 var bounds;
 function displayParticipants() {
@@ -131,22 +133,53 @@ function displayParticipants() {
         return;
     }
 
-    hideParticipants();
-    bounds = new google.maps.LatLngBounds();
+    for (var i = 0; i < participants.length; i++) {
+        participants[i].active = false;
+    }
 
     for (var i = 0; i < activity.joinedUsers.length; i++) {
-        var coord = addParticipant(activity.joinedUsers[i]);
+        var joinedUser = activity.joinedUsers[i];
+        var isNewUser = true;
+
+        for (var j = 0; j < participants.length; j++) {
+            var participant = participants[j];
+
+            if (joinedUser.user.email == participant.user.email) {
+                if (joinedUser.progressStatus != 'NOT_STARTED') {
+                    updateParticipantPosition(participant, joinedUser.coordinates.pop());
+                    participant.active = true;
+                }
+                isNewUser = false;
+            }
+        }
+
+        if (isNewUser && joinedUser.progressStatus != 'NOT_STARTED') {
+            addParticipant(joinedUser);
+        }
+    }
+
+    var i = 0;
+    while (i < participants.length) {
+        if (participants[i].active == false) {
+            participants.splice(0,1).marker.setMap(null);
+        } else {
+            i++;
+        }
+    }
+
+    bounds = new google.maps.LatLngBounds();
+    for (var i = 0; i < participants.length; i++) {
+        var coord = participants[i].marker.position;
         bounds.extend(coord);
     }
 
-    if (!setBounds && activity.joinedUsers.length > 0) {
+    if (!setBounds && participants.length > 0) {
         map.fitBounds(bounds);
         setBounds = true;
     }
 }
 
-function addParticipant(participant) {
-    var point = participant.coordinates.pop();
+function updateParticipantPosition(participant, point) {
     var coordinates = getLatLng(point.k, point.B);
 
     var marker = new google.maps.Marker({
@@ -154,11 +187,16 @@ function addParticipant(participant) {
         map: map
     });
 
-    participantMarkers.push(marker);
-
     addViewParticipantEvent(marker, participant.user);
+    participant.marker = marker;
+}
 
-    return coordinates;
+
+function addParticipant(participant) {
+    var point = participant.coordinates.pop();
+    updateParticipantPosition(participant, point);
+    participant.active = true;
+    participants.push(participant);
 }
 
 function addViewParticipantEvent(marker, user) {
@@ -170,12 +208,9 @@ function addViewParticipantEvent(marker, user) {
             "</div>";
 
         var infowindow = new google.maps.InfoWindow({
-            content: content,
-            maxWidth: 200
+            content: content
         });
 
         infowindow.open(map,marker);
     });
 };
-
-//TODO: when updating the participants position, keep the info windows open

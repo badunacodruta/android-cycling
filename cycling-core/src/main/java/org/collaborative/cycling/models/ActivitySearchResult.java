@@ -17,7 +17,7 @@ public class ActivitySearchResult implements Serializable {
     private List<Coordinates> coordinates;
     private ActivityAccessType activityAccessType;
 
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd HH:mm")
     private Date startDate;
 
     public ActivitySearchResult() {
@@ -39,14 +39,6 @@ public class ActivitySearchResult implements Serializable {
         this.name = name;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
     public User getOwner() {
         return owner;
     }
@@ -61,6 +53,14 @@ public class ActivitySearchResult implements Serializable {
 
     public void setActivityAccessType(ActivityAccessType activityAccessType) {
         this.activityAccessType = activityAccessType;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
     public List<Coordinates> getCoordinates() {

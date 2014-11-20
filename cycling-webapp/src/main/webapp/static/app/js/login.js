@@ -38,8 +38,8 @@ function fetchFBInfo() {
 }
 
 function fetchFBImage(email) {
-//    TODO: decide on the image size
-    FB.api("/me/picture?width=30&height=30",  function(response) {
+//    TODO: decide on the image size (make it smaller)
+    FB.api("/me/picture?width=10&height=10",  function(response) {
         appLogin(email, response.data.url);
     });
 }
