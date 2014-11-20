@@ -85,6 +85,7 @@ public class TrackingController {
     }
 
     private List<JoinedUser> getUsersForActivityAndUser(long activityId, User user) {
+        //TODO: it returns NULL
         Activity activity = activityService.getActivity(user, activityId);
         List<JoinedUser> joinedUsers = activity.getJoinedUsers();
 
