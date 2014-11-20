@@ -133,6 +133,10 @@ function saveActivity() {
     activity.activityAccessType = accessType;
     activity.coordinates = JSON.stringify(coordinatesForTrack);
 
+    if (startDate == "") {
+        displayErrorMessage("You must choose a start date for the activity!");
+        return;
+    }
 
     if (typeof activityId != 'undefined') {
         activity.id = activityId;
