@@ -134,6 +134,10 @@ public class ActivityRecord {
     }
 
     public void setStartDate(Date startDate) {
+        //TODO remove this if; this is a hack to avoid edit bug
+        if (this.startDate != null) {
+            return;
+        }
         this.startDate = startDate;
     }
 

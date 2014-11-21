@@ -64,5 +64,3 @@ function goToHomePage() {
 function errorLogin() {
     alert( "An error has occurred. Please try again!" );
 }
-
-
