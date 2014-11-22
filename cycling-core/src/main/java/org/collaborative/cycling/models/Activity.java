@@ -105,7 +105,8 @@ public class Activity implements Serializable {
     }
 
     public void setCoordinates(String coordinates) throws IOException {
-        if (coordinates == null) {
+        if (coordinates == null || coordinates.isEmpty()) {
+            this.coordinates = new ArrayList<>();
             return;
         }
         this.coordinates = Utilities.deserialize(coordinates, new ArrayList<Coordinates>().getClass());
