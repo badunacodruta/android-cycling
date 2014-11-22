@@ -16,7 +16,7 @@ public class UserActivityRecord {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user", referencedColumnName = "email", nullable = false)
+    @JoinColumn(name = "person", referencedColumnName = "email", nullable = false)
     private UserRecord user;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -29,8 +29,9 @@ public class UserActivityRecord {
     @Column(name = "join_status", nullable = false)
     private JoinedStatus joinedStatus = JoinedStatus.PENDING;
 
-    @Column(name = "coordinates", length = 50000)
-    private String coordinates = "[]";
+    @Lob
+    @Column(name = "coordinates")
+    private byte[] coordinates = new byte[0];
 
     @Column(name = "deleted", nullable = false)
     private boolean deleted;
@@ -112,11 +113,11 @@ public class UserActivityRecord {
     }
 
     public String getCoordinates() {
-        return coordinates;
+        return new String(coordinates);
     }
 
     public void setCoordinates(String coordinates) {
-        this.coordinates = coordinates;
+        this.coordinates = coordinates.getBytes();
     }
 
     public JoinedStatus getJoinedStatus() {
