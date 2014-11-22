@@ -73,7 +73,7 @@ public class ActivityService {
         }
 
         activityRecord.setOwner(userRecord);
-//        activityRecord.setUpdatedDate(currentDate);
+        activityRecord.setUpdatedDate(currentDate);
 
         activityRecord = activityRepository.save(activityRecord);
         userActivityRepository.save(activityRecord.updateJoinedUser(userRecord, JoinedStatus.MINE));
