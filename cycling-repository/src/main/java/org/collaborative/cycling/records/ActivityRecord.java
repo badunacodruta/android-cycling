@@ -11,6 +11,7 @@ import java.util.*;
 @Table(name = "activities"
 //        uniqueConstraints=@UniqueConstraint(columnNames={"name", "owner"})
 )
+
 public class ActivityRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,12 +28,9 @@ public class ActivityRecord {
     @Column(name = "activity_access_type", nullable = false)
     private ActivityAccessType activityAccessType = ActivityAccessType.PRIVATE;
 
-//    @Lob
-//    @Column(name = "coordinates", nullable = false, length = 50 * Integer.MAX_VALUE)
-//    private String coordinates = "[]";
-
     @Lob
-    private byte[] coordinates;// = new byte[0];
+    @Column(name = "coordinates")
+    private byte[] coordinates = new byte[0];
 
     @Column(name = "start_date")
     private Date startDate;
@@ -134,10 +132,6 @@ public class ActivityRecord {
     }
 
     public void setStartDate(Date startDate) {
-        //TODO remove this if; this is a hack to avoid edit bug
-        if (this.startDate != null) {
-            return;
-        }
         this.startDate = startDate;
     }
 
