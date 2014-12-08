@@ -8,17 +8,24 @@
 	   					   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://db4free.net:3306/cycling"/>
-        <property name="username" value="cycling"/>
-        <property name="password" value="qscesz"/>
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://ec2-54-83-201-96.compute-1.amazonaws.com:5432/dfl27805mm9oaj"/>
+        <property name="username" value="pbuuxteahfkyxp"/>
+        <property name="password" value="0KH_EelSKDFwbkVPiPmZ3vykcS"/>
     </bean>
+
+    <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+        <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
+        <!--<property name="url" value="jdbc:mysql://db4free.net:3306/cycling"/>-->
+        <!--<property name="username" value="cycling"/>-->
+        <!--<property name="password" value="qscesz"/>-->
+    <!--</bean>-->
 
     <bean id="jpaVendorAdapter"
           class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
         <property name="showSql" value="true"/>
         <property name="generateDdl" value="true"/>
-        <property name="database" value="MYSQL"/>
+        <property name="database" value="POSTGRESQL"/>
     </bean>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
