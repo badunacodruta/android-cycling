@@ -1,17 +1,22 @@
 package org.collaborative.cycling.webapp.filters;
 
-import org.collaborative.cycling.models.User;
+import org.collaborative.cycling.webapp.Utils;
 import org.collaborative.cycling.webapp.controllers.LoginController;
 import org.collaborative.cycling.webapp.controllers.VersionController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
-import javax.servlet.*;
+import java.io.IOException;
+
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 public class AuthFilter implements javax.servlet.Filter {
     private static Logger logger = LoggerFactory.getLogger(AuthFilter.class);
@@ -41,9 +46,8 @@ public class AuthFilter implements javax.servlet.Filter {
         }
 
         HttpSession session = request.getSession(false);
-        Object user = null;
 
-        if (session == null || (user = session.getAttribute(User.ID)) == null) {
+      if (session == null || Utils.getUser(session) == null) {
             logger.warn("deny access to {} for session = {}", request.getRequestURI(), session);
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return;
