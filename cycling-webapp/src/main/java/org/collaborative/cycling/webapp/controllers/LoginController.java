@@ -1,10 +1,14 @@
 package org.collaborative.cycling.webapp.controllers;
 
+import net.sourceforge.statelessfilter.session.StatelessSession;
+
 import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.services.UserService;
 import org.collaborative.cycling.webapp.Utils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -30,12 +34,18 @@ public class LoginController {
     @Path(MAPPING_VERSION)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response login(User user, @Context HttpServletRequest request) {
+    public Response login(User user, @Context HttpServletRequest request) throws NoSuchAlgorithmException {
         logger.debug("login -- email:{}", user.getEmail());
 
         User loggedUser = userService.login(user);
 
-        HttpSession session = request.getSession(true);
+
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+          session.invalidate();
+          ((StatelessSession)session).init(true);
+        }
+        session = request.getSession();
         Utils.setUser(session, loggedUser);
 
         return Response.status(Response.Status.OK).build();
