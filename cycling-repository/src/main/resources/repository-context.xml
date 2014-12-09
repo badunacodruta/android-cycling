@@ -19,10 +19,13 @@
         <property name="url" value="jdbc:mysql://us-cdbr-iron-east-01.cleardb.net/heroku_48bf37cc8ce989d?reconnect=true"/>
         <property name="username" value="bd3979c969242e"/>
         <property name="password" value="fa7d7ba9"/>
+
+        <!--<property name="url" value="jdbc:mysql://127.0.0.1/NS"/>-->
+        <!--<property name="username" value="root"/>-->
+        <!--<property name="password" value=""/>-->
     </bean>
 
-    <bean id="jpaVendorAdapter"
-          class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
         <property name="showSql" value="true"/>
         <property name="generateDdl" value="true"/>
         <!--<property name="database" value="POSTGRESQL"/>-->
@@ -35,7 +38,8 @@
         <property name="packagesToScan" value="org.collaborative.cycling"/>
     </bean>
 
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"/>
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+    </bean>
     <tx:annotation-driven transaction-manager="transactionManager" />
 
     <jpa:repositories base-package="org.collaborative.cycling.repositories"
