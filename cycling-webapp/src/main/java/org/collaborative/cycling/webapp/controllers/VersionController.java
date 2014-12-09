@@ -10,14 +10,12 @@ import javax.ws.rs.core.MediaType;
 @Path(VersionController.MAPPING)
 public class VersionController {
 
-    public static final String MAPPING = "/";
-    public static final String MAPPING_VERSION = "version";
+    public static final String MAPPING = "/version";
 
     public VersionController() {
     }
 
     @GET
-    @Path(MAPPING_VERSION)
     @Produces(MediaType.APPLICATION_JSON)
     public String getVersionInfo() throws IOException {
         return "v1.0";
