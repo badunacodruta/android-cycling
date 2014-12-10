@@ -55,6 +55,7 @@ public class AuthFilter implements javax.servlet.Filter {
 
       HttpSession session = request.getSession(false);
 
+      logger.debug("request type {}", request.getClass().getSimpleName());
       if (session == null || Utils.getUser(session) == null) {
             logger.warn("deny access to {} for session = {}", request.getRequestURI(), session);
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
