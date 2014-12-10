@@ -19,10 +19,6 @@ public class User implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public static String getId() {
-        return ID;
-    }
-
     public String getEmail() {
         return email;
     }

@@ -39,13 +39,7 @@ public class LoginController {
 
         User loggedUser = userService.login(user);
 
-
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-          session.invalidate();
-          ((StatelessSession)session).init(true);
-        }
-        session = request.getSession();
+        HttpSession session = request.getSession(true);
         Utils.setUser(session, loggedUser);
 
         return Response.status(Response.Status.OK).build();
