@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,7 +33,46 @@
 
 <body>
 
-<header class="navbar navbar-inverse navbar-fixed-top wet-asphalt" role="banner">
+
+    <nav class="navbar navbar-default" role="navigation" style="background-color: #34495e;">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!--<a class="navbar-brand" href="#">Brand</a>-->
+                <a class="navbar-brand" style="font-size: 40px;" href="my-activities.html"><img class="logo" src="../img/logo.png" alt="logo">
+                    <span style="color: white;">Bike<span class="green">Route</span></span>
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a style="color: white;font-size: 20px;" href="#" class="dropdown-toggle" data-toggle="dropdown">Login <i class="icon-angle-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" onclick="fbLogin();"><img class="login" src="../img/facebook_login_icon.png" alt=""></a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a style="color: white;font-size: 20px;" href="#" class="dropdown-toggle" data-toggle="dropdown">Download <i class="icon-angle-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="download/Cycling app.apk" target="_blank"><img style="height:55px;" src="../img/android-img.png"></a></li>
+                            </ul>
+                        </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+<!--<header class="navbar navbar-inverse navbar-fixed-top wet-asphalt" role="banner">
     <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand" href="my-activities.html"><img class="logo" src="../img/logo.png" alt="logo"></a>
@@ -45,9 +86,6 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#" onclick="fbLogin();"><img class="login" src="../img/facebook_login_icon.png" alt=""></a></li>
                 <li><a href="download/Cycling app.apk" target="_blank">
-                    <!--<button type="button" class="btn btn-default download" aria-label="Download app">-->
-                        <!--<span class="glyphicon glyphicon-save" aria-hidden="true"></span>-->
-                    <!--</button>-->
                     <img style="height:55px;" src="../img/android-img.png">
                 </a></li>
             </ul>
@@ -56,7 +94,7 @@
         </div>
 
     </div>
-</header><!--/header-->
+</header>-->
 
 <section id="main-slider" class="no-margin">
     <div class="carousel slide wet-asphalt">
