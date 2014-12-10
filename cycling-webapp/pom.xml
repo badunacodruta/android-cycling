@@ -14,14 +14,6 @@
     <packaging>war</packaging>
     <name>Android Cycling :: Webapp Module</name>
 
-    <repositories>
-        <repository>
-            <id>statelessfilter-repository</id>
-            <name>Stateless Filter repository</name>
-            <url>http://statelessfilter.sourceforge.net/maven2/repository</url>
-        </repository>
-    </repositories>
-
 
     <properties>
         <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
@@ -122,15 +114,6 @@
             <artifactId>aspectjweaver</artifactId>
         </dependency>
 
-        <!-- Client session -->
-        <dependency>
-            <groupId>net.sourceforge.statelessfilter</groupId>
-            <artifactId>stateless-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.statelessfilter</groupId>
-            <artifactId>stateless-cookie-aes</artifactId>
-        </dependency>
     </dependencies>
 
 

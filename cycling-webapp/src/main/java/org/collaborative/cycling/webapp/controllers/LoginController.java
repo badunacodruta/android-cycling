@@ -1,7 +1,5 @@
 package org.collaborative.cycling.webapp.controllers;
 
-import net.sourceforge.statelessfilter.session.StatelessSession;
-
 import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.services.UserService;
 import org.collaborative.cycling.webapp.Utils;

@@ -40,14 +40,14 @@
 
 
     <!-- Security / Session filters -->
-    <filter>
-        <filter-name>session</filter-name>
-        <filter-class>net.sourceforge.statelessfilter.filter.StatelessFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>session</filter-name>
-        <url-pattern>/api/v1/*</url-pattern>
-    </filter-mapping>
+    <!--<filter>-->
+        <!--<filter-name>session</filter-name>-->
+        <!--<filter-class>net.sourceforge.statelessfilter.filter.StatelessFilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>session</filter-name>-->
+        <!--<url-pattern>/api/v1/*</url-pattern>-->
+    <!--</filter-mapping>-->
 
 
     <!-- Auth filter-->

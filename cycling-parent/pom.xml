@@ -213,18 +213,6 @@
                 <version>${aspectj.version}</version>
             </dependency>
 
-            <!-- Client session -->
-            <dependency>
-                <groupId>net.sourceforge.statelessfilter</groupId>
-                <artifactId>stateless-core</artifactId>
-                <version>${stateless.filter.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.sourceforge.statelessfilter</groupId>
-                <artifactId>stateless-cookie-aes</artifactId>
-                <version>${stateless.filter.version}</version>
-            </dependency>
-
             <!-- Persistence -->
             <dependency>
                 <groupId>org.hibernate.javax.persistence</groupId>
