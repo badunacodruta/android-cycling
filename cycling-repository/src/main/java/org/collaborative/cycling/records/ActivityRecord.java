@@ -1,11 +1,32 @@
 package org.collaborative.cycling.records;
 
 import org.collaborative.cycling.Utilities;
-import org.collaborative.cycling.models.*;
+import org.collaborative.cycling.models.ActivityAccessType;
+import org.collaborative.cycling.models.Coordinates;
+import org.collaborative.cycling.models.JoinedStatus;
+import org.collaborative.cycling.models.JoinedUser;
+import org.collaborative.cycling.models.ProgressStatus;
+import org.collaborative.cycling.models.User;
 
-import javax.persistence.*;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "activities"
@@ -307,7 +328,7 @@ public class ActivityRecord {
         if (userCoordinate != null) {
             ArrayList<Coordinates> userCoordinates = new ArrayList<>();
             String existingCoordinates = joinedUser.getCoordinates();
-            if (existingCoordinates != null) {
+            if (existingCoordinates != null && !existingCoordinates.isEmpty()) {
                 userCoordinates = Utilities.deserialize(existingCoordinates, new ArrayList<Coordinates>().getClass());
             }
 

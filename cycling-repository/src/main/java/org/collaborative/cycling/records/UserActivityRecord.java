@@ -3,8 +3,18 @@ package org.collaborative.cycling.records;
 import org.collaborative.cycling.models.JoinedStatus;
 import org.collaborative.cycling.models.ProgressStatus;
 
-import javax.persistence.*;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "user_activity")
@@ -113,6 +123,10 @@ public class UserActivityRecord {
     }
 
     public String getCoordinates() {
+        if (coordinates == null) {
+          return "";
+        }
+
         return new String(coordinates);
     }
 
