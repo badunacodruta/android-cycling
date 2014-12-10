@@ -1,6 +1,7 @@
 package org.collaborative.cycling.webapp.filters;
 
 import org.collaborative.cycling.webapp.Utils;
+import org.collaborative.cycling.webapp.controllers.ErrorLogController;
 import org.collaborative.cycling.webapp.controllers.LoginController;
 import org.collaborative.cycling.webapp.controllers.VersionController;
 import org.slf4j.Logger;
@@ -25,6 +26,7 @@ public class AuthFilter implements javax.servlet.Filter {
     // by default the filter will allow unauthenticated access for login controller calls
     private String excludedMappings[] = new String[]{
             LoginController.MAPPING,
+            ErrorLogController.MAPPING,
             VersionController.MAPPING
     };
 
