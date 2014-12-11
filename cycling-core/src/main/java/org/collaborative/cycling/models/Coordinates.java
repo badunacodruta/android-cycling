@@ -7,10 +7,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Coordinates implements Serializable {
-//    TODO: modify from k and B to lat and lng -> web + app
-    @JsonProperty("k")
+    @JsonProperty("lat")
     private double latitude;
-    @JsonProperty("B")
+    @JsonProperty("lng")
     private double longitude;
 
 //    TODO: json prop

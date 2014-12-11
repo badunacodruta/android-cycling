@@ -66,7 +66,7 @@ function drawTrack() {
     coordinatesForTrack = [];
     for (var i = 0; i < parsedCoordinates.length; i++) {
         var parsedCoordinate = parsedCoordinates[i];
-        coordinatesForTrack.push(getLatLng(parsedCoordinate.k, parsedCoordinate.B));
+        coordinatesForTrack.push(getLatLng(parsedCoordinate.lat, parsedCoordinate.lng));
     }
 
     recreateTrack(true);
@@ -180,7 +180,7 @@ function displayParticipants() {
 }
 
 function updateParticipantPosition(participant, point) {
-    var coordinates = getLatLng(point.k, point.B);
+    var coordinates = getLatLng(point.lat, point.lng);
 
     var marker = new google.maps.Marker({
         position: coordinates,
