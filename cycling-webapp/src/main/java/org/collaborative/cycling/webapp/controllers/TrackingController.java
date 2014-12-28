@@ -1,5 +1,17 @@
 package org.collaborative.cycling.webapp.controllers;
 
+import org.collaborative.cycling.models.Activity;
+import org.collaborative.cycling.models.Coordinates;
+import org.collaborative.cycling.models.JoinedStatus;
+import org.collaborative.cycling.models.JoinedUser;
+import org.collaborative.cycling.models.ProgressStatus;
+import org.collaborative.cycling.models.User;
+import org.collaborative.cycling.services.ActivityService;
+import org.collaborative.cycling.services.UserActivityService;
+import org.collaborative.cycling.webapp.Utils;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -15,17 +27,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-
-import org.collaborative.cycling.models.Activity;
-import org.collaborative.cycling.models.Coordinates;
-import org.collaborative.cycling.models.JoinedUser;
-import org.collaborative.cycling.models.ProgressStatus;
-import org.collaborative.cycling.models.User;
-import org.collaborative.cycling.services.ActivityService;
-import org.collaborative.cycling.services.UserActivityService;
-import org.collaborative.cycling.webapp.Utils;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 @Path(TrackingController.MAPPING)
@@ -93,28 +94,29 @@ public class TrackingController {
     }
 
     @GET
-    @Path("/start")
+    @Path("/start/{activityId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public void start(long activityId,
+    public void start(@PathParam("activityId") long activityId,
                       @Context HttpServletRequest request) {
         logger.debug("start activity -- activityId:{}", activityId);
 
         HttpSession session = request.getSession(true);
         User user = Utils.getUser(session);
 
-        if (userActivityService.isJoinedUser(user, activityId) &&
+        if (!userActivityService.isJoinedUser(user, activityId) &&
                 userActivityService.getProgressStatusForUser(user, activityId) == ProgressStatus.NOT_STARTED &&
                 activityService.isStartable(activityId)) {
-            userActivityService.saveJoinedUser(user, activityId, ProgressStatus.ACTIVE, null);
+            userActivityService.saveJoinedUser(user, activityId, ProgressStatus.ACTIVE, JoinedStatus.ACCEPTED);
         }
     }
 
+
     @GET
-    @Path("/finish")
+    @Path("/finish/{activityId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public void finish(long activityId,
+    public void finish(@PathParam("activityId") long activityId,
                        @Context HttpServletRequest request) {
         logger.debug("finish activity -- activityId:{}", activityId);
 
@@ -129,10 +131,10 @@ public class TrackingController {
     }
 
     @GET
-    @Path("/pause")
+    @Path("/pause/{activityId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public void pause(long activityId,
+    public void pause(@PathParam("activityId") long activityId,
                       @Context HttpServletRequest request) {
         logger.debug("pause activity -- activityId:{}", activityId);
 
@@ -146,10 +148,10 @@ public class TrackingController {
     }
 
     @GET
-    @Path("/resume")
+    @Path("/resume/{activityId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public void resume(long activityId,
+    public void resume(@PathParam("activityId") long activityId,
                        @Context HttpServletRequest request) {
         logger.debug("resume activity -- activityId:{}", activityId);
 
