@@ -59,13 +59,10 @@ public class TrackingController {
         HttpSession session = request.getSession(true);
         User user = Utils.getUser(session);
 
-        ProgressStatus progressStatus = userActivityService.getProgressStatusForUser(user, activityId);
-        if (progressStatus != ProgressStatus.FINISHED) {
-            if (coordinates.getDate() == null) {
-                coordinates.setDate(new Date());
-            }
-            userActivityService.saveJoinedUser(user, activityId, null, null, coordinates);
+        if (coordinates.getDate() == null) {
+            coordinates.setDate(new Date());
         }
+        userActivityService.saveJoinedUser(user, activityId, null, null, coordinates);
 
         return getUsersForActivityAndUser(activityId, user);
     }
@@ -90,6 +87,13 @@ public class TrackingController {
         Activity activity = activityService.getActivity(user, activityId);
         List<JoinedUser> joinedUsers = activity.getJoinedUsers();
 
+        for (JoinedUser joinedUser : joinedUsers) {
+            List<Coordinates> coordinates = joinedUser.getCoordinates();
+            if (coordinates.size() > 10) {
+                joinedUser.setCoordinates(coordinates.subList(coordinates.size() - 5, coordinates.size()));
+            }
+        }
+
         return joinedUsers;
     }
 
@@ -105,8 +109,8 @@ public class TrackingController {
         User user = Utils.getUser(session);
 
         if (!userActivityService.isJoinedUser(user, activityId) &&
-                userActivityService.getProgressStatusForUser(user, activityId) == ProgressStatus.NOT_STARTED &&
-                activityService.isStartable(activityId)) {
+            userActivityService.getProgressStatusForUser(user, activityId) == ProgressStatus.NOT_STARTED &&
+            activityService.isStartable(activityId)) {
             userActivityService.saveJoinedUser(user, activityId, ProgressStatus.ACTIVE, JoinedStatus.ACCEPTED);
         }
     }
@@ -125,7 +129,7 @@ public class TrackingController {
 
         ProgressStatus progressStatus = userActivityService.getProgressStatusForUser(user, activityId);
         if (userActivityService.isJoinedUser(user, activityId) &&
-                (progressStatus == ProgressStatus.ACTIVE || progressStatus == ProgressStatus.PAUSED)) {
+            (progressStatus == ProgressStatus.ACTIVE || progressStatus == ProgressStatus.PAUSED)) {
             userActivityService.saveJoinedUser(user, activityId, ProgressStatus.FINISHED, null);
         }
     }
@@ -142,7 +146,7 @@ public class TrackingController {
         User user = Utils.getUser(session);
 
         if (userActivityService.isJoinedUser(user, activityId) &&
-                userActivityService.getProgressStatusForUser(user, activityId) == ProgressStatus.ACTIVE) {
+            userActivityService.getProgressStatusForUser(user, activityId) == ProgressStatus.ACTIVE) {
             userActivityService.saveJoinedUser(user, activityId, ProgressStatus.PAUSED, null);
         }
     }
@@ -159,7 +163,7 @@ public class TrackingController {
         User user = Utils.getUser(session);
 
         if (userActivityService.isJoinedUser(user, activityId) &&
-                userActivityService.getProgressStatusForUser(user, activityId) == ProgressStatus.PAUSED) {
+            userActivityService.getProgressStatusForUser(user, activityId) == ProgressStatus.PAUSED) {
             userActivityService.saveJoinedUser(user, activityId, ProgressStatus.ACTIVE, null);
         }
     }

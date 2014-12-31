@@ -1,11 +1,11 @@
 package org.collaborative.cycling.models;
 
+import org.collaborative.cycling.Utilities;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.collaborative.cycling.Utilities;
 
 public class JoinedUser implements Serializable {
     private User user;
@@ -55,6 +55,10 @@ public class JoinedUser implements Serializable {
 
     public List<Coordinates> getCoordinates() {
         return coordinates;
+    }
+
+    public void setCoordinates(List<Coordinates> coordinates) {
+        this.coordinates = coordinates;
     }
 
     public void setCoordinates(String coordinates) throws IOException {
