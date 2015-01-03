@@ -3,6 +3,7 @@ package org.collaborative.cycling.webapp.filters;
 import org.collaborative.cycling.webapp.Utils;
 import org.collaborative.cycling.webapp.controllers.ErrorLogController;
 import org.collaborative.cycling.webapp.controllers.LoginController;
+import org.collaborative.cycling.webapp.controllers.UpdatesController;
 import org.collaborative.cycling.webapp.controllers.VersionController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,7 @@ public class AuthFilter implements javax.servlet.Filter {
     private String excludedMappings[] = new String[]{
             LoginController.MAPPING,
             ErrorLogController.MAPPING,
+            UpdatesController.MAPPING,
             VersionController.MAPPING
     };
 
