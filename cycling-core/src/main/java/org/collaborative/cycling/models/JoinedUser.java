@@ -26,7 +26,7 @@ public class JoinedUser implements Serializable {
         this.user = user;
         this.joinedStatus = joinedStatus;
         this.progressStatus = progressStatus;
-        setCoordinates(coordinates);
+        setCoordinatesAsString(coordinates);
     }
 
     public User getUser() {
@@ -61,7 +61,7 @@ public class JoinedUser implements Serializable {
         this.coordinates = coordinates;
     }
 
-    public void setCoordinates(String coordinates) throws IOException {
+    public void setCoordinatesAsString(String coordinates) throws IOException {
         if (coordinates == null || coordinates.isEmpty()) {
             this.coordinates = new ArrayList<>();
             return;
