@@ -10,20 +10,20 @@ import java.util.Date;
 import java.util.List;
 
 public class Activity implements Serializable {
-    private long id;
-    private String name;
-    private User owner;
-    private ActivityAccessType activityAccessType;
-    private List<Coordinates> coordinates;
-    private List<JoinedUser> joinedUsers;
-    private ProgressStatus progressStatus;
+    public long id;
+    public String name;
+    public User owner;
+    public ActivityAccessType activityAccessType;
+    public List<Coordinates> coordinates;
+    public List<JoinedUser> joinedUsers;
+    public ProgressStatus progressStatus;
 
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd HH:mm")
-    private Date startDate;
+    public Date startDate;
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
-    private Date createdDate;
+    public Date createdDate;
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
-    private Date updatedDate;
+    public Date updatedDate;
 
     public Activity() {
     }
