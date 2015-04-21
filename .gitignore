@@ -1,6 +1,5 @@
+cycling-webapp/src/main/webapp/static/app/pages/download/Cycling app.apk
+.idea
 *.iml
 .DS_Store
-/db
-target
-/.idea
-
+*/target

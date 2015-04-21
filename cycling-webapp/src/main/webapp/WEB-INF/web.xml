@@ -18,13 +18,12 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
-
     <servlet>
         <servlet-name>webapp</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>org.collaborative.cycling.webapp.controllers</param-value>
+            <param-value>org.collaborative.cycling.webapp</param-value>
         </init-param>
         <init-param>
             <param-name>javax.ws.rs.Application</param-name>
@@ -37,18 +36,6 @@
         <servlet-name>webapp</servlet-name>
         <url-pattern>/api/v1/*</url-pattern>
     </servlet-mapping>
-
-
-    <!-- Security / Session filters -->
-    <filter>
-        <filter-name>session</filter-name>
-        <filter-class>net.sourceforge.statelessfilter.filter.StatelessFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>session</filter-name>
-        <url-pattern>/api/v1/*</url-pattern>
-    </filter-mapping>
-
 
     <!-- Auth filter-->
     <filter>

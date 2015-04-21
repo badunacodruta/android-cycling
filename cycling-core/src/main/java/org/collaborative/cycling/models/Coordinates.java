@@ -7,23 +7,18 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Coordinates implements Serializable {
-//    TODO: modify from k and B to lat and lng -> web + app
-    @JsonProperty("k")
-    private double latitude;
-    @JsonProperty("B")
-    private double longitude;
 
-//    TODO: json prop
-    private Date date;
+    @JsonProperty("lat")
+    private double latitude;
+    @JsonProperty("lng")
+    private double longitude;
+    @JsonProperty("date")
+    private long date;
 
     public Coordinates() {
     }
 
-    public Coordinates(double latitude, double longitude) {
-        this(latitude, longitude, null);
-    }
-
-    public Coordinates(double latitude, double longitude, Date date) {
+    public Coordinates(double latitude, double longitude, long date) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.date = date;
@@ -46,19 +41,19 @@ public class Coordinates implements Serializable {
     }
 
     public Date getDate() {
-        return date;
+        return new Date(date);
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.date = date.getTime();
     }
 
     @Override
     public String toString() {
         return "Coordinates{" +
-                "latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", date=" + date +
-                '}';
+               "latitude=" + latitude +
+               ", longitude=" + longitude +
+               ", date=" + date +
+               '}';
     }
 }

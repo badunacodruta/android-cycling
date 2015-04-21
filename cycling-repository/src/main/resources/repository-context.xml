@@ -8,24 +8,16 @@
 	   					   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql://ec2-54-83-201-96.compute-1.amazonaws.com:5432/dfl27805mm9oaj"/>
-        <property name="username" value="pbuuxteahfkyxp"/>
-        <property name="password" value="0KH_EelSKDFwbkVPiPmZ3vykcS"/>
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/cycling"/>
+        <property name="username" value="root"/>
+        <property name="password" value=""/>
     </bean>
 
-    <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
-        <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
-        <!--<property name="url" value="jdbc:mysql://db4free.net:3306/cycling"/>-->
-        <!--<property name="username" value="cycling"/>-->
-        <!--<property name="password" value="qscesz"/>-->
-    <!--</bean>-->
-
-    <bean id="jpaVendorAdapter"
-          class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
         <property name="showSql" value="true"/>
         <property name="generateDdl" value="true"/>
-        <property name="database" value="POSTGRESQL"/>
+        <property name="database" value="MYSQL"/>
     </bean>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -34,7 +26,8 @@
         <property name="packagesToScan" value="org.collaborative.cycling"/>
     </bean>
 
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"/>
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+    </bean>
     <tx:annotation-driven transaction-manager="transactionManager" />
 
     <jpa:repositories base-package="org.collaborative.cycling.repositories"

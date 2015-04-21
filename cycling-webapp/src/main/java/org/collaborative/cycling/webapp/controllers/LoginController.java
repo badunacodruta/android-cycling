@@ -6,6 +6,8 @@ import org.collaborative.cycling.webapp.Utils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.security.NoSuchAlgorithmException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
@@ -30,7 +32,7 @@ public class LoginController {
     @Path(MAPPING_VERSION)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response login(User user, @Context HttpServletRequest request) {
+    public Response login(User user, @Context HttpServletRequest request) throws NoSuchAlgorithmException {
         logger.debug("login -- email:{}", user.getEmail());
 
         User loggedUser = userService.login(user);

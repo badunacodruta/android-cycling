@@ -2,9 +2,16 @@ package org.collaborative.cycling.records;
 
 import org.collaborative.cycling.models.ProgressStatus;
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")

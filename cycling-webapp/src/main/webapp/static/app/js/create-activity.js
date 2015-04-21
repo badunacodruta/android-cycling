@@ -12,10 +12,10 @@ function addMarker(point) {
     var markerId = getMarkerUniqueId(lat, lng);
 
     var marker = new google.maps.Marker({
-        position: coordinates,
-        map: map,
-        id: 'marker_' + markerId
-    });
+                                            position: coordinates,
+                                            map: map,
+                                            id: 'marker_' + markerId
+                                        });
 
     markersByUnigueId[markerId] = marker;
     coordinatesByUniqueId[markerId] = coordinates;
@@ -62,12 +62,12 @@ function recreateTrack(fitBounds) {
     clearTrack();
 
     polyline = new google.maps.Polyline({
-        path: coordinatesForTrack,
-        map: map,
-        strokeColor: "#ff0000",
-        strokeOpacity: .7,
-        strokeWeight: 4
-    });
+                                            path: coordinatesForTrack,
+                                            map: map,
+                                            strokeColor: "#ff0000",
+                                            strokeOpacity: .7,
+                                            strokeWeight: 4
+                                        });
 
     if (fitBounds && coordinatesForTrack.length > 0) {
         var bounds = new google.maps.LatLngBounds();
@@ -109,14 +109,13 @@ function clearAllPins() {
 function changeAddPins() {
     if ($('#add-pins-switch').hasClass('btn-primary')) {
         google.maps.event.clearListeners(map, 'click');
-        google.maps.event.addListener(map, 'click', function(point) {
+        google.maps.event.addListener(map, 'click', function (point) {
             addMarker(point);
         });
     } else {
         google.maps.event.clearListeners(map, 'click');
     }
 }
-
 
 //TODO: verify the name of the activity is unique and display en error message
 //TODO: verify the required fields
@@ -131,7 +130,11 @@ function saveActivity() {
     activity.name = activityName;
     activity.startDate = startDate;
     activity.activityAccessType = accessType;
-    activity.coordinates = JSON.stringify(coordinatesForTrack);
+    activity.coordinates = [];
+    for (i = 0; i < coordinatesForTrack.length; i++) {
+        activity.coordinates.push({"lat": coordinatesForTrack[i].lat(), "lng": coordinatesForTrack[i].lng()});
+    }
+    activity.coordinates = JSON.stringify(activity.coordinates);
 
     if (startDate == "") {
         displayErrorMessage("You must choose a start date for the activity!");
@@ -143,18 +146,20 @@ function saveActivity() {
     }
 
     $.ajax({
-        type: "POST",
-        url: "/api/v1/activities",
-        data: JSON.stringify(activity),
-        success: showSuccessMessage,
-        error: function() { displayErrorMessage("An error has occurred while trying to create the activity!") },
-        contentType: "application/json"
-    });
+               type: "POST",
+               url: "/api/v1/activities",
+               data: JSON.stringify(activity),
+               success: showSuccessMessage,
+               error: function () {
+                   displayErrorMessage("An error has occurred while trying to create the activity!")
+               },
+               contentType: "application/json"
+           });
 }
 
 function getAccessType() {
     if ($('#access-type-switch').hasClass('btn-primary')) {
-       return "PUBLIC";
+        return "PUBLIC";
     } else {
         return "REQUEST";
     }
@@ -165,8 +170,9 @@ function showSuccessMessage(response) {
 
     displaySuccessMessage(message);
 
-    setTimeout(function()
-        { location.reload(); }
+    setTimeout(function () {
+                   location.reload();
+               }
         , 1000);
 
 }

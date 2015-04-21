@@ -66,7 +66,7 @@ function drawTrack() {
     coordinatesForTrack = [];
     for (var i = 0; i < parsedCoordinates.length; i++) {
         var parsedCoordinate = parsedCoordinates[i];
-        coordinatesForTrack.push(getLatLng(parsedCoordinate.k, parsedCoordinate.B));
+        coordinatesForTrack.push(getLatLng(parsedCoordinate.lat, parsedCoordinate.lng));
     }
 
     recreateTrack(true);
@@ -133,8 +133,10 @@ function displayParticipants() {
         return;
     }
 
+
     for (var i = 0; i < participants.length; i++) {
         participants[i].active = false;
+        participants[i].marker.setMap(null);
     }
 
     for (var i = 0; i < activity.joinedUsers.length; i++) {
@@ -180,7 +182,7 @@ function displayParticipants() {
 }
 
 function updateParticipantPosition(participant, point) {
-    var coordinates = getLatLng(point.k, point.B);
+    var coordinates = getLatLng(point.lat, point.lng);
 
     var marker = new google.maps.Marker({
         position: coordinates,
@@ -203,8 +205,8 @@ function addViewParticipantEvent(marker, user) {
     google.maps.event.addListener(marker, "rightclick", function (point) {
 
         var content = "<div>" +
-            "<div>" + user.email + "</div>" +
-            "<img src=\"" + user.imageUrl + "\">" +
+            "<div style='overflow: hidden;'>" + user.email + "</div>" +
+            "<img style='width: 80px;' src=\"" + user.imageUrl + "\">" +
             "</div>";
 
         var infowindow = new google.maps.InfoWindow({

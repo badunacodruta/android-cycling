@@ -48,7 +48,7 @@ function fetchFBInfo() {
 //======= login/logout related =============
 
 function goToLoginPage() {
-    window.location.href = "login.html";
+    window.location.href = "../../../index.html";
 }
 
 function logout() {

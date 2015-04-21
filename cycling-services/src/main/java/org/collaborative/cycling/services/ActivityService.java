@@ -1,10 +1,13 @@
 package org.collaborative.cycling.services;
 
-import java.lang.reflect.Type;
-import java.util.*;
-
 import org.collaborative.cycling.Utilities;
-import org.collaborative.cycling.models.*;
+import org.collaborative.cycling.models.Activity;
+import org.collaborative.cycling.models.ActivityAccessType;
+import org.collaborative.cycling.models.ActivitySearchResult;
+import org.collaborative.cycling.models.ActivitySummary;
+import org.collaborative.cycling.models.JoinedActivity;
+import org.collaborative.cycling.models.JoinedStatus;
+import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.records.ActivityRecord;
 import org.collaborative.cycling.records.UserActivityRecord;
 import org.collaborative.cycling.records.UserRecord;
@@ -13,10 +16,21 @@ import org.collaborative.cycling.repositories.UserActivityRepository;
 import org.collaborative.cycling.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 public class ActivityService {
+
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ActivityService.class);
 
     private static final String UNTITLED_ACTIVITY_PREFIX = "Untitled activity ";
     private static final int DEFAULT_PAGE_SIZE = 10;
@@ -56,7 +70,7 @@ public class ActivityService {
             userRecord.setCreatedActivityRecordList(createdActivityRecordList);
         } else {
             if (!activityRecord.getOwner().getEmail().equals(user.getEmail())
-                    || activityRecord.isDeleted()) {
+                || activityRecord.isDeleted()) {
                 return null;
             }
         }
@@ -85,17 +99,19 @@ public class ActivityService {
 
     public List<Activity> getActivities(User user, int pageNumber, int pageSize) {
         List<ActivityRecord> activityRecordList = getActivityRecords(user, pageNumber, pageSize);
-        Type activityListType = new TypeToken<List<Activity>>(){}.getType();
+        Type activityListType = new TypeToken<List<Activity>>() {
+        }.getType();
         return modelMapper.map(activityRecordList, activityListType);
     }
 
     public List<ActivitySummary> getActivitiesSummary(User user, int pageNumber, int pageSize) {
         List<ActivityRecord> activityRecordList = getActivityRecords(user, pageNumber, pageSize);
-        Type activityInfoListType = new TypeToken<List<ActivitySummary>>(){}.getType();
+        Type activityInfoListType = new TypeToken<List<ActivitySummary>>() {
+        }.getType();
         return modelMapper.map(activityRecordList, activityInfoListType);
     }
 
-//    TODO: maybe add pagination
+    //    TODO: maybe add pagination
     public List<ActivitySearchResult> searchActivitiesToJoin(User user, String query) {
         List<ActivityRecord> activityRecordList = activityRepository.getActivitiesByName(user.getEmail(), String.format("%%%s%%", query));
 
@@ -119,7 +135,8 @@ public class ActivityService {
             }
         }
 
-        Type activityInfoListType = new TypeToken<List<ActivitySearchResult>>(){}.getType();
+        Type activityInfoListType = new TypeToken<List<ActivitySearchResult>>() {
+        }.getType();
         return modelMapper.map(activityRecordList, activityInfoListType);
     }
 
@@ -169,8 +186,9 @@ public class ActivityService {
     }
 
     public int getActivitiesCount(User user) {
+
         if (user == null) {
-            return 0;
+            throw new RuntimeException("no user");
         }
 
         return activityRepository.getActivitiesCount(user.getEmail());
@@ -186,11 +204,7 @@ public class ActivityService {
             return null;
         }
 
-        if (activityRecord.getOwner().getEmail().equals(user.getEmail())) {
-            return modelMapper.map(activityRecord, Activity.class);
-        }
-
-        return null;
+        return modelMapper.map(activityRecord, Activity.class);
     }
 
 

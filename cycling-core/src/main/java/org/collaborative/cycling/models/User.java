@@ -1,8 +1,8 @@
 package org.collaborative.cycling.models;
 
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements Serializable {
@@ -17,10 +17,6 @@ public class User implements Serializable {
     public User(String email, String imageUrl) {
         this.email = email;
         this.imageUrl = imageUrl;
-    }
-
-    public static String getId() {
-        return ID;
     }
 
     public String getEmail() {
