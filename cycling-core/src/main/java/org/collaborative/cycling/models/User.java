@@ -10,6 +10,8 @@ public class User implements Serializable {
     public static final String ID = "USER_ID";
     private String email;
     private String imageUrl;
+    public String firstName;
+    public String lastName;
 
     public User() {
     }
@@ -17,6 +19,12 @@ public class User implements Serializable {
     public User(String email, String imageUrl) {
         this.email = email;
         this.imageUrl = imageUrl;
+    }
+    public User(String email, String imageUrl, String firstName, String lastName) {
+        this.email = email;
+        this.imageUrl = imageUrl;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public String getEmail() {
