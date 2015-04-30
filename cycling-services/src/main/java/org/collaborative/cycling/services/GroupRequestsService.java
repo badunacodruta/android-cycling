@@ -93,12 +93,6 @@ public class GroupRequestsService {
             return null;
         }
 
-        //TODO consider moving this check out of here (in the controller)
-        //check the sender is part of the group (has the right to send the invitation)
-        if (!groupService.hasUser(groupId, senderId)) {
-            return null;
-        }
-
         GroupInviteUserRequestRecord groupInviteUserRequestRecord = new GroupInviteUserRequestRecord(
                 new Date(), userRecord, groupRecord, senderRecord);
         groupInviteUserRequestRecord = groupInviteUserRequestRepository.save(groupInviteUserRequestRecord);
@@ -108,19 +102,13 @@ public class GroupRequestsService {
 
 
     @Transactional
-    public List<UserJoinGroupRequest> getUserJoinGroupRequests(Long groupId, Long userId) {
+    public List<UserJoinGroupRequest> getUserJoinGroupRequests(Long groupId) {
         if (groupId == null) {
             return null;
         }
 
         GroupRecord groupRecord = groupRepository.findOne(groupId);
         if (groupRecord == null) {
-            return null;
-        }
-
-        //TODO consider moving this check out of here (in the controller)
-        //check the sender is part of the group (has the right to get the requests)
-        if (!groupService.hasUser(groupId, userId)) {
             return null;
         }
 

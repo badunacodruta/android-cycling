@@ -5,6 +5,7 @@ import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.models.UserJoinGroupRequest;
 import org.collaborative.cycling.models.UserResponseToRequests;
 import org.collaborative.cycling.services.GroupRequestsService;
+import org.collaborative.cycling.services.GroupService;
 import org.collaborative.cycling.webapp.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,21 +27,27 @@ public class GroupRequestsController {
     public static final String MAPPING = "/request/group";
 
     private final GroupRequestsService groupRequestsService;
+    private final GroupService groupService;
 
     @Autowired
-    public GroupRequestsController(GroupRequestsService groupRequestsService) {
+    public GroupRequestsController(GroupRequestsService groupRequestsService, GroupService groupService) {
         this.groupRequestsService = groupRequestsService;
+        this.groupService = groupService;
     }
 
     @POST
     @Path("/{groupId}")
     public Response userJoinGroup(@PathParam("groupId") Long groupId,
-                         @Context HttpServletRequest request) {
+                                  @Context HttpServletRequest request) {
         if (groupId == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
         User currentUser = Utils.getUser(request.getSession(false));
+        if (groupService.hasUser(groupId, currentUser.getId())) {
+            return Response.status(Response.Status.CONFLICT).build();
+        }
+
         UserJoinGroupRequest userJoinGroupRequest = groupRequestsService.userJoinGroup(currentUser.getId(), groupId);
 
         if (userJoinGroupRequest == null) {
@@ -53,13 +60,17 @@ public class GroupRequestsController {
     @POST
     @Path("/{groupId}/invitation")
     public Response groupInviteUser(@PathParam("groupId") Long groupId,
-                               String email,
-                               @Context HttpServletRequest request) {
+                                    String email,
+                                    @Context HttpServletRequest request) {
         if (groupId == null || email == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
         User currentUser = Utils.getUser(request.getSession(false));
+        if (!groupService.hasUser(groupId, currentUser.getId())) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
         GroupInviteUserRequest groupInviteUserRequest = groupRequestsService.groupInviteUser(groupId, email, currentUser.getId());
 
         if (groupInviteUserRequest == null) {
@@ -79,7 +90,11 @@ public class GroupRequestsController {
         }
 
         User currentUser = Utils.getUser(request.getSession(false));
-        List<UserJoinGroupRequest> userJoinGroupRequestList = groupRequestsService.getUserJoinGroupRequests(groupId, currentUser.getId());
+        if (!groupService.hasUser(groupId, currentUser.getId())) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
+        List<UserJoinGroupRequest> userJoinGroupRequestList = groupRequestsService.getUserJoinGroupRequests(groupId);
 
         if (userJoinGroupRequestList == null) {
             return Response.status(Response.Status.NOT_FOUND).build();

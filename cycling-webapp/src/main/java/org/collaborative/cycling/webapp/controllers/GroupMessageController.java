@@ -3,6 +3,7 @@ package org.collaborative.cycling.webapp.controllers;
 import org.collaborative.cycling.models.GroupMessage;
 import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.services.GroupMessageService;
+import org.collaborative.cycling.services.GroupService;
 import org.collaborative.cycling.webapp.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,18 +25,26 @@ public class GroupMessageController {
     public static final String MAPPING = "/message/group";
 
     private final GroupMessageService groupMessageService;
+    private final GroupService groupService;
 
     @Autowired
-    public GroupMessageController(GroupMessageService groupMessageService) {
+    public GroupMessageController(GroupMessageService groupMessageService, GroupService groupService) {
         this.groupMessageService = groupMessageService;
+        this.groupService = groupService;
     }
 
     @GET
     @Path("/{groupId}")
     public Response getMessages(@PathParam("groupId") Long groupId,
-                                @QueryParam("size") Integer size) {
+                                @QueryParam("size") Integer size,
+                                @Context HttpServletRequest request) {
         if (groupId == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        User currentUser = Utils.getUser(request.getSession(false));
+        if (!groupService.hasUser(groupId, currentUser.getId())) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
 
         List<GroupMessage> messageList = groupMessageService.getMessages(groupId, size);
@@ -50,12 +59,17 @@ public class GroupMessageController {
     @POST
     @Path("/{groupId}")
     public Response addToChat(@PathParam("groupId") Long groupId,
-                              String textReceived, @Context HttpServletRequest request) {
+                              String textReceived,
+                              @Context HttpServletRequest request) {
         if (groupId == null || textReceived == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
         User currentUser = Utils.getUser(request.getSession(false));
+        if (!groupService.hasUser(groupId, currentUser.getId())) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
         GroupMessage groupMessage = groupMessageService.addMessage(groupId, textReceived, currentUser.getId());
 
         if (groupMessage == null) {
