@@ -9,17 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
-import java.io.IOException;
-import java.util.Enumeration;
-
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Enumeration;
 
 public class AuthFilter implements javax.servlet.Filter {
     private static Logger logger = LoggerFactory.getLogger(AuthFilter.class);
@@ -56,6 +51,8 @@ public class AuthFilter implements javax.servlet.Filter {
         logger.debug("{}={}", name, request.getHeader(name));
       }
 
+
+        logger.error(((HttpServletRequest) req).getPathInfo());
       HttpSession session = request.getSession(false);
       if (session == null || Utils.getUser(session) == null) {
             logger.warn("deny access to {} for session = {}", request.getRequestURI(), session);
