@@ -1,73 +1,73 @@
 package org.collaborative.cycling.records;
 
+import javax.persistence.*;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "errors")
 public class ErrorRecord {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
-  private long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-  @Column(name = "owner")
-  private String owner;
+    @Lob
+    @Column(name = "errorData", nullable = false)
+    private byte[] errorData = new byte[0];
 
-  @Lob
-  @Column(name = "errorData")
-  private byte[] errorData = new byte[0];
-
-  @Column(name = "created_date", nullable = false)
-  private Date createdDate;
-
-  public ErrorRecord() {
-  }
-
-  public ErrorRecord(String owner, byte[] errorData, Date createdDate) {
-    this.owner = owner;
-    this.errorData = errorData;
-    this.createdDate = createdDate;
-  }
+    @Column(name = "created_date", nullable = false, updatable = false)
+    private Date createdDate;
 
 
-  public long getId() {
-    return id;
-  }
+    @ManyToOne
+    @JoinColumn
+    private UserRecord owner;
 
-  public void setId(long id) {
-    this.id = id;
-  }
 
-  public String getOwner() {
-    return owner;
-  }
+    public ErrorRecord() {
+    }
 
-  public void setOwner(String owner) {
-    this.owner = owner;
-  }
+    public ErrorRecord(Long ownerId, byte[] errorData, Date createdDate) {
+        this.errorData = errorData;
+        this.createdDate = createdDate;
 
-  public byte[] getErrorData() {
-    return errorData;
-  }
+        if (ownerId != null) {
+            if (this.owner == null) {
+                this.owner = new UserRecord();
+            }
+            this.owner.setId(ownerId);
+        }
+    }
 
-  public void setErrorData(byte[] errorData) {
-    this.errorData = errorData;
-  }
+    public Long getId() {
+        return id;
+    }
 
-  public Date getCreatedDate() {
-    return createdDate;
-  }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-  public void setCreatedDate(Date createdDate) {
-    this.createdDate = createdDate;
-  }
+    public byte[] getErrorData() {
+        return errorData;
+    }
+
+    public void setErrorData(byte[] errorData) {
+        this.errorData = errorData;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public UserRecord getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserRecord owner) {
+        this.owner = owner;
+    }
 }

@@ -1,61 +1,80 @@
 package org.collaborative.cycling.records;
 
-import org.collaborative.cycling.models.ProgressStatus;
+import org.collaborative.cycling.comparators.UserGroupRecordComparatorByGroup;
+import org.collaborative.cycling.records.requests.GroupInviteUserRequestRecord;
+import org.hibernate.annotations.Sort;
+import org.hibernate.annotations.SortComparator;
+import org.hibernate.annotations.SortType;
 
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
 public class UserRecord {
 
     @Id
-    @Column(name = "email", nullable = false)
+    @GeneratedValue
+    private Long id;
+
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "image_url", nullable = false)
-    private String imageUrl;
+    //TODO
+    @Column(name = "image_url")
+    private String imageUrl = "TODO";
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
-    @OrderBy("created_date desc")
-    private Set<ActivityRecord> createdActivityRecordList;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-    @OrderBy("created_date desc")
-    private Set<UserActivityRecord> joinedUserActivityRecordList;
-
-    @Column(name = "untitled_activities_index", nullable = false)
-    private long untitledActivitiesIndex;
-
-    @Column(name = "deleted", nullable = false)
-    private boolean deleted;
-
-    @Column(name = "created_date", nullable = false)
+    @Column(name = "created_date", nullable = false, updatable = false)
     private Date createdDate;
 
-    @Column(name = "updated_date")
+    //    @Version
+    @Column(name = "updated_date", nullable = false)
     private Date updatedDate;
 
-    @Column(name = "deleted_date")
-    private Date deletedDate;
+
+    @OneToMany(targetEntity = GroupRecord.class, mappedBy = "owner")
+    private List<GroupRecord> createdGroups = new ArrayList<>();;
+
+    @OneToMany(targetEntity = ActivityRecord.class, mappedBy = "owner")
+    private List<ActivityRecord> createdActivities = new ArrayList<>();;
+
+    @OneToMany(targetEntity = UserGroupRecord.class, mappedBy = "user")
+//    @SortComparator(UserGroupRecordComparatorByGroup.class)
+    private List<UserGroupRecord> groups = new ArrayList<>();
+
+    @OneToMany(targetEntity = UserActivityRecord.class, mappedBy = "user")
+    private List<UserActivityRecord> activities = new ArrayList<>();;
+
+    @OneToMany(targetEntity = ErrorRecord.class, mappedBy = "owner")
+    private List<ErrorRecord> errors = new ArrayList<>();;
+
+    @OneToMany(targetEntity = GroupMessageRecord.class, mappedBy = "sender")
+    private List<GroupMessageRecord> sentMessages = new ArrayList<>();;
+
+    @OneToMany(targetEntity = GroupInviteUserRequestRecord.class, mappedBy = "user")
+    @OrderBy("createdDate ASC")
+    private List<GroupInviteUserRequestRecord> receivedGroupInvitations = new ArrayList<>();;
+
 
     public UserRecord() {
     }
 
-    public UserRecord(String email, String imageUrl) {
+    public UserRecord(String email, String imageUrl, Date createdDate, Date updatedDate) {
         this.email = email;
         this.imageUrl = imageUrl;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
+    }
 
-        this.deleted = false;
-        this.createdDate = new Date();
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -66,12 +85,12 @@ public class UserRecord {
         this.email = email;
     }
 
-    public boolean isDeleted() {
-        return deleted;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Date getCreatedDate() {
@@ -90,57 +109,61 @@ public class UserRecord {
         this.updatedDate = updatedDate;
     }
 
-    public Date getDeletedDate() {
-        return deletedDate;
+    public List<GroupRecord> getCreatedGroups() {
+        return createdGroups;
     }
 
-    public void setDeletedDate(Date deletedDate) {
-        this.deletedDate = deletedDate;
+    public void setCreatedGroups(List<GroupRecord> createdGroups) {
+        this.createdGroups = createdGroups;
     }
 
-    public long getUntitledActivitiesIndex() {
-        return untitledActivitiesIndex;
+    public List<ActivityRecord> getCreatedActivities() {
+        return createdActivities;
     }
 
-    public void setUntitledActivitiesIndex(long untitledActivitiesIndex) {
-        this.untitledActivitiesIndex = untitledActivitiesIndex;
+    public void setCreatedActivities(List<ActivityRecord> createdActivities) {
+        this.createdActivities = createdActivities;
     }
 
-    public Set<ActivityRecord> getCreatedActivityRecordList() {
-        return createdActivityRecordList;
+    public List<UserGroupRecord> getGroups() {
+        //TODO make the annotation work and skip this
+        Collections.sort(groups, new UserGroupRecordComparatorByGroup());
+        return groups;
     }
 
-    public void setCreatedActivityRecordList(Set<ActivityRecord> createdActivityRecordList) {
-        this.createdActivityRecordList = createdActivityRecordList;
+    public void setGroups(List<UserGroupRecord> groups) {
+        this.groups = groups;
     }
 
-    public Set<UserActivityRecord> getJoinedUserActivityRecordList() {
-        return joinedUserActivityRecordList;
+    public List<UserActivityRecord> getActivities() {
+        return activities;
     }
 
-    public void setJoinedUserActivityRecordList(Set<UserActivityRecord> joinedUserActivityRecordList) {
-        this.joinedUserActivityRecordList = joinedUserActivityRecordList;
+    public void setActivities(List<UserActivityRecord> activities) {
+        this.activities = activities;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public List<ErrorRecord> getErrors() {
+        return errors;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setErrors(List<ErrorRecord> errors) {
+        this.errors = errors;
     }
 
-    public ProgressStatus getProgressStatusForActivity(long activityId) {
-        if (joinedUserActivityRecordList == null || joinedUserActivityRecordList.isEmpty()) {
-            return ProgressStatus.NOT_STARTED;
-        }
+    public List<GroupMessageRecord> getSentMessages() {
+        return sentMessages;
+    }
 
-        for (UserActivityRecord userActivityRecord : joinedUserActivityRecordList) {
-            if (userActivityRecord.getActivity() != null && userActivityRecord.getActivity().getId() == activityId) {
-                return userActivityRecord.getProgressStatus();
-            }
-        }
+    public void setSentMessages(List<GroupMessageRecord> sentMessages) {
+        this.sentMessages = sentMessages;
+    }
 
-        return ProgressStatus.NOT_STARTED;
+    public List<GroupInviteUserRequestRecord> getReceivedGroupInvitations() {
+        return receivedGroupInvitations;
+    }
+
+    public void setReceivedGroupInvitations(List<GroupInviteUserRequestRecord> receivedGroupInvitations) {
+        this.receivedGroupInvitations = receivedGroupInvitations;
     }
 }

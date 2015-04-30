@@ -1,29 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-	   					   http://www.springframework.org/schema/beans/spring-beans.xsd">
+	   					   http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <import resource="classpath:repository-context.xml"/>
 
-    <bean id="userService" class="org.collaborative.cycling.services.UserService">
-        <constructor-arg ref="userRepository"/>
-    </bean>
+    <context:component-scan base-package="org.collaborative.cycling.services"/>
 
-    <bean id="activityService" class="org.collaborative.cycling.services.ActivityService">
-        <constructor-arg ref="activityRepository"/>
-        <constructor-arg ref="userRepository"/>
-        <constructor-arg ref="userActivityRepository"/>
-    </bean>
-
-    <bean id="errorService" class="org.collaborative.cycling.services.ErrorService">
-        <constructor-arg ref="errorRepository"/>
-    </bean>
-
-    <bean id="userActivityService" class="org.collaborative.cycling.services.UserActivityService">
-        <constructor-arg ref="activityRepository"/>
-        <constructor-arg ref="userRepository"/>
-        <constructor-arg ref="userActivityRepository"/>
-    </bean>
+    <bean id="modelMapper" class="org.modelmapper.ModelMapper"/>
 
 </beans>

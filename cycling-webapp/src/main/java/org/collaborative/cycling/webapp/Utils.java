@@ -10,6 +10,7 @@ public class Utils {
     public static User getUser(HttpSession session) {
         return (User) session.getAttribute(User.ID);
     }
+
     public static void setUser(HttpSession session, User user) {
         session.setAttribute(User.ID, user);
     }

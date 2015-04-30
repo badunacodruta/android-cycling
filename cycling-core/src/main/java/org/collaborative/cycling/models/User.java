@@ -8,15 +8,29 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     public static final String ID = "USER_ID";
+    private Long id;
     private String email;
     private String imageUrl;
 
     public User() {
     }
 
-    public User(String email, String imageUrl) {
+    public User(Long id, String email, String imageUrl) {
+        this.id = id;
         this.email = email;
         this.imageUrl = imageUrl;
+    }
+
+    public static String getID() {
+        return ID;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {

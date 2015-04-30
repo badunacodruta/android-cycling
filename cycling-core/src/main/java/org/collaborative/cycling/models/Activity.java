@@ -15,8 +15,6 @@ public class Activity implements Serializable {
     public User owner;
     public ActivityAccessType activityAccessType;
     public List<Coordinates> coordinates;
-    public List<JoinedUser> joinedUsers;
-    public ProgressStatus progressStatus;
 
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy/MM/dd HH:mm")
     public Date startDate;
@@ -58,22 +56,6 @@ public class Activity implements Serializable {
 
     public void setActivityAccessType(ActivityAccessType activityAccessType) {
         this.activityAccessType = activityAccessType;
-    }
-
-    public List<JoinedUser> getJoinedUsers() {
-        return joinedUsers;
-    }
-
-    public void setJoinedUsers(List<JoinedUser> joinedUsers) {
-        this.joinedUsers = joinedUsers;
-    }
-
-    public ProgressStatus getProgressStatus() {
-        return progressStatus;
-    }
-
-    public void setProgressStatus(ProgressStatus progressStatus) {
-        this.progressStatus = progressStatus;
     }
 
     public Date getStartDate() {

@@ -1,10 +1,10 @@
 package org.collaborative.cycling.repositories;
 
-import org.collaborative.cycling.records.UserActivityRecord;
+import org.collaborative.cycling.records.GroupMessageRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public interface UserActivityRepository extends JpaRepository<UserActivityRecord, Long> {
+public interface GroupMessageRepository extends JpaRepository<GroupMessageRecord, Long> {
 
 }

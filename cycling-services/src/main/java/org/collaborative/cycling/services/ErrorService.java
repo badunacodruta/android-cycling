@@ -2,22 +2,27 @@ package org.collaborative.cycling.services;
 
 import org.collaborative.cycling.records.ErrorRecord;
 import org.collaborative.cycling.repositories.ErrorRepository;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+@Service
 public class ErrorService {
 
-  private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ErrorService.class);
+    private final ErrorRepository errorRepository;
 
-  private ErrorRepository errorRepository;
+    @Autowired
+    public ErrorService(ErrorRepository errorRepository) {
+        this.errorRepository = errorRepository;
+    }
 
-  public ErrorService(ErrorRepository errorRepository) {
-    this.errorRepository = errorRepository;
-  }
+    public void save(Long userId, String errorData) {
+        if (errorData == null || errorData.isEmpty()) {
+            return;
+        }
 
-  public void save(String user, String errorData) {
-    errorRepository.save(new ErrorRecord(user, errorData.getBytes(), new Date()));
-  }
-
+        ErrorRecord errorRecord = new ErrorRecord(userId, errorData.getBytes(), new Date());
+        errorRepository.save(errorRecord);
+    }
 }

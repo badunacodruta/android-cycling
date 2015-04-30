@@ -4,24 +4,48 @@ import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.records.UserRecord;
 import org.collaborative.cycling.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
+@Service
 public class UserService {
-    private UserRepository userRepository;
-    private ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper;
+    private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    @Autowired
+    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
     }
 
     public User login(User user) {
-        UserRecord userRecord = userRepository.findOne(user.getEmail());
-        if (userRecord == null) {
-            userRecord = new UserRecord(user.getEmail(), user.getImageUrl());
-        } else {
-            userRecord.setImageUrl(user.getImageUrl());
+        if (user == null || user.getEmail() == null) {
+            return null;
         }
 
-        userRepository.save(userRecord);
+        Long id = user.getId();
+        String email = user.getEmail();
+        Date now = new Date();
+        UserRecord userRecord = null;
+
+        if (id != null) {
+            userRecord = userRepository.findOne(id);
+        }
+
+        if (userRecord == null) {
+            userRecord = userRepository.findByEmail(email);
+        }
+
+        if (userRecord == null) {
+            userRecord = new UserRecord(user.getEmail(), user.getImageUrl(), now, now);
+        } else {
+            userRecord.setImageUrl(user.getImageUrl());
+            userRecord.setUpdatedDate(now);
+        }
+
+        userRecord = userRepository.save(userRecord);
         return modelMapper.map(userRecord, User.class);
     }
 }
