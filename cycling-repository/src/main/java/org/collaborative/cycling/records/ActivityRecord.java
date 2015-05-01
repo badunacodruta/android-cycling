@@ -50,6 +50,18 @@ public class ActivityRecord {
     private List<GroupActivityRecord> groups = new ArrayList<>();;
 
 
+    public ActivityRecord() {
+    }
+
+    public ActivityRecord(String name, ActivityAccessType activityAccessType, byte[] coordinates, Date startDate, Date createdDate, Date updatedDate) {
+        this.name = name;
+        this.activityAccessType = activityAccessType;
+        this.coordinates = coordinates;
+        this.startDate = startDate;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
+    }
+
     public Long getId() {
         return id;
     }

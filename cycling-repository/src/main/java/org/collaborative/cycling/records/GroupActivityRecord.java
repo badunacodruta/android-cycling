@@ -24,6 +24,15 @@ public class GroupActivityRecord {
     private ActivityRecord activity;
 
 
+    public GroupActivityRecord() {
+    }
+
+    public GroupActivityRecord(Date createdDate, GroupRecord group, ActivityRecord activity) {
+        this.createdDate = createdDate;
+        this.group = group;
+        this.activity = activity;
+    }
+
     public Long getId() {
         return id;
     }

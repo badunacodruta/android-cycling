@@ -32,6 +32,7 @@ public class GroupRequestsService {
     private final UserJoinGroupRequestRepository userJoinGroupRequestRepository;
     private final GroupInviteUserRequestRepository groupInviteUserRequestRepository;
     private final GroupService groupService;
+    private final ActivityService activityService;
 
     //TODO add pagination
 
@@ -40,7 +41,7 @@ public class GroupRequestsService {
                                 GroupRepository groupRepository, UserRepository userRepository,
                                 UserGroupRepository userGroupRepository,
                                 UserJoinGroupRequestRepository userJoinGroupRequestRepository,
-                                GroupInviteUserRequestRepository groupInviteUserRequestRepository, GroupService groupService) {
+                                GroupInviteUserRequestRepository groupInviteUserRequestRepository, GroupService groupService, ActivityService activityService) {
         this.modelMapper = modelMapper;
         this.groupRepository = groupRepository;
         this.userRepository = userRepository;
@@ -48,6 +49,7 @@ public class GroupRequestsService {
         this.userJoinGroupRequestRepository = userJoinGroupRequestRepository;
         this.groupInviteUserRequestRepository = groupInviteUserRequestRepository;
         this.groupService = groupService;
+        this.activityService = activityService;
     }
 
     public UserJoinGroupRequest userJoinGroup(Long userId, Long groupId) {
@@ -161,6 +163,9 @@ public class GroupRequestsService {
             UserGroupRecord userGroupRecord = new UserGroupRecord(now, now,
                     userJoinGroupRequestRecord.getUser(), userJoinGroupRequestRecord.getGroup());
             userGroupRepository.save(userGroupRecord);
+
+            //TODO this is hardcoded, should be removed after prima evadare
+            activityService.addUserToDefaultActivity(userJoinGroupRequestRecord.getUser(), userJoinGroupRequestRecord.getGroup());
         }
 
         return true;
@@ -189,6 +194,9 @@ public class GroupRequestsService {
             UserGroupRecord userGroupRecord = new UserGroupRecord(now, now,
                     groupInviteUserRequestRecord.getUser(), groupInviteUserRequestRecord.getGroup());
             userGroupRepository.save(userGroupRecord);
+
+            //TODO this is hardcoded, should be removed after prima evadare
+            activityService.addUserToDefaultActivity(groupInviteUserRequestRecord.getUser(), groupInviteUserRequestRecord.getGroup());
         }
 
         return true;

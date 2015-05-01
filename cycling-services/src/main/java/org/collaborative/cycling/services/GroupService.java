@@ -25,16 +25,18 @@ public class GroupService {
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
     private final UserGroupRepository userGroupRepository;
+    private final ActivityService activityService;
 
     //TODO add pagination
 
     @Autowired
     public GroupService(ModelMapper modelMapper,
-                        GroupRepository groupRepository, UserRepository userRepository, UserGroupRepository userGroupRepository) {
+                        GroupRepository groupRepository, UserRepository userRepository, UserGroupRepository userGroupRepository, ActivityService activityService) {
         this.groupRepository = groupRepository;
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
         this.userGroupRepository = userGroupRepository;
+        this.activityService = activityService;
     }
 
     public boolean exists(String groupName) {
@@ -62,6 +64,12 @@ public class GroupService {
             }
 
             groupRecord = new GroupRecord(group.getName(), now, now, userRecord);
+            groupRecord = groupRepository.save(groupRecord);
+
+            addUserToGroup(userId, groupRecord.getId());
+
+            //TODO this is hardcoded, should be removed after prima evadare
+            activityService.addGroupToDefaultActivity(groupRecord);
         } else {
             groupRecord = groupRepository.findOne(id);
 
@@ -72,10 +80,6 @@ public class GroupService {
             groupRecord.setName(group.getName());
             groupRecord.setUpdatedDate(now);
         }
-
-        groupRecord = groupRepository.save(groupRecord);
-
-        addUserToGroup(userId, groupRecord.getId());
 
         return modelMapper.map(groupRecord, Group.class);
     }
@@ -182,6 +186,10 @@ public class GroupService {
                 now, now, userRecord, groupRecord);
 
         userGroupRepository.save(userGroupRecord);
+
+        //TODO this is hardcoded, should be removed after prima evadare
+        activityService.addUserToDefaultActivity(userRecord, groupRecord);
+
         return true;
     }
 }

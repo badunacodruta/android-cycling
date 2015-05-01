@@ -1,6 +1,9 @@
 package org.collaborative.cycling.services;
 
+import org.collaborative.cycling.models.Activity;
 import org.collaborative.cycling.models.User;
+import org.collaborative.cycling.records.ActivityRecord;
+import org.collaborative.cycling.records.UserActivityRecord;
 import org.collaborative.cycling.records.UserRecord;
 import org.collaborative.cycling.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -13,11 +16,13 @@ import java.util.Date;
 public class UserService {
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
+    private final ActivityService activityService;
 
     @Autowired
-    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
+    public UserService(UserRepository userRepository, ModelMapper modelMapper, ActivityService activityService) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+        this.activityService = activityService;
     }
 
     public User login(User user) {
@@ -40,12 +45,16 @@ public class UserService {
 
         if (userRecord == null) {
             userRecord = new UserRecord(user.getEmail(), user.getImageUrl(), now, now);
+            userRecord = userRepository.save(userRecord);
+
+            //TODO this is hardcoded, should be removed after prima evadare
+            activityService.addUserToDefaultActivity(userRecord, null);
         } else {
             userRecord.setImageUrl(user.getImageUrl());
             userRecord.setUpdatedDate(now);
+            userRecord = userRepository.save(userRecord);
         }
 
-        userRecord = userRepository.save(userRecord);
         return modelMapper.map(userRecord, User.class);
     }
 }

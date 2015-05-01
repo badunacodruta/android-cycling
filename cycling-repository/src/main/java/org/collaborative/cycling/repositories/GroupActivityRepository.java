@@ -7,4 +7,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface GroupActivityRepository extends JpaRepository<GroupActivityRecord, Long> {
 
+    GroupActivityRecord findByGroupIdAndActivityId(Long groupId, long activityId);
 }

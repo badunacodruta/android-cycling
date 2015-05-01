@@ -1,40 +1,37 @@
 package org.collaborative.cycling.services;
 
-import org.collaborative.cycling.models.Coordinates;
-import org.collaborative.cycling.models.Group;
-import org.collaborative.cycling.models.User;
-import org.collaborative.cycling.records.ActivityRecord;
-import org.collaborative.cycling.records.CoordinatesRecord;
-import org.collaborative.cycling.records.GroupRecord;
-import org.collaborative.cycling.records.UserActivityRecord;
+import org.collaborative.cycling.models.*;
+import org.collaborative.cycling.records.*;
 import org.collaborative.cycling.repositories.ActivityRepository;
+import org.collaborative.cycling.repositories.GroupActivityRepository;
 import org.collaborative.cycling.repositories.UserActivityRepository;
-import org.collaborative.cycling.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class ActivityService {
     private static final double DISTANCE_THRESHOLD = 2000;
+    private static final long DEFAULT_ACTIVITY_ID = 1;
 
     private final ModelMapper modelMapper;
     private final ActivityRepository activityRepository;
-    private final UserRepository userRepository;
     private final UserActivityRepository userActivityRepository;
     private final CoordinatesService coordinatesService;
+    private final GroupActivityRepository groupActivityRepository;
 
     @Autowired
-    public ActivityService(ModelMapper modelMapper, ActivityRepository activityRepository, UserRepository userRepository, UserActivityRepository userActivityRepository, CoordinatesService coordinatesService) {
+    public ActivityService(ModelMapper modelMapper, ActivityRepository activityRepository, UserActivityRepository userActivityRepository, CoordinatesService coordinatesService, GroupActivityRepository groupActivityRepository) {
         this.modelMapper = modelMapper;
         this.activityRepository = activityRepository;
-        this.userRepository = userRepository;
         this.userActivityRepository = userActivityRepository;
         this.coordinatesService = coordinatesService;
+        this.groupActivityRepository = groupActivityRepository;
     }
 
     public Coordinates getUserLocation(Long userId, Long activityId) {
@@ -129,5 +126,45 @@ public class ActivityService {
         userActivityRecord.setCurrentCoordinates(modelMapper.map(coordinates, CoordinatesRecord.class));
         userActivityRepository.save(userActivityRecord);
         return true;
+    }
+
+
+    public void addUserToDefaultActivity(UserRecord userRecord, GroupRecord groupRecord) {
+        Date now = new Date();
+
+        ActivityRecord activityRecord = activityRepository.findOne(DEFAULT_ACTIVITY_ID);
+        if (activityRecord == null) {
+            activityRecord = new ActivityRecord("prima evadare", ActivityAccessType.PUBLIC, null, now, now, now);
+            activityRecord = activityRepository.save(activityRecord);
+        }
+
+        UserActivityRecord userActivityRecord = userActivityRepository.findByUserIdAndActivityId(userRecord.getId(), DEFAULT_ACTIVITY_ID);
+        if (userActivityRecord == null) {
+            userActivityRecord = new UserActivityRecord(
+                    null, ProgressStatus.NOT_STARTED, now, now, userRecord, activityRecord, null);
+        }
+
+        if (groupRecord != null) {
+            userActivityRecord.setGroup(groupRecord);
+        }
+
+        userActivityRepository.save(userActivityRecord);
+    }
+
+    public void addGroupToDefaultActivity(GroupRecord groupRecord) {
+        Date now = new Date();
+
+        ActivityRecord activityRecord = activityRepository.findOne(DEFAULT_ACTIVITY_ID);
+        if (activityRecord == null) {
+            activityRecord = new ActivityRecord("prima evadare", ActivityAccessType.PUBLIC, null, now, now, now);
+            activityRecord = activityRepository.save(activityRecord);
+        }
+
+        GroupActivityRecord groupActivityRecord = groupActivityRepository.findByGroupIdAndActivityId(groupRecord.getId(), DEFAULT_ACTIVITY_ID);
+        if (groupActivityRecord == null) {
+            groupActivityRecord = new GroupActivityRecord(
+                    now, groupRecord, activityRecord);
+            groupActivityRepository.save(groupActivityRecord);
+        }
     }
 }
