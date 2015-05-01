@@ -83,6 +83,9 @@ public class HelpMessageController {
 
         if (nearby && nearbyUsers != null) {
             userMessageService.sendMessage(nearbyUsers, text, currentUser.getId());
+            if (groupUsers != null) {
+                groupUsers.removeAll(nearbyUsers);
+            }
         }
 
         if (group && groupUsers != null) {
