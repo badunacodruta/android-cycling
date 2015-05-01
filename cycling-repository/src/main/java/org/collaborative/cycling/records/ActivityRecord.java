@@ -1,9 +1,12 @@
 package org.collaborative.cycling.records;
 
+import org.collaborative.cycling.comparators.UserActivityRecordComparatorByUser;
 import org.collaborative.cycling.models.ActivityAccessType;
+import org.hibernate.mapping.Collection;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -112,6 +115,7 @@ public class ActivityRecord {
     }
 
     public List<UserActivityRecord> getUsers() {
+        Collections.sort(users, new UserActivityRecordComparatorByUser());
         return users;
     }
 

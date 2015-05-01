@@ -1,33 +1,23 @@
-package org.collaborative.cycling.models;
+package org.collaborative.cycling.records;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Coordinates implements Serializable {
+@Embeddable
+public class CoordinatesRecord implements Serializable {
 
-    @JsonProperty("lat")
     private double latitude;
-    @JsonProperty("lng")
     private double longitude;
-    @JsonProperty("time")
-    private long date;
-
+    private Date date;
     private String provider;
     private double accuracy;
 
-    public Coordinates() {
+    public CoordinatesRecord() {
     }
 
-    public Coordinates(double latitude, double longitude, long date) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.date = date;
-    }
-
-    public Coordinates(double latitude, double longitude, long date, String provider, double accuracy) {
+    public CoordinatesRecord(double latitude, double longitude, Date date, String provider, double accuracy) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.date = date;
@@ -52,11 +42,11 @@ public class Coordinates implements Serializable {
     }
 
     public Date getDate() {
-        return new Date(date);
+        return date;
     }
 
     public void setDate(Date date) {
-        this.date = date.getTime();
+        this.date = date;
     }
 
     public String getProvider() {
@@ -73,16 +63,5 @@ public class Coordinates implements Serializable {
 
     public void setAccuracy(double accuracy) {
         this.accuracy = accuracy;
-    }
-
-    @Override
-    public String toString() {
-        return "Coordinates{" +
-                "latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", date=" + date +
-                ", provider='" + provider + '\'' +
-                ", accuracy=" + accuracy +
-                '}';
     }
 }

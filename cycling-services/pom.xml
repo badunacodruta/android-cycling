@@ -37,6 +37,13 @@
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
         </dependency>
+
+
+        <dependency>
+            <groupId>com.javadocmd</groupId>
+            <artifactId>simplelatlng</artifactId>
+            <version>RELEASE</version>
+        </dependency>
     </dependencies>
 
 </project>

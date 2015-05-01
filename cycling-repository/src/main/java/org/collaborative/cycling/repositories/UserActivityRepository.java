@@ -7,4 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface UserActivityRepository extends JpaRepository<UserActivityRecord, Long> {
 
+    UserActivityRecord findByUserIdAndActivityId(Long userId, Long activityId);
+
 }
