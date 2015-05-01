@@ -1,7 +1,6 @@
 package org.collaborative.cycling.services;
 
 import org.collaborative.cycling.models.GroupInviteUserRequest;
-import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.models.UserJoinGroupRequest;
 import org.collaborative.cycling.models.UserResponseToRequests;
 import org.collaborative.cycling.records.GroupRecord;
@@ -167,8 +166,8 @@ public class GroupRequestsService {
         return true;
     }
 
-    public boolean updateUserInvitation(Long invitationId, UserResponseToRequests userResponseToRequests, Long currentuserId) {
-        if (invitationId == null || userResponseToRequests == null || currentuserId == null) {
+    public boolean updateUserInvitation(Long invitationId, UserResponseToRequests userResponseToRequests, Long currentUserId) {
+        if (invitationId == null || userResponseToRequests == null || currentUserId == null) {
             return false;
         }
 
@@ -179,7 +178,7 @@ public class GroupRequestsService {
 
         //TODO consider moving this check out of here (in the controller)
         //check the current user is the one invited (has the right to update the request)
-        if(groupInviteUserRequestRecord.getUser().getId() != currentuserId) {
+        if (!groupInviteUserRequestRecord.getUser().getId().equals(currentUserId)) {
             return false;
         }
 

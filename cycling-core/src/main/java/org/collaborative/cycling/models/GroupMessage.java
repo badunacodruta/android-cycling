@@ -1,6 +1,7 @@
 package org.collaborative.cycling.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -9,15 +10,17 @@ import java.util.Date;
 public class GroupMessage implements Serializable {
 
     private Long id;
-    private byte[] message = new byte[0];
+    @JsonProperty(value = "text")
+    private String message = "";
     private Date createdDate;
+    @JsonProperty(value = "userInfo")
     private User sender;
     private Group group;
 
     public GroupMessage() {
     }
 
-    public GroupMessage(Long id, byte[] message, Date createdDate, User sender, Group group) {
+    public GroupMessage(Long id, String message, Date createdDate, User sender, Group group) {
         this.id = id;
         this.message = message;
         this.createdDate = createdDate;
@@ -33,11 +36,11 @@ public class GroupMessage implements Serializable {
         this.id = id;
     }
 
-    public byte[] getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage(byte[] message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
