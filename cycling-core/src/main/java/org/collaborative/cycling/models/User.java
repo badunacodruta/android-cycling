@@ -11,6 +11,8 @@ public class User implements Serializable {
     private Long id;
     private String email;
     private String imageUrl;
+    private String firstName;
+    private String lastName;
 
     public User() {
     }
@@ -47,5 +49,21 @@ public class User implements Serializable {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 }

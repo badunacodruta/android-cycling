@@ -11,9 +11,8 @@ public class GroupMessageRecord {
     @GeneratedValue
     private Long id;
 
-    @Lob
     @Column(name = "message")
-    private byte[] message = new byte[0];
+    private String message = "";
 
     @Column(name = "created_date", nullable = false, updatable = false)
     private Date createdDate;
@@ -31,7 +30,7 @@ public class GroupMessageRecord {
     public GroupMessageRecord() {
     }
 
-    public GroupMessageRecord(byte[] message, Date createdDate, UserRecord sender, GroupRecord group) {
+    public GroupMessageRecord(String message, Date createdDate, UserRecord sender, GroupRecord group) {
         this.message = message;
         this.createdDate = createdDate;
         this.sender = sender;
@@ -46,11 +45,11 @@ public class GroupMessageRecord {
         this.id = id;
     }
 
-    public byte[] getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage(byte[] message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 

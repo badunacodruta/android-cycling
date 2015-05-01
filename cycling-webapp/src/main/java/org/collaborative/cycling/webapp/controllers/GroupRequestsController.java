@@ -1,23 +1,23 @@
 package org.collaborative.cycling.webapp.controllers;
 
-import org.collaborative.cycling.models.GroupInviteUserRequest;
-import org.collaborative.cycling.models.User;
-import org.collaborative.cycling.models.UserJoinGroupRequest;
-import org.collaborative.cycling.models.UserResponseToRequests;
+import org.collaborative.cycling.models.*;
 import org.collaborative.cycling.services.GroupRequestsService;
 import org.collaborative.cycling.services.GroupService;
 import org.collaborative.cycling.webapp.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 
+@Service
 @Path(GroupRequestsController.MAPPING)
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -96,11 +96,18 @@ public class GroupRequestsController {
 
         List<UserJoinGroupRequest> userJoinGroupRequestList = groupRequestsService.getUserJoinGroupRequests(groupId);
 
+        List<User> result = new ArrayList<>();
+        for (UserJoinGroupRequest userJoinGroupRequest : userJoinGroupRequestList) {
+            //TODO: HACK using group id to provide the invitation ID
+            userJoinGroupRequest.getUser().setId(userJoinGroupRequest.getId());
+            result.add(userJoinGroupRequest.getUser());
+        }
+
         if (userJoinGroupRequestList == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        return Response.status(Response.Status.OK).entity(userJoinGroupRequestList).build();
+        return Response.status(Response.Status.OK).entity(result).build();
     }
 
     @GET
@@ -114,12 +121,20 @@ public class GroupRequestsController {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        return Response.status(Response.Status.OK).entity(groupInviteUserRequestList).build();
+        List<Group> result = new ArrayList<>();
+        for (GroupInviteUserRequest invitations : groupInviteUserRequestList) {
+            //TODO: HACK using group id to provide the invitation ID
+            invitations.getGroup().setId(invitations.getId());
+            result.add(invitations.getGroup());
+        }
+
+        return Response.status(Response.Status.OK).entity(result).build();
     }
 
 
     @POST
     @Path("/requests/{requestId}")
+    // cineva din interior face update
     public Response updateJoinRequest(@PathParam("requestId") Long requestId,
                                       UserResponseToRequests userResponseToRequests,
                                       @Context HttpServletRequest request) {
@@ -137,6 +152,7 @@ public class GroupRequestsController {
 
     @POST
     @Path("/invitations/{invitationId}")
+    // cineva din exterior face update
     public Response updateInvitation(@PathParam("invitationId") Long invitationId,
                                      UserResponseToRequests userResponseToRequests,
                                      @Context HttpServletRequest request) {

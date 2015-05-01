@@ -85,7 +85,7 @@ public class GroupMessageService {
         }
 
         GroupMessageRecord groupMessageRecord = new GroupMessageRecord(
-                message.getBytes(), new Date(), userRecord, groupRecord);
+                message, new Date(), userRecord, groupRecord);
         groupMessageRecord = groupMessageRepository.save(groupMessageRecord);
 
         return modelMapper.map(groupMessageRecord, GroupMessage.class);
