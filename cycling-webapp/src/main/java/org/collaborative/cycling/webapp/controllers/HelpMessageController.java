@@ -64,35 +64,37 @@ public class HelpMessageController {
     @POST
     @Path("/activity/{activityId}")
     public Response sendMessage(@PathParam("activityId") Long activityId,
-                                boolean nearby,
-                                boolean group,
-                                String text,
+                                HelpMsgDto msg,
                                 @Context HttpServletRequest request) {
-        if (activityId == null || text == null) {
+        if (activityId == null || msg.text == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
         User currentUser = Utils.getUser(request.getSession(false));
 
-        List<User> nearbyUsers = activityService.getNearbyUsers(currentUser.getId(), activityId);
-
         List<User> groupUsers = null;
-        Group userGroup = activityService.getUserGroup(currentUser.getId(), activityId);
-        if (userGroup != null) {
-            groupUsers = groupService.getUsers(userGroup.getId());
-        }
-
-        if (nearby && nearbyUsers != null) {
-            userMessageService.sendMessage(nearbyUsers, text, currentUser.getId());
-            if (groupUsers != null) {
-                groupUsers.removeAll(nearbyUsers);
+        if (msg.group) {
+            Group userGroup = activityService.getUserGroup(currentUser.getId(), activityId);
+            if (userGroup != null) {
+                groupUsers = groupService.getUsers(userGroup.getId());
             }
         }
 
-        if (group && groupUsers != null) {
-            userMessageService.sendMessage(groupUsers, text, currentUser.getId());
+        if (msg.nearby) {
+            List<User> nearbyUsers = activityService.getNearbyUsers(currentUser.getId(), activityId);
+            if (nearbyUsers != null) {
+                userMessageService.sendMessage(nearbyUsers, msg.text, currentUser.getId());
+                if (groupUsers != null) {
+                    groupUsers.removeAll(nearbyUsers);
+                }
+            }
+        }
+
+        if (msg.group && groupUsers != null) {
+            userMessageService.sendMessage(groupUsers, msg.text, currentUser.getId());
         }
 
         return Response.status(Response.Status.OK).build();
     }
 }
+
