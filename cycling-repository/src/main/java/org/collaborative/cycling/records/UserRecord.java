@@ -2,9 +2,6 @@ package org.collaborative.cycling.records;
 
 import org.collaborative.cycling.comparators.UserGroupRecordComparatorByGroup;
 import org.collaborative.cycling.records.requests.GroupInviteUserRequestRecord;
-import org.hibernate.annotations.Sort;
-import org.hibernate.annotations.SortComparator;
-import org.hibernate.annotations.SortType;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -52,11 +49,15 @@ public class UserRecord {
     private List<ErrorRecord> errors = new ArrayList<>();;
 
     @OneToMany(targetEntity = GroupMessageRecord.class, mappedBy = "sender")
-    private List<GroupMessageRecord> sentMessages = new ArrayList<>();;
+    private List<GroupMessageRecord> sentGroupMessages = new ArrayList<>();;
 
     @OneToMany(targetEntity = GroupInviteUserRequestRecord.class, mappedBy = "user")
     @OrderBy("createdDate ASC")
     private List<GroupInviteUserRequestRecord> receivedGroupInvitations = new ArrayList<>();;
+
+    @OneToMany(targetEntity = UserMessageRecord.class, mappedBy = "receiver")
+    @OrderBy("createdDate ASC")
+    private List<UserMessageRecord> receivedUserMessages = new ArrayList<>();;
 
 
     public UserRecord() {
@@ -151,12 +152,12 @@ public class UserRecord {
         this.errors = errors;
     }
 
-    public List<GroupMessageRecord> getSentMessages() {
-        return sentMessages;
+    public List<GroupMessageRecord> getSentGroupMessages() {
+        return sentGroupMessages;
     }
 
-    public void setSentMessages(List<GroupMessageRecord> sentMessages) {
-        this.sentMessages = sentMessages;
+    public void setSentGroupMessages(List<GroupMessageRecord> sentGroupMessages) {
+        this.sentGroupMessages = sentGroupMessages;
     }
 
     public List<GroupInviteUserRequestRecord> getReceivedGroupInvitations() {
@@ -165,5 +166,13 @@ public class UserRecord {
 
     public void setReceivedGroupInvitations(List<GroupInviteUserRequestRecord> receivedGroupInvitations) {
         this.receivedGroupInvitations = receivedGroupInvitations;
+    }
+
+    public List<UserMessageRecord> getReceivedUserMessages() {
+        return receivedUserMessages;
+    }
+
+    public void setReceivedUserMessages(List<UserMessageRecord> receivedUserMessages) {
+        this.receivedUserMessages = receivedUserMessages;
     }
 }

@@ -1,7 +1,6 @@
 package org.collaborative.cycling.webapp.controllers;
 
-import org.collaborative.cycling.models.Group;
-import org.collaborative.cycling.models.User;
+import org.collaborative.cycling.models.*;
 import org.collaborative.cycling.services.ActivityService;
 import org.collaborative.cycling.services.GroupService;
 import org.collaborative.cycling.services.UserMessageService;
@@ -15,6 +14,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path(HelpMessageController.MAPPING)
@@ -40,24 +40,25 @@ public class HelpMessageController {
     @Path("/activity/{activityId}")
     public Response getMessages(@PathParam("activityId") Long activityId,
                                 @Context HttpServletRequest request) {
+        if (activityId == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
 
-//        if (groupId == null) {
-//            return Response.status(Response.Status.BAD_REQUEST).build();
-//        }
-//
-//        User currentUser = Utils.getUser(request.getSession(false));
-//        if (!groupService.hasUser(groupId, currentUser.getId())) {
-//            return Response.status(Response.Status.UNAUTHORIZED).build();
-//        }
-//
-//        List<GroupMessage> messageList = groupMessageService.getMessages(groupId, size);
-//
-//        if (messageList == null) {
-//            return Response.status(Response.Status.NOT_FOUND).build();
-//        }
-//
-//        return Response.status(Response.Status.OK).entity(messageList).build();
-        return null;
+        User currentUser = Utils.getUser(request.getSession(false));
+
+        List<UserMessage> messages = userMessageService.getMessages(currentUser.getId());
+        if (messages == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        List<HelpMessage> helpMessages = new ArrayList<>(messages.size());
+        for (UserMessage userMessage : messages) {
+            Coordinates lastLocation = activityService.getUserLocation(userMessage.getSender().getId(), activityId);
+            HelpMessage helpMessage = new HelpMessage(userMessage.getMessage(), userMessage.getSender(), lastLocation);
+            helpMessages.add(helpMessage);
+        }
+
+        return Response.status(Response.Status.OK).entity(helpMessages).build();
     }
 
     @POST

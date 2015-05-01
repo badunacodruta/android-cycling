@@ -1,14 +1,18 @@
 package org.collaborative.cycling.services;
 
 import org.collaborative.cycling.models.User;
+import org.collaborative.cycling.models.UserMessage;
 import org.collaborative.cycling.records.UserMessageRecord;
 import org.collaborative.cycling.records.UserRecord;
 import org.collaborative.cycling.repositories.UserMessageRepository;
 import org.collaborative.cycling.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 
@@ -47,5 +51,26 @@ public class UserMessageService {
                     message.getBytes(), new Date(), sender, userRecord);
             userMessageRepository.save(userMessageRecord);
         }
+    }
+
+    @Transactional
+    public List<UserMessage> getMessages(Long userId) {
+        if (userId == null) {
+            return null;
+        }
+
+        UserRecord userRecord = userRepository.findOne(userId);
+        if (userRecord == null) {
+            return null;
+        }
+
+        List<UserMessageRecord> userMessageRecords = userRecord.getReceivedUserMessages();
+        for (UserMessageRecord userMessageRecord : userMessageRecords) {
+            userMessageRepository.delete(userMessageRecord.getId());
+        }
+
+        Type userMessageListType = new TypeToken<List<UserMessage>>() {
+        }.getType();
+        return modelMapper.map(userMessageRecords, userMessageListType);
     }
 }
