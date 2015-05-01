@@ -1,6 +1,9 @@
 package org.collaborative.cycling.webapp.controllers;
 
-import org.collaborative.cycling.models.*;
+import org.collaborative.cycling.models.ActivityUser;
+import org.collaborative.cycling.models.Coordinates;
+import org.collaborative.cycling.models.Group;
+import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.services.ActivityService;
 import org.collaborative.cycling.services.GroupService;
 import org.collaborative.cycling.services.UserMessageService;
@@ -14,7 +17,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -80,4 +82,23 @@ public class ActivityController {
 
         return Response.status(Response.Status.OK).entity(activityUserSet).build();
     }
+
+    @POST
+    @Path("/{activityId}")
+    public Response updateUserLocation(@PathParam("activityId") Long activityId,
+                                       Coordinates coordinates,
+                                       @Context HttpServletRequest request) {
+        if (activityId == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        User currentUser = Utils.getUser(request.getSession(false));
+
+        if (activityService.updateUserLocation(currentUser.getId(), activityId, coordinates)) {
+            return Response.status(Response.Status.OK).build();
+        }
+
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
 }

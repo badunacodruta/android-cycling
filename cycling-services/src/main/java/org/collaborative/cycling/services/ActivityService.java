@@ -4,9 +4,9 @@ import org.collaborative.cycling.models.Coordinates;
 import org.collaborative.cycling.models.Group;
 import org.collaborative.cycling.models.User;
 import org.collaborative.cycling.records.ActivityRecord;
+import org.collaborative.cycling.records.CoordinatesRecord;
 import org.collaborative.cycling.records.GroupRecord;
 import org.collaborative.cycling.records.UserActivityRecord;
-import org.collaborative.cycling.records.UserRecord;
 import org.collaborative.cycling.repositories.ActivityRepository;
 import org.collaborative.cycling.repositories.UserActivityRepository;
 import org.collaborative.cycling.repositories.UserRepository;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -43,16 +42,6 @@ public class ActivityService {
             return null;
         }
 
-        ActivityRecord activityRecord = activityRepository.findOne(activityId);
-        if (activityRecord == null) {
-            return null;
-        }
-
-        UserRecord userRecord = userRepository.findOne(userId);
-        if (userRecord == null) {
-            return null;
-        }
-
         UserActivityRecord userActivityRecord = userActivityRepository.findByUserIdAndActivityId(userId, activityId);
         if (userActivityRecord == null) {
             return null;
@@ -63,16 +52,6 @@ public class ActivityService {
 
     public Group getUserGroup(Long userId, Long activityId) {
         if (userId == null || activityId == null) {
-            return null;
-        }
-
-        ActivityRecord activityRecord = activityRepository.findOne(activityId);
-        if (activityRecord == null) {
-            return null;
-        }
-
-        UserRecord userRecord = userRepository.findOne(userId);
-        if (userRecord == null) {
             return null;
         }
 
@@ -135,5 +114,20 @@ public class ActivityService {
         }
 
         return nearbyUsers;
+    }
+
+    public boolean updateUserLocation(Long userId, Long activityId, Coordinates coordinates) {
+        if (userId == null || activityId == null || coordinates == null) {
+            return false;
+        }
+
+        UserActivityRecord userActivityRecord = userActivityRepository.findByUserIdAndActivityId(userId, activityId);
+        if (userActivityRecord == null) {
+            return false;
+        }
+
+        userActivityRecord.setCurrentCoordinates(modelMapper.map(coordinates, CoordinatesRecord.class));
+        userActivityRepository.save(userActivityRecord);
+        return true;
     }
 }
