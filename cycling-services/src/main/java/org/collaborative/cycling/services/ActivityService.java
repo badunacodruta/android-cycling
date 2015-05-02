@@ -3,6 +3,7 @@ package org.collaborative.cycling.services;
 import org.collaborative.cycling.models.*;
 import org.collaborative.cycling.records.*;
 import org.collaborative.cycling.repositories.ActivityRepository;
+import org.collaborative.cycling.repositories.CoordinatesHistoryRepository;
 import org.collaborative.cycling.repositories.GroupActivityRepository;
 import org.collaborative.cycling.repositories.UserActivityRepository;
 import org.modelmapper.ModelMapper;
@@ -24,14 +25,16 @@ public class ActivityService {
     private final UserActivityRepository userActivityRepository;
     private final CoordinatesService coordinatesService;
     private final GroupActivityRepository groupActivityRepository;
+    private final CoordinatesHistoryRepository coordinatesHistoryRepository;
 
     @Autowired
-    public ActivityService(ModelMapper modelMapper, ActivityRepository activityRepository, UserActivityRepository userActivityRepository, CoordinatesService coordinatesService, GroupActivityRepository groupActivityRepository) {
+    public ActivityService(ModelMapper modelMapper, ActivityRepository activityRepository, UserActivityRepository userActivityRepository, CoordinatesService coordinatesService, GroupActivityRepository groupActivityRepository, CoordinatesHistoryRepository coordinatesHistoryRepository) {
         this.modelMapper = modelMapper;
         this.activityRepository = activityRepository;
         this.userActivityRepository = userActivityRepository;
         this.coordinatesService = coordinatesService;
         this.groupActivityRepository = groupActivityRepository;
+        this.coordinatesHistoryRepository = coordinatesHistoryRepository;
     }
 
     public Coordinates getUserLocation(Long userId, Long activityId) {
@@ -129,6 +132,10 @@ public class ActivityService {
 
         userActivityRecord.setCurrentCoordinates(modelMapper.map(coordinates, CoordinatesRecord.class));
         userActivityRepository.save(userActivityRecord);
+
+        CoordinatesHistoryRecord coordinatesHistoryRecord = new CoordinatesHistoryRecord(coordinates, userId, activityId);
+        coordinatesHistoryRepository.save(coordinatesHistoryRecord);
+
         return true;
     }
 
