@@ -48,7 +48,7 @@ public class UserMessageService {
             }
 
             UserMessageRecord userMessageRecord = new UserMessageRecord(
-                    message.getBytes(), new Date(), sender, userRecord);
+                    message, new Date(), sender, userRecord);
             userMessageRepository.save(userMessageRecord);
         }
     }

@@ -63,6 +63,9 @@ public class ActivityController {
             if (groupUsers != null) {
                 for (User user : groupUsers) {
                     Coordinates userCoordinates = activityService.getUserLocation(user.getId(), activityId);
+                    if (userCoordinates == null) {
+                        continue;
+                    }
                     ActivityUser activityUser = new ActivityUser(user, userCoordinates, true);
                     activityUserSet.add(activityUser);
                 }
@@ -74,7 +77,9 @@ public class ActivityController {
             if (nearbyUsers != null) {
                 for (User user : nearbyUsers) {
                     Coordinates userCoordinates = activityService.getUserLocation(user.getId(), activityId);
-                    ActivityUser activityUser = new ActivityUser(user, userCoordinates, false);
+                    if (userCoordinates == null) {
+                        continue;
+                    }ActivityUser activityUser = new ActivityUser(user, userCoordinates, false);
                     activityUserSet.add(activityUser);
                 }
             }
@@ -84,7 +89,7 @@ public class ActivityController {
     }
 
     @POST
-    @Path("/{activityId}")
+    @Path("/{activityId}/location")
     public Response updateUserLocation(@PathParam("activityId") Long activityId,
                                        Coordinates coordinates,
                                        @Context HttpServletRequest request) {

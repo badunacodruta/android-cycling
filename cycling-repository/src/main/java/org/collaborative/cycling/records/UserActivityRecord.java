@@ -1,6 +1,5 @@
 package org.collaborative.cycling.records;
 
-import org.collaborative.cycling.models.Coordinates;
 import org.collaborative.cycling.models.ProgressStatus;
 
 import javax.persistence.*;
@@ -19,6 +18,8 @@ public class UserActivityRecord {
 //    @Column(name = "coordinates")
 //    private CoordinatesRecord[] coordinates = new CoordinatesRecord[0];
 //
+
+
 
     @Embedded
     private CoordinatesRecord currentCoordinates;

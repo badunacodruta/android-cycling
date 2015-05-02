@@ -2,7 +2,6 @@ package org.collaborative.cycling.records;
 
 import org.collaborative.cycling.comparators.UserActivityRecordComparatorByUser;
 import org.collaborative.cycling.models.ActivityAccessType;
-import org.hibernate.mapping.Collection;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class ActivityRecord {
     private Date updatedDate;
 
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumn
     private UserRecord owner;
 

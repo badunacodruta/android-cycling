@@ -17,6 +17,7 @@ public class Coordinates implements Serializable {
 
     private String provider;
     private double accuracy;
+    private int battery = -1;
 
     public Coordinates() {
     }
@@ -33,6 +34,16 @@ public class Coordinates implements Serializable {
         this.date = date;
         this.provider = provider;
         this.accuracy = accuracy;
+    }
+
+
+    public Coordinates(double latitude, double longitude, long date, String provider, double accuracy, int battery) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.date = date;
+        this.provider = provider;
+        this.accuracy = accuracy;
+        this.battery = battery;
     }
 
     public double getLatitude() {
@@ -84,5 +95,13 @@ public class Coordinates implements Serializable {
                 ", provider='" + provider + '\'' +
                 ", accuracy=" + accuracy +
                 '}';
+    }
+
+    public int getBattery() {
+        return battery;
+    }
+
+    public void setBattery(int battery) {
+        this.battery = battery;
     }
 }

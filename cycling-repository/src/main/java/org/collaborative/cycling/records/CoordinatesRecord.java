@@ -1,6 +1,7 @@
 package org.collaborative.cycling.records;
 
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Date;
@@ -8,11 +9,18 @@ import java.util.Date;
 @Embeddable
 public class CoordinatesRecord implements Serializable {
 
+    @Column(nullable = true)
     private double latitude;
+    @Column(nullable = true)
     private double longitude;
+    @Column(nullable = true)
     private Date date;
+    @Column(nullable = true)
     private String provider;
+    @Column(nullable = true)
     private double accuracy;
+    @Column(nullable = true)
+    private int battery = -1;
 
     public CoordinatesRecord() {
     }
@@ -23,6 +31,15 @@ public class CoordinatesRecord implements Serializable {
         this.date = date;
         this.provider = provider;
         this.accuracy = accuracy;
+    }
+
+    public CoordinatesRecord(double latitude, double longitude, Date date, String provider, double accuracy, int battery) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.date = date;
+        this.provider = provider;
+        this.accuracy = accuracy;
+        this.battery = battery;
     }
 
     public double getLatitude() {
@@ -63,5 +80,13 @@ public class CoordinatesRecord implements Serializable {
 
     public void setAccuracy(double accuracy) {
         this.accuracy = accuracy;
+    }
+
+    public int getBattery() {
+        return battery;
+    }
+
+    public void setBattery(int battery) {
+        this.battery = battery;
     }
 }

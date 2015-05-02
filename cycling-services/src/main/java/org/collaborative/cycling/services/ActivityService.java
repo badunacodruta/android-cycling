@@ -44,7 +44,8 @@ public class ActivityService {
             return null;
         }
 
-        return modelMapper.map(userActivityRecord.getCurrentCoordinates(), Coordinates.class);
+        return userActivityRecord.getCurrentCoordinates() == null ?
+                null : modelMapper.map(userActivityRecord.getCurrentCoordinates(), Coordinates.class);
     }
 
     public Group getUserGroup(Long userId, Long activityId) {
@@ -104,6 +105,9 @@ public class ActivityService {
         List<User> nearbyUsers = new ArrayList<>();
         for (User user : users) {
             Coordinates userCoordinates = getUserLocation(user.getId(), activityId);
+            if (userCoordinates == null) {
+                continue;
+            }
             double distance = coordinatesService.computeDistance(currentUserCoordinates, userCoordinates);
             if (distance < DISTANCE_THRESHOLD) {
                 nearbyUsers.add(user);

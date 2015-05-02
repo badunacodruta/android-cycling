@@ -54,6 +54,9 @@ public class HelpMessageController {
         List<HelpMessage> helpMessages = new ArrayList<>(messages.size());
         for (UserMessage userMessage : messages) {
             Coordinates lastLocation = activityService.getUserLocation(userMessage.getSender().getId(), activityId);
+            if (lastLocation == null) {
+                continue;
+            }
             HelpMessage helpMessage = new HelpMessage(userMessage.getMessage(), userMessage.getSender(), lastLocation);
             helpMessages.add(helpMessage);
         }

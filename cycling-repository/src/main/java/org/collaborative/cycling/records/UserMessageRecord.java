@@ -13,7 +13,7 @@ public class UserMessageRecord {
 
     @Lob
     @Column(name = "message")
-    private byte[] message = new byte[0];
+    private String message = "";
 
     @Column(name = "created_date", nullable = false, updatable = false)
     private Date createdDate;
@@ -31,7 +31,7 @@ public class UserMessageRecord {
     public UserMessageRecord() {
     }
 
-    public UserMessageRecord(byte[] message, Date createdDate, UserRecord sender, UserRecord receiver) {
+    public UserMessageRecord(String message, Date createdDate, UserRecord sender, UserRecord receiver) {
         this.message = message;
         this.createdDate = createdDate;
         this.sender = sender;
@@ -46,11 +46,11 @@ public class UserMessageRecord {
         this.id = id;
     }
 
-    public byte[] getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage(byte[] message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
