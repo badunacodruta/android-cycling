@@ -133,7 +133,13 @@ public class ActivityService {
         userActivityRecord.setCurrentCoordinates(modelMapper.map(coordinates, CoordinatesRecord.class));
         userActivityRepository.save(userActivityRecord);
 
-        CoordinatesHistoryRecord coordinatesHistoryRecord = new CoordinatesHistoryRecord(coordinates, userId, activityId);
+        CoordinatesRecord coordinatesRecord = new CoordinatesRecord(coordinates.getLatitude(),
+                coordinates.getLongitude(),
+                coordinates.getDate(),
+                coordinates.getProvider(),
+                coordinates.getAccuracy(),
+                coordinates.getBattery());
+        CoordinatesHistoryRecord coordinatesHistoryRecord = new CoordinatesHistoryRecord(coordinatesRecord, userId, activityId);
         coordinatesHistoryRepository.save(coordinatesHistoryRecord);
 
         return true;
