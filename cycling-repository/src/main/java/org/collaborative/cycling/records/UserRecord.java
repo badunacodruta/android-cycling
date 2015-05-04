@@ -24,6 +24,12 @@ public class UserRecord {
     @Column(name = "image_url")
     private String imageUrl = "TODO";
 
+    @Column(name = "firstName", nullable = true)
+    private String firstName;
+
+    @Column(name = "lastName", nullable = true)
+    private String lastName;
+
     @Column(name = "created_date", nullable = false, updatable = false)
     private Date createdDate;
 
@@ -63,9 +69,11 @@ public class UserRecord {
     public UserRecord() {
     }
 
-    public UserRecord(String email, String imageUrl, Date createdDate, Date updatedDate) {
+    public UserRecord(String email, String imageUrl, String firstName, String lastName, Date createdDate, Date updatedDate) {
         this.email = email;
         this.imageUrl = imageUrl;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
     }
@@ -174,5 +182,21 @@ public class UserRecord {
 
     public void setReceivedUserMessages(List<UserMessageRecord> receivedUserMessages) {
         this.receivedUserMessages = receivedUserMessages;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 }

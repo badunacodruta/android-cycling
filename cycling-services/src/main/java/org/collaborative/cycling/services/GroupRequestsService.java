@@ -166,6 +166,8 @@ public class GroupRequestsService {
 
             //TODO this is hardcoded, should be removed after prima evadare
             activityService.addUserToDefaultActivity(userJoinGroupRequestRecord.getUser(), userJoinGroupRequestRecord.getGroup());
+
+            userJoinGroupRequestRepository.delete(requestId);
         }
 
         return true;
@@ -197,6 +199,8 @@ public class GroupRequestsService {
 
             //TODO this is hardcoded, should be removed after prima evadare
             activityService.addUserToDefaultActivity(groupInviteUserRequestRecord.getUser(), groupInviteUserRequestRecord.getGroup());
+
+            groupInviteUserRequestRepository.delete(invitationId);
         }
 
         return true;

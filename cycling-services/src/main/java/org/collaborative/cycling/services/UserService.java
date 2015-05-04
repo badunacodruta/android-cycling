@@ -41,7 +41,7 @@ public class UserService {
         }
 
         if (userRecord == null) {
-            userRecord = new UserRecord(user.getEmail(), user.getImageUrl(), now, now);
+            userRecord = new UserRecord(user.getEmail(), user.getImageUrl(),user.getFirstName(), user.getLastName(), now, now);
             userRecord = userRepository.save(userRecord);
 
             //TODO this is hardcoded, should be removed after prima evadare
