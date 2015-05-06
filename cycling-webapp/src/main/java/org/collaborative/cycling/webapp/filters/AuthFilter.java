@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Enumeration;
 
 public class AuthFilter implements javax.servlet.Filter {
     private static Logger logger = LoggerFactory.getLogger(AuthFilter.class);
@@ -54,17 +53,9 @@ public class AuthFilter implements javax.servlet.Filter {
             }
         }
 
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String name = headerNames.nextElement();
-            logger.debug("{}={}", name, request.getHeader(name));
-        }
-
         HttpSession session = request.getSession(false);
-
-
         if (session == null || Utils.getUser(session) == null) {
-            logger.warn("retry auth: deny access to {} for session = {}", request.getRequestURI(), session);
+            logger.warn("no session for {} for session = {}", request.getRequestURI(), session);
 
             String NO_IMAGE_URL = "http://kamomecorporation.com/image/default_main_image.jpg";
 
@@ -73,7 +64,6 @@ public class AuthFilter implements javax.servlet.Filter {
 
             session = request.getSession(true);
             Utils.setUser(session, user);
-
         }
 
         session = request.getSession(false);

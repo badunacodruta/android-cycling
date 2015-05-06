@@ -61,6 +61,7 @@ public class HelpMessageController {
             helpMessages.add(helpMessage);
         }
 
+        logger.debug("Get help msg: {}", helpMessages.toString());
         return Response.status(Response.Status.OK).entity(helpMessages).build();
     }
 
@@ -69,6 +70,9 @@ public class HelpMessageController {
     public Response sendMessage(@PathParam("activityId") Long activityId,
                                 HelpMsgDto msg,
                                 @Context HttpServletRequest request) {
+
+        logger.debug("sage help msg: {}", msg.toString());
+
         if (activityId == null || msg.text == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
