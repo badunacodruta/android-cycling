@@ -30,7 +30,6 @@ public class UserActivityRecord {
     @Column(name = "created_date", nullable = false, updatable = false)
     private Date createdDate;
 
-    @Version
     @Column(name = "updated_date", nullable = false)
     private Date updatedDate;
 
