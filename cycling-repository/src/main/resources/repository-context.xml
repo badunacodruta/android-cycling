@@ -7,29 +7,29 @@
 	   					   http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
 	   					   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <!--<property name="url" value="jdbc:mysql://192.168.0.105:3306/cycling"/>-->
-        <property name="url" value="jdbc:mysql://localhost:3306/cycling"/>
-        <property name="username" value="root"/>
-        <property name="password" value=""/>
-    </bean>
-
-
-    <!--<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">-->
-        <!--<property name="driverClass" value="com.mysql.jdbc.Driver"/>-->
-        <!--<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/cycling"/>-->
-        <!--<property name="user" value="root"/>-->
+    <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+        <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
+        <!--&lt;!&ndash;<property name="url" value="jdbc:mysql://192.168.0.105:3306/cycling"/>&ndash;&gt;-->
+        <!--<property name="url" value="jdbc:mysql://localhost:3306/cycling"/>-->
+        <!--<property name="username" value="root"/>-->
         <!--<property name="password" value=""/>-->
-
-        <!--&lt;!&ndash; these are C3P0 properties &ndash;&gt;-->
-        <!--<property name="acquireIncrement" value="5"/>-->
-        <!--<property name="minPoolSize" value="20"/>-->
-        <!--<property name="maxPoolSize" value="100"/>-->
     <!--</bean>-->
 
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/cycling"/>
+        <property name="user" value="root"/>
+        <property name="password" value=""/>
+
+        <!-- these are C3P0 properties -->
+        <property name="acquireIncrement" value="5"/>
+        <property name="minPoolSize" value="20"/>
+        <property name="maxPoolSize" value="100"/>
+    </bean>
+
     <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-        <property name="showSql" value="true"/>
+        <property name="showSql" value="false"/>
         <property name="generateDdl" value="true"/>
         <property name="database" value="MYSQL"/>
     </bean>
