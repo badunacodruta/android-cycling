@@ -19,6 +19,23 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-c3p0</artifactId>
+            <version>4.3.5.Final</version>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.hibernate</groupId>-->
+            <!--<artifactId>hibernate-commons-annotations</artifactId>-->
+            <!--<version>3.3.0.ga</version>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>c3p0</groupId>
+            <artifactId>c3p0</artifactId>
+            <version>0.9.1.2</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>cycling-core</artifactId>
             <version>${project.version}</version>

@@ -15,8 +15,21 @@
         <property name="password" value=""/>
     </bean>
 
+
+    <!--<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">-->
+        <!--<property name="driverClass" value="com.mysql.jdbc.Driver"/>-->
+        <!--<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/cycling"/>-->
+        <!--<property name="user" value="root"/>-->
+        <!--<property name="password" value=""/>-->
+
+        <!--&lt;!&ndash; these are C3P0 properties &ndash;&gt;-->
+        <!--<property name="acquireIncrement" value="5"/>-->
+        <!--<property name="minPoolSize" value="20"/>-->
+        <!--<property name="maxPoolSize" value="100"/>-->
+    <!--</bean>-->
+
     <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-        <property name="showSql" value="false"/>
+        <property name="showSql" value="true"/>
         <property name="generateDdl" value="true"/>
         <property name="database" value="MYSQL"/>
     </bean>
@@ -29,7 +42,7 @@
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
     </bean>
-    <tx:annotation-driven transaction-manager="transactionManager" />
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <jpa:repositories base-package="org.collaborative.cycling.repositories"
                       entity-manager-factory-ref="entityManagerFactory"

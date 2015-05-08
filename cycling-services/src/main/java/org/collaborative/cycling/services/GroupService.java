@@ -153,7 +153,7 @@ public class GroupService {
         }
 
         for (User user : users) {
-            if (user.getId() == userId) {
+            if (user.getId().equals(userId)) {
                 return true;
             }
         }
