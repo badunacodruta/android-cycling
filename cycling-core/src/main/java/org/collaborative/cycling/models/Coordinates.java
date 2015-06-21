@@ -24,6 +24,10 @@ public class Coordinates implements Serializable {
         this.date = date;
     }
 
+    public Coordinates(double latitude, double longitude) {
+        this(latitude, longitude, 0);
+    }
+
     public double getLatitude() {
         return latitude;
     }

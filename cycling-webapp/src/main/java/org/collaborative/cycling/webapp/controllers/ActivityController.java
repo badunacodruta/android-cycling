@@ -17,7 +17,7 @@ import java.util.List;
 
 @Path(ActivityController.MAPPING)
 public class ActivityController {
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ActivityController.class);
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(ActivityNewController.class);
 
     @Autowired
     private ActivityService activityService;

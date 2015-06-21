@@ -1,0 +1,9 @@
+FILE_NAME=Ro-AtoB-Gravel && cat $FILE_NAME.json | jq '.tiles[] | .[] | numbers | if ( . > 300 ) then . else 0 end ' | sort | uniq > $FILE_NAME.list
+FILE_NAME=Ro-AtoB-Paved && cat $FILE_NAME.json | jq '.tiles[] | .[] | numbers | if ( . > 300 ) then . else 0 end ' | sort | uniq > $FILE_NAME.list
+FILE_NAME=Ro-AtoB-Unpaved && cat $FILE_NAME.json | jq '.tiles[] | .[] | numbers | if ( . > 300 ) then . else 0 end ' | sort | uniq > $FILE_NAME.list
+FILE_NAME=Ro-MTB-Gravel && cat $FILE_NAME.json | jq '.tiles[] | .[] | numbers | if ( . > 300 ) then . else 0 end ' | sort | uniq > $FILE_NAME.list
+FILE_NAME=Ro-MTB-Paved && cat $FILE_NAME.json | jq '.tiles[] | .[] | numbers | if ( . > 300 ) then . else 0 end ' | sort | uniq > $FILE_NAME.list
+FILE_NAME=Ro-MTB-Unpaved && cat $FILE_NAME.json | jq '.tiles[] | .[] | numbers | if ( . > 300 ) then . else 0 end ' | sort | uniq > $FILE_NAME.list
+FILE_NAME=Ro-Racing-Gravel && cat $FILE_NAME.json | jq '.tiles[] | .[] | numbers | if ( . > 300 ) then . else 0 end ' | sort | uniq > $FILE_NAME.list
+FILE_NAME=Ro-Racing-Paved && cat $FILE_NAME.json | jq '.tiles[] | .[] | numbers | if ( . > 300 ) then . else 0 end ' | sort | uniq > $FILE_NAME.list
+FILE_NAME=Ro-Racing-Unpaved  && cat $FILE_NAME.json | jq '.tiles[] | .[] | numbers | if ( . > 300 ) then . else 0 end ' | sort | uniq > $FILE_NAME.list

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+read_file() {
+	while IFS='' read -r line || [[ -n $line ]]; do
+    	if [ $line -eq 0 ]
+    	then 
+    		continue;
+    	fi
+
+    	curl -s "http://polyline.toursprung.com/?id=$line" > $2/$line
+	done < $1
+}
+
+
+for f in Ro*list
+do
+	echo "Processing $f"
+
+	location_data=$f.data
+	mkdir $location_data
+
+	read_file $f $location_data &
+
+
+done

@@ -1,0 +1,22 @@
+
+	Ro-Racing-Paved
+http://mtk2.toursprung.com/tiles2.json?callback=jQuery182011322158738039434_1434456208982&version=8.7&charset=utf8&api_key=a43b336be8b817ce89f61fdabf73499c&language=en&zoom=20&bounds=[48.03203310437869,28.011476421356198,43.02299211572251,22.089460849761963]&north=48.03203310437869&east=28.011476421356198&south=43.02299211572251&west=22.089460849761963&num_x=10&num_y=6&_=1434447193402&resources={"outdoorish_bikemap_routes":{"filter":{"is_premium":0,"category":[1],"ground":[1]}}}
+	Ro-Racing-Unpaved
+http://mtk2.toursprung.com/tiles2.json?callback=jQuery182011322158738039434_1434456208982&version=8.7&charset=utf8&api_key=a43b336be8b817ce89f61fdabf73499c&language=en&zoom=20&bounds=[48.03203310437869,28.011476421356198,43.02299211572251,22.089460849761963]&north=48.03203310437869&east=28.011476421356198&south=43.02299211572251&west=22.089460849761963&num_x=10&num_y=6&_=1434447193402&resources={"outdoorish_bikemap_routes":{"filter":{"is_premium":0,"category":[1],"ground":[2]}}}
+	Ro-Racing-Gravel
+http://mtk2.toursprung.com/tiles2.json?callback=jQuery182011322158738039434_1434456208982&version=8.7&charset=utf8&api_key=a43b336be8b817ce89f61fdabf73499c&language=en&zoom=20&bounds=[48.03203310437869,28.011476421356198,43.02299211572251,22.089460849761963]&north=48.03203310437869&east=28.011476421356198&south=43.02299211572251&west=22.089460849761963&num_x=10&num_y=6&_=1434447193402&resources={"outdoorish_bikemap_routes":{"filter":{"is_premium":0,"category":[1],"ground":[4]}}}
+
+	Ro-MTB-Paved
+http://mtk2.toursprung.com/tiles2.json?callback=jQuery182011322158738039434_1434456208982&version=8.7&charset=utf8&api_key=a43b336be8b817ce89f61fdabf73499c&language=en&zoom=20&bounds=[48.03203310437869,28.011476421356198,43.02299211572251,22.089460849761963]&north=48.03203310437869&east=28.011476421356198&south=43.02299211572251&west=22.089460849761963&num_x=10&num_y=6&_=1434447193402&resources={"outdoorish_bikemap_routes":{"filter":{"is_premium":0,"category":[2],"ground":[1]}}}
+	Ro-MTB-Unpaved
+http://mtk2.toursprung.com/tiles2.json?callback=jQuery182011322158738039434_1434456208982&version=8.7&charset=utf8&api_key=a43b336be8b817ce89f61fdabf73499c&language=en&zoom=20&bounds=[48.03203310437869,28.011476421356198,43.02299211572251,22.089460849761963]&north=48.03203310437869&east=28.011476421356198&south=43.02299211572251&west=22.089460849761963&num_x=10&num_y=6&_=1434447193402&resources={"outdoorish_bikemap_routes":{"filter":{"is_premium":0,"category":[2],"ground":[2]}}}
+	Ro-MTB-Gravel
+http://mtk2.toursprung.com/tiles2.json?callback=jQuery182011322158738039434_1434456208982&version=8.7&charset=utf8&api_key=a43b336be8b817ce89f61fdabf73499c&language=en&zoom=20&bounds=[48.03203310437869,28.011476421356198,43.02299211572251,22.089460849761963]&north=48.03203310437869&east=28.011476421356198&south=43.02299211572251&west=22.089460849761963&num_x=10&num_y=6&_=1434447193402&resources={"outdoorish_bikemap_routes":{"filter":{"is_premium":0,"category":[2],"ground":[4]}}}
+
+// A-B
+Ro-AtoB-Paved
+http://mtk2.toursprung.com/tiles2.json?callback=jQuery182011322158738039434_1434456208982&version=8.7&charset=utf8&api_key=a43b336be8b817ce89f61fdabf73499c&language=en&zoom=20&bounds=[48.03203310437869,28.011476421356198,43.02299211572251,22.089460849761963]&north=48.03203310437869&east=28.011476421356198&south=43.02299211572251&west=22.089460849761963&num_x=10&num_y=6&_=1434447193402&resources={"outdoorish_bikemap_routes":{"filter":{"is_premium":0,"category":[4],"ground":[1]}}}
+	Ro-AtoB-Unpaved	
+http://mtk2.toursprung.com/tiles2.json?callback=jQuery182011322158738039434_1434456208982&version=8.7&charset=utf8&api_key=a43b336be8b817ce89f61fdabf73499c&language=en&zoom=20&bounds=[48.03203310437869,28.011476421356198,43.02299211572251,22.089460849761963]&north=48.03203310437869&east=28.011476421356198&south=43.02299211572251&west=22.089460849761963&num_x=10&num_y=6&_=1434447193402&resources={"outdoorish_bikemap_routes":{"filter":{"is_premium":0,"category":[4],"ground":[2]}}}
+	Ro-AtoB-Gravel
+http://mtk2.toursprung.com/tiles2.json?callback=jQuery182011322158738039434_1434456208982&version=8.7&charset=utf8&api_key=a43b336be8b817ce89f61fdabf73499c&language=en&zoom=20&bounds=[48.03203310437869,28.011476421356198,43.02299211572251,22.089460849761963]&north=48.03203310437869&east=28.011476421356198&south=43.02299211572251&west=22.089460849761963&num_x=10&num_y=6&_=1434447193402&resources={"outdoorish_bikemap_routes":{"filter":{"is_premium":0,"category":[4],"ground":[4]}}}
