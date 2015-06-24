@@ -202,6 +202,53 @@ public class ActivityRecord {
     public List<JoinedUser> getJoinedUsers() throws IOException {
         List<JoinedUser> joinedUserList = new ArrayList<>();
 
+
+//
+//        UserRecord userRecord = new UserRecord("andra.mihalache@gmail.com", "https://scontent-fra3-1.xx.fbcdn.net/hphotos-xpa1/t31.0-8/1602055_10201459345701891_282709368_o.jpg");
+//        User user = new User(userRecord.getEmail(), userRecord.getImageUrl());
+//        JoinedStatus joinedStatus = JoinedStatus.ACCEPTED;
+//        ProgressStatus progressStatus = ProgressStatus.ACTIVE;
+//        String coordinates = "[{\"lat\" :  44.63002, \"lng\" : 26.170079999999984}]";
+//        JoinedUser joinedUser = new JoinedUser(user, joinedStatus, progressStatus, coordinates);
+//        joinedUserList.add(joinedUser);
+//
+//
+//        userRecord = new UserRecord("cristina.marinas@gmail.com", "https://scontent-fra3-1.xx.fbcdn.net/hphotos-xtp1/v/t1.0-9/10849985_777835528948367_565091510447989263_n.jpg?oh=dcc44730f1e417dae15a8265a1087fe8&oe=562F5E6F");
+//        user = new User(userRecord.getEmail(), userRecord.getImageUrl());
+//        joinedStatus = JoinedStatus.ACCEPTED;
+//        progressStatus = ProgressStatus.ACTIVE;
+//        coordinates = "[{\"lat\" :  44.63453, \"lng\" : 26.16190000000006}]";
+//        joinedUser = new JoinedUser(user, joinedStatus, progressStatus, coordinates);
+//        joinedUserList.add(joinedUser);
+//
+//
+//        userRecord = new UserRecord("badunacodruta@gmail.com", "https://scontent-fra3-1.xx.fbcdn.net/hphotos-xpf1/t31.0-8/10580947_643869415731523_2162529210250925525_o.jpg");
+//        user = new User(userRecord.getEmail(), userRecord.getImageUrl());
+//        joinedStatus = JoinedStatus.ACCEPTED;
+//        progressStatus = ProgressStatus.ACTIVE;
+//        coordinates = "[{\"lat\" :  44.63011, \"lng\" : 26.14542000000006}]";
+//        joinedUser = new JoinedUser(user, joinedStatus, progressStatus, coordinates);
+//        joinedUserList.add(joinedUser);
+//
+//
+//        userRecord = new UserRecord("aurel.savoiu@gmail.com", "https://scontent-fra3-1.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10676316_932628956777123_510584342867574881_n.jpg?oh=019cde41a525aa7f86f5146f40eaa6e7&oe=55F65AFA");
+//        user = new User(userRecord.getEmail(), userRecord.getImageUrl());
+//        joinedStatus = JoinedStatus.ACCEPTED;
+//        progressStatus = ProgressStatus.ACTIVE;
+//        coordinates = "[{\"lat\" :  44.65894, \"lng\" : 26.15201000000002}]";
+//        joinedUser = new JoinedUser(user, joinedStatus, progressStatus, coordinates);
+//        joinedUserList.add(joinedUser);
+//
+//
+//        userRecord = new UserRecord("mihai.ciorobea@gmail.com", "https://scontent-fra3-1.xx.fbcdn.net/hphotos-xtf1/t31.0-8/10494944_568193256620507_6594003520634166946_o.jpg");
+//        user = new User(userRecord.getEmail(), userRecord.getImageUrl());
+//        joinedStatus = JoinedStatus.ACCEPTED;
+//        progressStatus = ProgressStatus.ACTIVE;
+//        coordinates = "[{\"lat\" :  44.71396, \"lng\" : 26.211479999999938}]";
+//        joinedUser = new JoinedUser(user, joinedStatus, progressStatus, coordinates);
+//        joinedUserList.add(joinedUser);
+
+
         if (joinedUserActivityRecordList == null || joinedUserActivityRecordList.isEmpty()) {
             return joinedUserList;
         }
