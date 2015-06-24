@@ -181,8 +181,6 @@
                 <br>
 
 
-
-
                 <div class="row">
                     <div class="col-xs-1"></div>
                     <div class="col-xs-9">
@@ -228,13 +226,96 @@
                                 <input id="slider" type="text" class="span2" value="" data-slider-min="1"
                                        data-slider-max="101" data-slider-step="1" data-slider-value="[1,100]"/>
                             </div>
-                            <div class="col-xs-1"/>
+                            <div class="col-xs-1"></div>
                             <div class="col-xs-2"><b>100 km</b></div>
                         </div>
                     </div>
                 </div>
                 <br>
 
+
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-6">
+                        <div class="col-xs-5">
+                            <label class="control-label">Add pins on map</label>
+                        </div>
+                        <div class="col-xs-5">
+                            <div id="add-pins-switch" class="toggle btn active off" data-toggle="toggle"
+                                 onmouseout="changeAddPins()">
+                                <input type="checkbox" checked>
+
+                                <div class="toggle-group">
+                                    <label class="toggle-on btn btn-primary">On</label>
+                                    <label class="toggle-off btn active">Off</label>
+                                    <span class="toggle-handle btn"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3"></div>
+                </div>
+                <br>
+
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-6">
+
+                        <div class="col-xs-5">
+                            <span/>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="btn-group">
+                                <button id="clear-pins-button" type="button" class="btn btn-default"
+                                        onclick="clearAllPins()">Clear pins
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3"></div>
+                </div>
+                <br>
+
+
+
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-6">
+
+                        <div class="col-xs-5">
+                            <span/>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="btn-group">
+                                <button id="generate-track-button" type="button" class="btn btn-default"
+                                        onclick="generateTrack()">Generate track
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3"></div>
+                </div>
+                <br>
+
+
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-6">
+
+                        <div class="col-xs-5">
+                            <span/>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="btn-group">
+                                <button id="clear-track-button" type="button" class="btn btn-default"
+                                        onclick="clearTrack()">Clear track
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3"></div>
+                </div>
+                <br>
 
 
                 <div class="row">
@@ -294,10 +375,11 @@
 
     $("#slider").slider({});
 
-    $("#slider").on("slide", function(slideEvt) {
-        console.debug(slideEvt.value);
+    $("#slider").on("slide", function (slideEvt) {
+//        console.debug(slideEvt.value);
+        distanceMin = slideEvt.value[0];
+        distanceMax = slideEvt.value[1];
     });
-
 
 </script>
 

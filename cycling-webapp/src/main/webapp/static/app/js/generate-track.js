@@ -3,7 +3,11 @@ google.maps.event.addDomListener(window, 'load', createMap);
 var map;
 var markersByUnigueId = {};
 var coordinatesByUniqueId = {};
-var coordinatesForTrack = [];
+var markersCoordinates = [];
+var trackCoordinates = [];
+
+var distanceMin = 1;
+var distanceMax = 100;
 
 function addMarker(point) {
     var lat = point.latLng.lat();
@@ -12,18 +16,16 @@ function addMarker(point) {
     var markerId = getMarkerUniqueId(lat, lng);
 
     var marker = new google.maps.Marker({
-                                            position: coordinates,
-                                            map: map,
-                                            id: 'marker_' + markerId
-                                        });
+        position: coordinates,
+        map: map,
+        id: 'marker_' + markerId
+    });
 
     markersByUnigueId[markerId] = marker;
     coordinatesByUniqueId[markerId] = coordinates;
-    coordinatesForTrack.push(coordinates);
+    markersCoordinates.push(coordinates);
 
     bindMarkerEvents(marker);
-
-    recreateTrack();
 }
 
 function getMarkerUniqueId(lat, lng) {
@@ -48,12 +50,10 @@ function removeMarker(markerId) {
 
     var coordinates = coordinatesByUniqueId[markerId];
     delete coordinatesByUniqueId[markerId];
-    var index = coordinatesForTrack.indexOf(coordinates);
+    var index = markersCoordinates.indexOf(coordinates);
     if (index != -1) {
-        coordinatesForTrack.splice(index, 1);
+        markersCoordinates.splice(index, 1);
     }
-
-    recreateTrack();
 };
 
 var polyline;
@@ -62,17 +62,17 @@ function recreateTrack(fitBounds) {
     clearTrack();
 
     polyline = new google.maps.Polyline({
-                                            path: coordinatesForTrack,
-                                            map: map,
-                                            strokeColor: "#ff0000",
-                                            strokeOpacity: .7,
-                                            strokeWeight: 4
-                                        });
+        path: trackCoordinates,
+        map: map,
+        strokeColor: "#ff0000",
+        strokeOpacity: .7,
+        strokeWeight: 4
+    });
 
-    if (fitBounds && coordinatesForTrack.length > 0) {
+    if (fitBounds && trackCoordinates.length > 0) {
         var bounds = new google.maps.LatLngBounds();
-        for (var i = 0; i < coordinatesForTrack.length; i++) {
-            bounds.extend(coordinatesForTrack[i]);
+        for (var i = 0; i < trackCoordinates.length; i++) {
+            bounds.extend(trackCoordinates[i]);
         }
         map.fitBounds(bounds);
     }
@@ -84,15 +84,7 @@ function clearTrack() {
     }
 }
 
-function clearFile() {
-    var fileInput = $('#fileInput');
-    if (fileInput.length > 0) {
-        fileInput[0].value = "";
-    }
-}
-
 function clearAllPins() {
-    clearFile();
     clearTrack();
 
     var markerIds = Object.keys(markersByUnigueId);
@@ -103,7 +95,7 @@ function clearAllPins() {
 
     markersByUnigueId = {};
     coordinatesByUniqueId = {};
-    coordinatesForTrack = [];
+    markersCoordinates = [];
 }
 
 function changeAddPins() {
@@ -115,6 +107,35 @@ function changeAddPins() {
     } else {
         google.maps.event.clearListeners(map, 'click');
     }
+}
+
+function generateTrack() {
+    clearTrack();
+
+    var trackDetails = {};
+    trackDetails.roadTypes = getTypeOfTheRoad();
+    trackDetails.distanceMin = distanceMin;
+    trackDetails.distanceMax = distanceMax;
+    trackDetails.coordinates = [];
+    for (i = 0; i < markersCoordinates.length; i++) {
+        trackDetails.coordinates.push({"lat": markersCoordinates[i].lat(), "lng": markersCoordinates[i].lng()});
+    }
+    trackDetails.coordinates = JSON.stringify(trackDetails.coordinates);
+
+    $.ajax({
+        type: "POST",
+        url: "/api/v1/track",
+        data: JSON.stringify(trackDetails),
+        success: function (track) {
+            trackCoordinates = track;
+
+            recreateTrack();
+        },
+        error: function () {
+            displayErrorMessage("An error has occurred while trying to generate the track!")
+        },
+        contentType: "application/json"
+    });
 }
 
 //TODO: verify the name of the activity is unique and display en error message
@@ -131,8 +152,8 @@ function saveActivity() {
     activity.startDate = startDate;
     activity.activityAccessType = accessType;
     activity.coordinates = [];
-    for (i = 0; i < coordinatesForTrack.length; i++) {
-        activity.coordinates.push({"lat": coordinatesForTrack[i].lat(), "lng": coordinatesForTrack[i].lng()});
+    for (i = 0; i < trackCoordinates.length; i++) {
+        activity.coordinates.push({"lat": trackCoordinates[i].lat(), "lng": trackCoordinates[i].lng()});
     }
     activity.coordinates = JSON.stringify(activity.coordinates);
 
@@ -146,15 +167,15 @@ function saveActivity() {
     }
 
     $.ajax({
-               type: "POST",
-               url: "/api/v1/activities",
-               data: JSON.stringify(activity),
-               success: showSuccessMessage,
-               error: function () {
-                   displayErrorMessage("An error has occurred while trying to create the activity!")
-               },
-               contentType: "application/json"
-           });
+        type: "POST",
+        url: "/api/v1/activities",
+        data: JSON.stringify(activity),
+        success: showSuccessMessage,
+        error: function () {
+            displayErrorMessage("An error has occurred while trying to create the activity!")
+        },
+        contentType: "application/json"
+    });
 }
 
 function getAccessType() {
@@ -165,18 +186,36 @@ function getAccessType() {
     }
 }
 
+function getTypeOfTheRoad() {
+    var types = [];
+
+    if ($("#paved").prop("checked") == true) {
+        types.push("paved");
+    }
+
+    if ($("#unpaved").prop("checked") == true) {
+        types.push("unpaved");
+    }
+
+    if ($("#gravel").prop("checked") == true) {
+        types.push("gravel");
+    }
+
+    return types;
+}
+
 function showSuccessMessage(response) {
     var message = "Activity " + response.name + " has been successfully saved";
 
     displaySuccessMessage(message);
 
     setTimeout(function () {
-                   location.reload();
-               }
+            location.reload();
+        }
         , 1000);
 
 }
 
 
 
-//$("#paved").prop("checked")
+
