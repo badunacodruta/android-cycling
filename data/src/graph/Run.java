@@ -9,15 +9,15 @@ public class Run {
 
 
     public static final String dirs[] = {
-            "Ro-AtoB-Gravel.tracks.data",
-            "Ro-AtoB-Paved.tracks.data",
-            "Ro-AtoB-Unpaved.tracks.data",
-            "Ro-MTB-Gravel.tracks.data",
-            "Ro-MTB-Paved.tracks.data",
-            "Ro-MTB-Unpaved.tracks.data",
+//            "Ro-AtoB-Gravel.tracks.data",
+//            "Ro-AtoB-Paved.tracks.data",
+//            "Ro-AtoB-Unpaved.tracks.data",
+//            "Ro-MTB-Gravel.tracks.data",
+//            "Ro-MTB-Paved.tracks.data",
+//            "Ro-MTB-Unpaved.tracks.data",
             "Ro-Racing-Gravel.tracks.data",
-            "Ro-Racing-Paved.tracks.data",
-            "Ro-Racing-Unpaved.tracks.data"
+//            "Ro-Racing-Paved.tracks.data",
+//            "Ro-Racing-Unpaved.tracks.data"
     };
     public static final String BASE_PATH = "/Users/mciorobe/work/mihai/mihigh/cycling-app/bikemap/data/trackNeighbors/";
 
@@ -25,15 +25,13 @@ public class Run {
 
 
         for (String dir : dirs) {
-            dir = "Ro-AtoB-Gravel.tracks.data";
-            System.out.println(dir);
+//            System.out.println(dir);
             File folder = new File(BASE_PATH + dir);
             File[] allFiles = folder.listFiles();
 
 
             for (final File file : allFiles) {
                 if (!file.getName().endsWith(".graph")) {
-                    System.out.println("Skipping file:" + file.getName());
                     continue;
                 }
 
@@ -42,150 +40,215 @@ public class Run {
 
             }
 
-            break;
 
         }
 
 
-        System.out.println("Size1: " + Node.allNodes.size());
-//        OptimizeGraph.run();
-//        System.out.println("Size2: " + Node.allNodes.size());
-
-//        // lines
-//        System.out.println("[");
-//        String text = "";
-//        int index = -1;
-//        for (Node node : Node.allNodes.values()) {
-//            ++index;
-//            for (Node neighbor : node.getNeighbors()) {
-//                text += "[\n";
-//                text += "\t[" + node.getX() + ", " + node.getY() + "],\n";
-//                text += "\t[" + neighbor.getX() + ", " + neighbor.getY() + "],\n";
-//                text += "],\n";
-//            }
-//
-//            if (index > 10000) {
-//                System.out.println(text);
-//                index = -1;
-//                text = "";
-//            }
-//        }
-//
-//        System.out.println(text);
-//        System.out.println("]");
-
-        // points
-//        System.out.println("[");
-//        for (Node node : Node.allNodes.values()) {
-//            System.out.println("[" + node.getX() + "," + node.getY() + "],");
-//        }
-//        System.out.println("],");
-
+        if (1==1)
+            return;
 
         double[][] userCheckpoints = {
-                {44.51748555, 26.08395696},
-                {44.5393453, 26.10407352},
-                {44.62065445, 26.12432957},
-                {44.7140499, 26.19286537}
+                {44.41962054167956, 26.04806900024414},
+                {44.4186396836315, 26.042919158935547},
+                {44.4178733768324, 26.034507751464844},
+                {44.42210326507494, 26.03463649749756}
         };
         final Map<Node, Node> closestNodesToCheckpoints = ClosestNodeToCheckPoint.find(userCheckpoints);
 
 
-        // detect (1by1) paths
-
-
-        HashMap<Node, Integer> border = new HashMap<Node, Integer>() {{
+        // Domain = index of node in user input
+        // Key = "node"  Value = the node domain
+        final Map<Node, Integer> domains = new HashMap<Node, Integer>() {{
             int index = -1;
             for (Node node : closestNodesToCheckpoints.values()) {
-                ++index;
-                put(node, index);
+                put(node, ++index);
+            }
+        }};
+
+        // Key = "domain_domain" Value = list of nodes
+        Map<String, Set<Node>> domainIntersections = new HashMap<String, Set<Node>>() {{
+            for (Integer domain1 : domains.values()) {
+                for (Integer domain2 : domains.values()) {
+                    put(domain1 + "_" + domain2, new HashSet<Node>());
+
+                }
+            }
+        }};
+
+        // Key = "domain"  Value = list of domains
+        Map<Integer, Set<Integer>> domainNeighbors = new HashMap<Integer, Set<Integer>>() {{
+            for (Integer domainId : domains.values()) {
+                put(domainId, new HashSet<Integer>());
+            }
+        }};
+
+
+        // Key = unvisited node  Value = parent node
+        HashMap<Integer, PriorityQueue<List<Node>>> domainBorder = new HashMap<Integer, PriorityQueue<List<Node>>>() {{
+            for (final Node node : closestNodesToCheckpoints.values()) {
+                Integer domainId = domains.get(node);
+
+                PriorityQueue<List<Node>> borderList = new PriorityQueue<>(300, new Comparator<List<Node>>() {
+                    @Override
+                    public int compare(List<Node> node1, List<Node> node2) {
+                        return (int) (node1.get(0).distance(node) * 10000000000L - node2.get(0).distance(node) * 10000000000L);
+                    }
+                });
+
+                borderList.add(Arrays.asList(node, node));
+                put(domainId, borderList);
             }
 
         }};
 
-        HashMap<Node, Integer> visited = new HashMap<>();
-        HashMap<Node, Node> parent = new HashMap<>();
 
-        Set<Node> componentIntersection = new HashSet<>();
+//        HashMap<Node, Node> border = new HashMap<Node, Node>() {{
+//            for (Node node : closestNodesToCheckpoints.values()) {
+//                put(node, node);
+//            }
+//        }};
 
-        int nrOfConexComponents = closestNodesToCheckpoints.size();
+        HashMap<Node, Node> visited = new HashMap<>();
 
-        while (border.size() != 0 && nrOfConexComponents != 1) {
-            HashMap<Node, Integer> toVisit = new HashMap<>(border);
-            border.clear();
+        int round = -1;
+        System.out.println("var stepByStep = {");
 
-            for (Node borderNode : toVisit.keySet()) {
-                Integer borderComponentId = toVisit.get(borderNode);
-                Integer visitedComponentId = visited.get(borderNode);
-
-                if (visitedComponentId != null) {
-                    if (!visitedComponentId.equals(borderComponentId)) {
-
-                        // add intersection
-                        componentIntersection.add(borderNode);
-                        componentIntersection.addAll(borderNode.getNeighbors());
-
-                        // merge the 2 components
-                        replaceComponentId(visited, borderComponentId, visitedComponentId);
-                        replaceComponentId(toVisit, borderComponentId, visitedComponentId);
-                        replaceComponentId(border, borderComponentId, visitedComponentId);
-                        --nrOfConexComponents;
-                    }
-                    continue;
-                }
-
-                visited.put(borderNode, borderComponentId);
-                for (Node neighbor : borderNode.getNeighbors()) {
-                    if (!visited.containsKey(neighbor)) {
-                        border.put(neighbor, borderComponentId);
-                        parent.put(neighbor, borderNode);
-                    }
-                }
+        while (true) {
+            int neighborsNr = 0;
+            for (Set<Integer> neighborsList : domainNeighbors.values()) {
+                neighborsNr += neighborsList.size();
             }
+            if (neighborsNr == (closestNodesToCheckpoints.size() - 2) * 2 + 2) {
+                break;
+            }
+
+
+            int borderSize = 0;
+            for (Integer domainId : domainBorder.keySet()) {
+                borderSize += domainBorder.get(domainId).size();
+            }
+            if (borderSize == 0) {
+                break;
+            }
+
+
+            ++round;
+            System.out.print(round + ": [");
+
+            for (Integer domainId : domainBorder.keySet()) {
+                PriorityQueue<List<Node>> border = domainBorder.get(domainId);
+                List<Node> nodeAndParent = border.poll();
+                System.out.print(nodeAndParent.get(0) + ", ");
+
+                expandNode(domains, domainIntersections, domainNeighbors, border, visited,
+                        nodeAndParent.get(0), nodeAndParent.get(1));
+            }
+            System.out.println("],");
+
         }
+        System.out.println("}");
 
 
-        System.out.println(visited.size());
-        System.out.println(border.size());
-        System.out.println(parent.size());
-        System.out.println(componentIntersection.size());
-        System.out.println(nrOfConexComponents);
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        getTrack(closestNodesToCheckpoints.values(), visited, domainNeighbors, domainIntersections);
 
-//        System.out.println(visited);
+//        HashMap<Integer, Set<Node>> nodesInDomain = new HashMap<>();
+//
+//
+//        for (Node node : domains.keySet()) {
+//            Integer domainId = domains.get(node);
+//
+//            Set<Node> nodes = nodesInDomain.get(domainId);
+//            if (nodes == null) {
+//                nodes = new HashSet<>();
+//                nodesInDomain.put(domainId, nodes);
+//            }
+//
+//            nodes.add(node);
+//        }
 
-        // get the road
-//        closestNodesToCheckpoints
-        getRoad(closestNodesToCheckpoints.values(), componentIntersection, parent);
 
+//        System.out.println(nodesInDomain.toString().replace("=", ":"));
 
     }
 
-    private static void getRoad(Collection<Node> closestNodesToCheckpoints, Set<Node> componentIntersection, HashMap<Node, Node> parent) {
+    private static void expandNode(Map<Node, Integer> domains,
+                                   Map<String, Set<Node>> domainIntersections,
+                                   Map<Integer, Set<Integer>> domainNeighbors,
+                                   PriorityQueue<List<Node>> border,
+                                   HashMap<Node, Node> visited,
+                                   Node node,
+                                   Node parent) {
 
-//        Node firstNode = closestNodesToCheckpoints.iterator().next();
+        visited.put(node, parent);
+        domains.put(node, domains.get(parent));
+
+        for (Node neighbor : node.getNeighbors()) {
+
+            if (visited.keySet().contains(neighbor)) {
+                //check to see if 2 separate domains
+                Integer expandingDomain = domains.get(node);
+                Integer hitDomain = domains.get(neighbor);
+                if (!expandingDomain.equals(hitDomain)
+                        && domainNeighbors.get(expandingDomain).size() < 2
+                        && domainNeighbors.get(hitDomain).size() < 2) {
+                    String key = expandingDomain + "_" + hitDomain;
+                    if (domainIntersections.get(key).size() == 0) {
+                        domainIntersections.get(key).add(node);
+                        domainIntersections.get(key).addAll(node.getNeighbors());
+                    }
+
+                    String reverseKey = hitDomain + "_" + expandingDomain;
+                    if (domainIntersections.get(reverseKey).size() == 0) {
+                        domainIntersections.get(reverseKey).add(node);
+                        domainIntersections.get(reverseKey).addAll(node.getNeighbors());
+                    }
+
+                    domainNeighbors.get(expandingDomain).add(hitDomain);
+                    domainNeighbors.get(hitDomain).add(expandingDomain);
+                }
+            } else {
+                border.add(Arrays.asList(neighbor, node));
+            }
+        }
+    }
+
+    private static void getTrack(Collection<Node> closestNodesToCheckpoints, HashMap<Node, Node> parent, Map<Integer, Set<Integer>> domainNeighbors, Map<String, Set<Node>> domainIntersections) {
         Set<Node> path = new HashSet<>();
 
-        for (Node node : componentIntersection) {
-            while (node != null && !path.contains(node)) {
-                path.add(node);
-                node = parent.get(node);
-            }
-//            System.out.println(node);
-//            System.out.println(path.size());
-//            System.out.println(path);
 
+        Set<Node> border = new HashSet<>();
+        for (Integer domain1 : domainNeighbors.keySet()) {
+            Set<Integer> domain1neighbor = domainNeighbors.get(domain1);
+
+            for (Integer domain2 : domain1neighbor) {
+                Set<Node> intersectionNodes = domainIntersections.get(domain1 + "_" + domain2);
+                border.addAll(intersectionNodes);
+            }
         }
 
+
+        while (!path.containsAll(closestNodesToCheckpoints)) {
+            Set<Node> toVisit = new HashSet<>();
+            toVisit.addAll(border);
+            path.addAll(border);
+            border.clear();
+
+            for (Node node : toVisit) {
+                border.add(parent.get(node));
+            }
+        }
+
+//        System.out.println("FINAL PATH:");
+        System.out.println("var userData = {0: ");
         System.out.println(path);
+        System.out.println("}");
 
     }
 
-    public static void replaceComponentId(HashMap<Node, Integer> map, Integer from, Integer to) {
-        for (Node node : map.keySet()) {
-            if (map.get(node).equals(from)) {
-                map.put(node, to);
-            }
-        }
 
-    }
 }

@@ -1,6 +1,9 @@
 package graph;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class Node {
 
@@ -21,7 +24,7 @@ public class Node {
     }
 
     public double distance(Node node) {
-        return (x-node.x)*(x-node.x) + (y-node.y)*(y-node.y);
+        return Math.sqrt((x - node.x) * (x - node.x) + (y - node.y) * (y - node.y));
     }
 
     public void addNeighbor(Node node) {
@@ -49,6 +52,7 @@ public class Node {
     public void clearNeighbors() {
         neighbors.clear();
     }
+
     public double getX() {
         return x;
     }

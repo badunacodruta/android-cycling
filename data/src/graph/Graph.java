@@ -5,10 +5,7 @@ import graph.graph.LoadNodes;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Graph {
 
@@ -20,8 +17,9 @@ public class Graph {
 
     public static void loadGraph(String path, String trackId) {
 
-        System.out.println("Processing file: " + path);
+//        System.out.println("Processing file: " + path);
 
+        Set<Node> nodes = new HashSet<>();
 
         File file = new File(path);
         try (BufferedReader br = new BufferedReader(new FileReader(file), 1048576)) {
@@ -35,11 +33,16 @@ public class Graph {
 
                 node1.addNeighbor(node2);
                 node2.addNeighbor(node1);
+
+                nodes.add(node1);
+                nodes.add(node2);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        System.out.println(nodes + ",");
     }
 
     static void loadNodesLocations() {
