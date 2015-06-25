@@ -63,7 +63,7 @@ function drawTrack() {
     }
 
     var parsedCoordinates = JSON.parse(activity.coordinates);
-    coordinatesForTrack = [];
+    trackCoordinates = [];
     for (var i = 0; i < parsedCoordinates.length; i++) {
         var parsedCoordinate = parsedCoordinates[i];
         coordinatesForTrack.push(getLatLng(parsedCoordinate.lat, parsedCoordinate.lng));
