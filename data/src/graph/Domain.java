@@ -16,7 +16,7 @@ public class Domain {
 
             @Override
             public int compare(Node o1, Node o2) {
-                double diff = o1.distance(startingPoint) - o2.distance(startingPoint);
+                double diff = o1.distance(Domain.this.startingPoint) - o2.distance(Domain.this.startingPoint);
                 if (diff < 0) {
                     return -1;
                 }
@@ -26,9 +26,9 @@ public class Domain {
                 return 0;
             }
         });
+        border.add(this.startingPoint);
 
-        startingPoint.addParent(null, this);
-        border.add(startingPoint);
+        this.startingPoint.addParent(null, this);
 
         intersectionNodesByDomain = new HashMap<>();
     }
@@ -39,6 +39,10 @@ public class Domain {
 
     public Node getNextNode() {
         return border.poll();
+    }
+
+    public boolean canBeExpanded() {
+        return !border.isEmpty();
     }
 
     public void addToBorder(Node node) {
@@ -59,6 +63,10 @@ public class Domain {
 
     public Map<Domain, List<Node>> getIntersectionNodesByDomain() {
         return intersectionNodesByDomain;
+    }
+
+    public PriorityQueue<Node> getBorder() {
+        return border;
     }
 
     @Override

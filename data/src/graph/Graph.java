@@ -42,7 +42,7 @@ public class Graph {
             e.printStackTrace();
         }
 
-        System.out.println(nodes + ",");
+//        System.out.println(nodes + ",");
     }
 
     static void loadNodesLocations() {

@@ -8,17 +8,18 @@ import java.util.*;
 public class RunMultipleBFS {
 
     public static final String dirs[] = {
+            "test.data"
 //            "Ro-AtoB-Gravel.tracks.data",
 //            "Ro-AtoB-Paved.tracks.data",
 //            "Ro-AtoB-Unpaved.tracks.data",
 //            "Ro-MTB-Gravel.tracks.data",
 //            "Ro-MTB-Paved.tracks.data",
 //            "Ro-MTB-Unpaved.tracks.data",
-            "Ro-Racing-Gravel.tracks.data",
+//            "Ro-Racing-Gravel.tracks.data",
 //            "Ro-Racing-Paved.tracks.data",
 //            "Ro-Racing-Unpaved.tracks.data"
     };
-    public static final String BASE_PATH = "/Users/mciorobe/work/mihai/mihigh/cycling-app/bikemap/data/trackNeighbors/";
+    public static final String BASE_PATH = "/Users/baduna/personal/android-cycling/data/resources/";
 
     public static void main(String[] args) {
 
@@ -37,28 +38,46 @@ public class RunMultipleBFS {
             }
         }
 
+        System.out.println("var graph = ");
+//        System.out.println(Node.allNodes.values());
+//
+//        if (1==1) {
+//            return;
+//        }
+
+//        double[][] userCheckpoints = {
+//                {44.41962054167956, 26.04806900024414},
+//                {44.4186396836315, 26.042919158935547},
+//                {44.4178733768324, 26.034507751464844},
+//                {44.42210326507494, 26.03463649749756}
+//        };
+
         double[][] userCheckpoints = {
-                {44.41962054167956, 26.04806900024414},
-                {44.4186396836315, 26.042919158935547},
-                {44.4178733768324, 26.034507751464844},
-                {44.42210326507494, 26.03463649749756}
+                {1,13},
+                {6,10},
+                {19,5},
+
         };
+
 
 
         final Map<Node, Node> closestNodesToCheckpoints = ClosestNodeToCheckPoint.find(userCheckpoints);
 
         List<Node> track = getTrack(closestNodesToCheckpoints.values());
 
-        for (Node node : track) {
-            System.out.println(node);
-        }
+        System.out.println(track);
     }
 
     private static List<Node> getTrack(Collection<Node> startingPoints) {
         List<Domain> domains = assignDomainsToStartingPoints(startingPoints);
 
-        while (!allDomainsConnected(domains)) {
+        while (!allDomainsConnected(domains) && canExpandDomains(domains)) {
             expandDomains(domains);
+        }
+
+        if (!allDomainsConnected(domains)) {
+            System.out.println("No path found!");
+            return null;
         }
 
         return getPathBetweenDomains(domains);
@@ -146,9 +165,23 @@ public class RunMultipleBFS {
         return connectedDomains.size() == domainsSize;
     }
 
+    private static boolean canExpandDomains(List<Domain> domains) {
+        for (Domain domain : domains) {
+            if (domain.canBeExpanded()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private static void expandDomains(List<Domain> domains) {
         for (Domain domain : domains) {
             Node node = domain.getNextNode();
+            if (node == null) {
+                continue;
+            }
+
             Set<Node> neighbors = node.getNeighbors();
 
             for (Node neighbor : neighbors) {
@@ -160,6 +193,7 @@ public class RunMultipleBFS {
 
                 for (Domain visitingDomain : visitingDomains) {
                     domain.addIntersectionPoint(neighbor, visitingDomain);
+                    visitingDomain.addIntersectionPoint(neighbor, domain);
                 }
 
                 if (visitingDomains.isEmpty()) {
