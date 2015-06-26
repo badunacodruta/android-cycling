@@ -1,9 +1,6 @@
 package graph;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Node {
 
@@ -15,12 +12,16 @@ public class Node {
     private double x;
     private double y;
 
+    private Map<Domain, Node> parentsByDomain;
+
     public Node(double x, double y, boolean isTrackNode) {
         this.x = x;
         this.y = y;
         if (isTrackNode) {
             allNodes.put(getKey(x, y), this);
         }
+
+        parentsByDomain = new HashMap<>();
     }
 
     public double distance(Node node) {
@@ -67,6 +68,31 @@ public class Node {
 
     public void setY(double y) {
         this.y = y;
+    }
+
+    public Node getParent(Domain domain) {
+        return parentsByDomain.get(domain);
+    }
+
+    public Node getParent() {
+        Collection<Node> parents = parentsByDomain.values();
+        if (parents == null || parents.isEmpty()) {
+            return null;
+        }
+
+        return parents.iterator().next();
+    }
+
+    public void addParent(Node parent, Domain domain) {
+        parentsByDomain.put(domain, parent);
+    }
+
+    public Set<Domain> getVisitingDomains() {
+        return parentsByDomain.keySet();
+    }
+
+    public boolean isVisited(Domain domain) {
+        return parentsByDomain.containsKey(domain);
     }
 
     public String toString() {

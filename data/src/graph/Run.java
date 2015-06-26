@@ -91,22 +91,25 @@ public class Run {
                 PriorityQueue<List<Node>> borderList = new PriorityQueue<>(300, new Comparator<List<Node>>() {
                     @Override
                     public int compare(List<Node> node1, List<Node> node2) {
-                        return (int) (node1.get(0).distance(node) * 10000000000L - node2.get(0).distance(node) * 10000000000L);
+                        double diff = node1.get(0).distance(node) - node2.get(0).distance(node);
+
+                        if (diff == 0) {
+                            return 0;
+                        }
+
+                        if (diff > 0) {
+                            return 1;
+                        }
+
+                        return -1;
                     }
                 });
 
                 borderList.add(Arrays.asList(node, node));
                 put(domainId, borderList);
             }
-
         }};
 
-
-//        HashMap<Node, Node> border = new HashMap<Node, Node>() {{
-//            for (Node node : closestNodesToCheckpoints.values()) {
-//                put(node, node);
-//            }
-//        }};
 
         HashMap<Node, Node> visited = new HashMap<>();
 
