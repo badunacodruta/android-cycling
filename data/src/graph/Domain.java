@@ -49,6 +49,10 @@ public class Domain {
         border.add(node);
     }
 
+    public void removeFromBorder(Node neighbor) {
+        border.remove(neighbor);
+    }
+
     public void addIntersectionPoint(Node intersectionPoint, Domain domain) {
         if (!intersectionNodesByDomain.containsKey(domain)) {
             intersectionNodesByDomain.put(domain, new ArrayList<Node>());

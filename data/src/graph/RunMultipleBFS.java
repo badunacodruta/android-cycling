@@ -103,6 +103,7 @@ public class RunMultipleBFS {
 
     private static List<Node> getPathBetween(Domain domain1, Domain domain2, Node intersectionPoint) {
         List<Node> path = getPathBetween(domain1, intersectionPoint);
+        path.remove(intersectionPoint);
         path.addAll(getPathBetween(intersectionPoint, domain2));
 
         return path;
@@ -194,6 +195,8 @@ public class RunMultipleBFS {
                 for (Domain visitingDomain : visitingDomains) {
                     domain.addIntersectionPoint(neighbor, visitingDomain);
                     visitingDomain.addIntersectionPoint(neighbor, domain);
+
+                    visitingDomain.removeFromBorder(neighbor);
                 }
 
                 if (visitingDomains.isEmpty()) {
