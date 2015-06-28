@@ -113,9 +113,9 @@ function generateTrack() {
     clearTrack();
 
     var trackDetails = {};
-    trackDetails.roadTypes = getTypeOfTheRoad();
-    trackDetails.distanceMin = distanceMin;
-    trackDetails.distanceMax = distanceMax;
+    //trackDetails.roadTypes = getTypeOfTheRoad();
+    //trackDetails.distanceMin = distanceMin;
+    //trackDetails.distanceMax = distanceMax;
     trackDetails.coordinates = [];
     for (i = 0; i < markersCoordinates.length; i++) {
         trackDetails.coordinates.push({"lat": markersCoordinates[i].lat(), "lng": markersCoordinates[i].lng()});
@@ -127,7 +127,8 @@ function generateTrack() {
         url: "/api/v1/track",
         data: JSON.stringify(trackDetails),
         success: function (track) {
-            trackCoordinates = track;
+
+            trackCoordinates = JSON.parse(track.coordinates);
 
             recreateTrack();
         },

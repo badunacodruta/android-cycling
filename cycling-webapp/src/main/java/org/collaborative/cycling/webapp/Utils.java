@@ -13,5 +13,4 @@ public class Utils {
     public static void setUser(HttpSession session, User user) {
         session.setAttribute(User.ID, user);
     }
-
 }

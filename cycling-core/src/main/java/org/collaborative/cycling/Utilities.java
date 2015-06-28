@@ -5,10 +5,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.collaborative.cycling.models.Coordinates;
 
 import java.io.IOException;
-import java.util.List;
 
 
 public class Utilities {
@@ -46,5 +44,16 @@ public class Utilities {
 
     public static boolean isNullOrEmpty(String string) {
         return string == null || string.isEmpty();
+    }
+
+
+    public static final ThreadLocal<Long> threadLocal = new ThreadLocal<>();
+
+    public static Long getThreadLocalVariable() {
+        return threadLocal.get();
+    }
+
+    public static void setThreadLocalVariable(Long variable) {
+        threadLocal.set(variable);
     }
 }

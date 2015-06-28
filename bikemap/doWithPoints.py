@@ -102,16 +102,16 @@ for point in trackData:
 	if 'neighbour_id' in point:
 		allPoints.append(point['neighbour_id'])
 
-# create graph
-graph = []
+# create org.collaborative.cycling.services.track.graph
+org.collaborative.cycling.services.track.graph = []
 for index in range(len(allPoints)-1):
 	point_id = allPoints[index]
 	next_point_id = allPoints[index+1]
-	graph.append([point_id, next_point_id])
+	org.collaborative.cycling.services.track.graph.append([point_id, next_point_id])
 
-# save graph to file
-with open(dirName + "/" + trackId + ".graph", "w") as text_file:
-	text_file.write(str(graph))
+# save org.collaborative.cycling.services.track.graph to file
+with open(dirName + "/" + trackId + ".org.collaborative.cycling.services.track.graph", "w") as text_file:
+	text_file.write(str(org.collaborative.cycling.services.track.graph))
 
 
 cursor.close()
