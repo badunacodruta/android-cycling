@@ -8,7 +8,8 @@ import java.io.File;
 @Component
 public class LoadGraph {
     private final String dirs[] = {
-            "test.data"
+//            "test.data"
+            "poli.data"
 //            "Ro-AtoB-Gravel.tracks.data",
 //            "Ro-AtoB-Paved.tracks.data",
 //            "Ro-AtoB-Unpaved.tracks.data",

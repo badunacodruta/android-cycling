@@ -52,7 +52,7 @@ public class TrackService {
             coordinates.add(new Coordinates(node.getX(), node.getY()));
         }
 
-        System.out.println(nodes);
+//        System.out.println(nodes);
 
         Track track = new Track();
         track.coordinates = coordinates;

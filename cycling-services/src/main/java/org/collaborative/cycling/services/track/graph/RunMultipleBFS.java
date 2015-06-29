@@ -236,11 +236,14 @@ public class RunMultipleBFS {
             Set<Node> neighbors = new HashSet<>(node.getNeighbors());
 
             //TODO: better personalization
-            for (Node neighbor : neighbors) {
+            Iterator<Node> iterator = neighbors.iterator();
+            while (iterator.hasNext()) {
+                Node neighbor = iterator.next();
                 if (!neighbor.hasAtLeastOneRoadType(roadTypes)) {
-                    neighbors.remove(neighbor);
+                    iterator.remove();
                 }
             }
+
             if (neighbors.isEmpty()) {
                 neighbors = new HashSet<>(node.getNeighbors());
             }
