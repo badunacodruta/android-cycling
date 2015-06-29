@@ -1,67 +1,9 @@
 package org.collaborative.cycling.services.track.graph;
 
 
-
 import java.util.*;
 
 public class RunMultipleBFS {
-//
-//    public static final String dirs[] = {
-//            "test.data"
-////            "Ro-AtoB-Gravel.tracks.data",
-////            "Ro-AtoB-Paved.tracks.data",
-////            "Ro-AtoB-Unpaved.tracks.data",
-////            "Ro-MTB-Gravel.tracks.data",
-////            "Ro-MTB-Paved.tracks.data",
-////            "Ro-MTB-Unpaved.tracks.data",
-////            "Ro-Racing-Gravel.tracks.data",
-////            "Ro-Racing-Paved.tracks.data",
-////            "Ro-Racing-Unpaved.tracks.data"
-//    };
-//    public static final String BASE_PATH = "/Users/baduna/personal/android-cycling/data/resources/";
-//
-//    public static void main(String[] args) {
-//
-//        for (String dir : dirs) {
-////            System.out.println(dir);
-//            File folder = new File(BASE_PATH + dir);
-//            File[] allFiles = folder.listFiles();
-//
-//            for (final File file : allFiles) {
-//                if (!file.getName().endsWith(".org.collaborative.cycling.services.track.graph")) {
-//                    continue;
-//                }
-//
-//                String trackId = file.getName().replace(".org.collaborative.cycling.services.track.graph", "");
-//                Graph.loadGraph(file.getPath(), trackId);
-//            }
-//        }
-//
-//        System.out.println("var org.collaborative.cycling.services.track.graph = ");
-////        System.out.println(Node.allNodes.values());
-////
-////        if (1==1) {
-////            return;
-////        }
-//
-//        double[][] userCheckpoints = {
-//                {44.44189997711198, 26.052939891815186},
-//                {44.43745702634121, 26.045215129852295},
-//        };
-//
-////        double[][] userCheckpoints = {
-////                {1,13},
-////                {6,10},
-////                {19,5},
-////        };
-//
-//
-//        final Map<Node, Node> closestNodesToCheckpoints = ClosestNodeToCheckPoint.find(userCheckpoints);
-//
-//        List<Node> track = getTrack(closestNodesToCheckpoints.values());
-//
-//        System.out.println(track);
-//    }
 
     public static List<Node> getTrack(List<Node> startingPoints) {
         List<Domain> domains = assignDomainsToStartingPoints(startingPoints);
@@ -99,7 +41,7 @@ public class RunMultipleBFS {
 
     private static List<Map.Entry<Domain, Domain>> getDomainsConnections(List<Domain> domains) {
         List<Map.Entry<Domain, Domain>> domainsConnections = new ArrayList<>();
-        Map<Domain, Domain> domainsConnectionsMap = new HashMap<>();
+//        Map<Domain, Domain> domainsConnectionsMap = new HashMap<>();
         List<Map.Entry<Domain, Domain>> dfsParentsByDomain = getDFSParents(domains);
 
         for (Map.Entry<Domain, Domain> domainAndParent : dfsParentsByDomain) {
@@ -116,11 +58,36 @@ public class RunMultipleBFS {
 //                continue;
 //            }
 
-            domainsConnectionsMap.put(parent, domain);
+//            domainsConnectionsMap.put(parent, domain);
             domainsConnections.add(new AbstractMap.SimpleEntry<Domain, Domain>(parent, domain));
         }
 
-        return domainsConnections;
+        return linearize(domainsConnections);
+    }
+
+    private static List<Map.Entry<Domain, Domain>> linearize(List<Map.Entry<Domain, Domain>> domainsConnections) {
+        List<Map.Entry<Domain, Domain>> linearDomainConnections = new ArrayList<>();
+        Stack<Map.Entry<Domain, Domain>> connectionsStack = new Stack<>();
+        Domain lastDomain = null;
+
+        while (!domainsConnections.isEmpty()) {
+            Map.Entry<Domain, Domain> connection = domainsConnections.remove(0);
+
+            if (lastDomain != null && !lastDomain.equals(connection.getKey())) {
+                while (!connection.getKey().equals(lastDomain) && !connectionsStack.isEmpty()) {
+                    Map.Entry<Domain, Domain> connectionToReverse = connectionsStack.pop();
+                    linearDomainConnections.add(new AbstractMap.SimpleEntry<Domain, Domain>
+                            (connectionToReverse.getValue(), connectionToReverse.getKey()));
+                    lastDomain = connectionToReverse.getKey();
+                }
+            }
+
+            linearDomainConnections.add(connection);
+            connectionsStack.push(connection);
+            lastDomain = connection.getValue();
+        }
+
+        return linearDomainConnections;
     }
 
     private static List<Map.Entry<Domain, Domain>> getDFSParents(List<Domain> domains) {
@@ -137,7 +104,7 @@ public class RunMultipleBFS {
         visited.add(domain);
         dfsParents.add(new AbstractMap.SimpleEntry<Domain, Domain>(domain, null));
 
-        while(!dfsStack.isEmpty() && dfsParents.size() != domains.size()) {
+        while (!dfsStack.isEmpty() && dfsParents.size() != domains.size()) {
             domain = dfsStack.pop();
 
             List<Domain> intersectingDomains = new ArrayList<>(domain.getIntersectingDomains());
