@@ -1,5 +1,7 @@
 package org.collaborative.cycling.services.track.graph;
 
+import org.collaborative.cycling.models.RoadType;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -12,7 +14,7 @@ public class Graph {
     public static void main(String[] args) {
     }
 
-    public static void loadGraph(String path, String trackId) {
+    public static void loadGraph(String path, String trackId, RoadType roadType) {
 
 //        System.out.println("Processing file: " + path);
 
@@ -25,8 +27,8 @@ public class Graph {
                 String[] pointsLocation = line.split(" ");
 
                 assert pointsLocation.length == 4;
-                Node node1 = Node.getNode(Double.parseDouble(pointsLocation[0]), Double.parseDouble(pointsLocation[1]));
-                Node node2 = Node.getNode(Double.parseDouble(pointsLocation[2]), Double.parseDouble(pointsLocation[3]));
+                Node node1 = Node.getNode(Double.parseDouble(pointsLocation[0]), Double.parseDouble(pointsLocation[1]), roadType);
+                Node node2 = Node.getNode(Double.parseDouble(pointsLocation[2]), Double.parseDouble(pointsLocation[3]), roadType);
 
                 node1.addNeighbor(node2);
                 node2.addNeighbor(node1);

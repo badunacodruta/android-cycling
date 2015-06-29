@@ -113,7 +113,7 @@ function generateTrack() {
     clearTrack();
 
     var trackDetails = {};
-    //trackDetails.roadTypes = getTypeOfTheRoad();
+    trackDetails.roadTypes = JSON.stringify(getTypeOfTheRoad());
     //trackDetails.distanceMin = distanceMin;
     //trackDetails.distanceMax = distanceMax;
     trackDetails.coordinates = [];
@@ -191,15 +191,15 @@ function getTypeOfTheRoad() {
     var types = [];
 
     if ($("#paved").prop("checked") == true) {
-        types.push("paved");
+        types.push("PAVED");
     }
 
     if ($("#unpaved").prop("checked") == true) {
-        types.push("unpaved");
+        types.push("UNPAVED");
     }
 
     if ($("#gravel").prop("checked") == true) {
-        types.push("gravel");
+        types.push("GRAVEL");
     }
 
     return types;

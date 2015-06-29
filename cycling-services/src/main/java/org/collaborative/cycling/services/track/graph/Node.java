@@ -1,6 +1,7 @@
 package org.collaborative.cycling.services.track.graph;
 
 import org.collaborative.cycling.Utilities;
+import org.collaborative.cycling.models.RoadType;
 
 import java.util.*;
 
@@ -9,6 +10,8 @@ public class Node {
     public static final Map<String, Node> allNodes = new HashMap<String, Node>();
 
     private Set<Node> neighbors = new HashSet<Node>();
+
+    private Set<RoadType> roadTypes = new HashSet<>();
 
     private Long version = 0l;
 
@@ -36,13 +39,16 @@ public class Node {
     }
 
 
-    public static Node getNode(double x, double y) {
+    public static Node getNode(double x, double y, RoadType roadType) {
         Node node = allNodes.get(getKey(x, y));
         if (node != null) {
+            node.roadTypes.add(roadType);
             return node;
         }
 
-        return new Node(x, y, true);
+        node = new Node(x, y, true);
+        node.roadTypes.add(roadType);
+        return node;
     }
 
     private static String getKey(double x, double y) {
@@ -103,6 +109,14 @@ public class Node {
         return parentsByDomain.containsKey(domain);
     }
 
+    public Set<RoadType> getRoadTypes() {
+        return roadTypes;
+    }
+
+    public boolean hasRoadType(RoadType roadType) {
+        return roadTypes.contains(roadType);
+    }
+
     public String toString() {
         return "[" + x + "," + y + "]";
     }
@@ -138,5 +152,15 @@ public class Node {
 
             parentsByDomain = new HashMap<>();
         }
+    }
+
+    public boolean hasAtLeastOneRoadType(Set<RoadType> roadTypes) {
+        for (RoadType roadType : roadTypes) {
+            if (this.hasRoadType(roadType)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

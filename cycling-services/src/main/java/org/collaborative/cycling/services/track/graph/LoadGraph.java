@@ -1,5 +1,6 @@
 package org.collaborative.cycling.services.track.graph;
 
+import org.collaborative.cycling.models.RoadType;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -32,7 +33,16 @@ public class LoadGraph {
                 }
 
                 String trackId = file.getName().replace(".graph", "");
-                Graph.loadGraph(file.getPath(), trackId);
+
+                RoadType roadType = RoadType.PAVED;
+                for (RoadType type : RoadType.values()) {
+                    if (dir.toLowerCase().contains(type.name().toLowerCase())) {
+                        roadType = type;
+                        break;
+                    }
+                }
+
+                Graph.loadGraph(file.getPath(), trackId, roadType);
             }
         }
     }

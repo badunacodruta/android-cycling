@@ -45,7 +45,7 @@ public class TrackService {
 
         final Map<Node, Node> closestNodesToCheckpoints = ClosestNodeToCheckPoint.find(startingPointsCoordinates);
 
-        List<Node> nodes = RunMultipleBFS.getTrack(Lists.from(closestNodesToCheckpoints.values().iterator()));
+        List<Node> nodes = RunMultipleBFS.getTrack(Lists.from(closestNodesToCheckpoints.values().iterator()), startingPoints.getRoadTypes());
 
         List<Coordinates> coordinates = new ArrayList<>();
         for (Node node : nodes) {

@@ -2,72 +2,17 @@ package org.collaborative.cycling.services.track.graph;
 
 
 
+import org.collaborative.cycling.models.RoadType;
+
 import java.util.*;
 
 public class RunMultipleBFS {
-//
-//    public static final String dirs[] = {
-//            "test.data"
-////            "Ro-AtoB-Gravel.tracks.data",
-////            "Ro-AtoB-Paved.tracks.data",
-////            "Ro-AtoB-Unpaved.tracks.data",
-////            "Ro-MTB-Gravel.tracks.data",
-////            "Ro-MTB-Paved.tracks.data",
-////            "Ro-MTB-Unpaved.tracks.data",
-////            "Ro-Racing-Gravel.tracks.data",
-////            "Ro-Racing-Paved.tracks.data",
-////            "Ro-Racing-Unpaved.tracks.data"
-//    };
-//    public static final String BASE_PATH = "/Users/baduna/personal/android-cycling/data/resources/";
-//
-//    public static void main(String[] args) {
-//
-//        for (String dir : dirs) {
-////            System.out.println(dir);
-//            File folder = new File(BASE_PATH + dir);
-//            File[] allFiles = folder.listFiles();
-//
-//            for (final File file : allFiles) {
-//                if (!file.getName().endsWith(".org.collaborative.cycling.services.track.graph")) {
-//                    continue;
-//                }
-//
-//                String trackId = file.getName().replace(".org.collaborative.cycling.services.track.graph", "");
-//                Graph.loadGraph(file.getPath(), trackId);
-//            }
-//        }
-//
-//        System.out.println("var org.collaborative.cycling.services.track.graph = ");
-////        System.out.println(Node.allNodes.values());
-////
-////        if (1==1) {
-////            return;
-////        }
-//
-//        double[][] userCheckpoints = {
-//                {44.44189997711198, 26.052939891815186},
-//                {44.43745702634121, 26.045215129852295},
-//        };
-//
-////        double[][] userCheckpoints = {
-////                {1,13},
-////                {6,10},
-////                {19,5},
-////        };
-//
-//
-//        final Map<Node, Node> closestNodesToCheckpoints = ClosestNodeToCheckPoint.find(userCheckpoints);
-//
-//        List<Node> track = getTrack(closestNodesToCheckpoints.values());
-//
-//        System.out.println(track);
-//    }
 
-    public static List<Node> getTrack(List<Node> startingPoints) {
+    public static List<Node> getTrack(List<Node> startingPoints, Set<RoadType> roadTypes) {
         List<Domain> domains = assignDomainsToStartingPoints(startingPoints);
 
         while (!allDomainsConnected(domains) && canExpandDomains(domains)) {
-            expandDomains(domains);
+            expandDomains(domains, roadTypes);
         }
 
         if (!allDomainsConnected(domains)) {
@@ -99,7 +44,7 @@ public class RunMultipleBFS {
 
     private static List<Map.Entry<Domain, Domain>> getDomainsConnections(List<Domain> domains) {
         List<Map.Entry<Domain, Domain>> domainsConnections = new ArrayList<>();
-        Map<Domain, Domain> domainsConnectionsMap = new HashMap<>();
+//        Map<Domain, Domain> domainsConnectionsMap = new HashMap<>();
         List<Map.Entry<Domain, Domain>> dfsParentsByDomain = getDFSParents(domains);
 
         for (Map.Entry<Domain, Domain> domainAndParent : dfsParentsByDomain) {
@@ -116,7 +61,7 @@ public class RunMultipleBFS {
 //                continue;
 //            }
 
-            domainsConnectionsMap.put(parent, domain);
+//            domainsConnectionsMap.put(parent, domain);
             domainsConnections.add(new AbstractMap.SimpleEntry<Domain, Domain>(parent, domain));
         }
 
@@ -281,16 +226,28 @@ public class RunMultipleBFS {
         return false;
     }
 
-    private static void expandDomains(List<Domain> domains) {
+    private static void expandDomains(List<Domain> domains, Set<RoadType> roadTypes) {
         for (Domain domain : domains) {
             Node node = domain.getNextNode();
             if (node == null) {
                 continue;
             }
 
-            Set<Node> neighbors = node.getNeighbors();
+            Set<Node> neighbors = new HashSet<>(node.getNeighbors());
+
+            //TODO: better personalization
+            for (Node neighbor : neighbors) {
+                if (!neighbor.hasAtLeastOneRoadType(roadTypes)) {
+                    neighbors.remove(neighbor);
+                }
+            }
+            if (neighbors.isEmpty()) {
+                neighbors = new HashSet<>(node.getNeighbors());
+            }
 
             for (Node neighbor : neighbors) {
+
+
                 Set<Domain> visitingDomains = neighbor.getVisitingDomains();
 
                 if (visitingDomains.contains(domain)) {
