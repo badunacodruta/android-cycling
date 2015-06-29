@@ -268,9 +268,9 @@ public class RunMultipleBFS {
                 }
             }
 
-            if (neighbors.isEmpty()) {
-                neighbors = new HashSet<>(node.getNeighbors());
-            }
+//            if (neighbors.isEmpty()) {
+//                neighbors = new HashSet<>(node.getNeighbors());
+//            }
 
             for (Node neighbor : neighbors) {
 
