@@ -154,7 +154,7 @@ function saveActivity() {
     activity.activityAccessType = accessType;
     activity.coordinates = [];
     for (i = 0; i < trackCoordinates.length; i++) {
-        activity.coordinates.push({"lat": trackCoordinates[i].lat(), "lng": trackCoordinates[i].lng()});
+        activity.coordinates.push({"lat": trackCoordinates[i].lat, "lng": trackCoordinates[i].lng});
     }
     activity.coordinates = JSON.stringify(activity.coordinates);
 

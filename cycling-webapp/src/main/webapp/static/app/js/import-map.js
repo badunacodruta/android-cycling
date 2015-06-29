@@ -30,6 +30,6 @@ function createTrackFromImportedXml(xml) {
         points.push(p);
     });
 
-    trackCoordinates = points;
+    coordinatesForTrack = points;
     recreateTrack(true);
 }
