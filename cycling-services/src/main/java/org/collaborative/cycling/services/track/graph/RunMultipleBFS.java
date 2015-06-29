@@ -77,21 +77,113 @@ public class RunMultipleBFS {
     }
 
     private static List<Node> getPathBetweenDomains(List<Domain> domains) {
-
-        //TODO
-
+        Map<Domain, Domain> domainsConnections = getDomainsConnections(domains);
+        Random random = new Random();
         List<Node> nodes = new ArrayList<>();
 
-        for (Domain domain : domains) {
-            Map<Domain, List<Node>> intersectionNodesByDomain = domain.getIntersectionNodesByDomain();
+        for (Map.Entry<Domain, Domain> domaninConnection : domainsConnections.entrySet()) {
+            Domain domain1 = domaninConnection.getKey();
+            Domain domain2 = domaninConnection.getValue();
 
-            for (Domain intersectingDomain : intersectionNodesByDomain.keySet()) {
-                Node intersectionNode = intersectionNodesByDomain.get(intersectingDomain).get(0);
-                nodes.addAll(getPathBetween(domain, intersectingDomain, intersectionNode));
-            }
+            List<Node> intersectionNodes = domain1.getIntersectionNodesByDomain().get(domain2);
+            int intersectionNodeIndex = random.nextInt(intersectionNodes.size());
+            Node intersectionNode = intersectionNodes.get(intersectionNodeIndex);
+
+            nodes.addAll(getPathBetween(domain1, domain2, intersectionNode));
         }
 
         return nodes;
+    }
+
+    private static Map<Domain, Domain> getDomainsConnections(List<Domain> domains) {
+        Map<Domain, Domain> domainsConnections = new HashMap<>();
+        Map<Domain, Domain> dfsParentsByDomain = getDFSParents(domains);
+
+        for (Map.Entry<Domain, Domain> domainAndParent : dfsParentsByDomain.entrySet()) {
+            Domain domain = domainAndParent.getKey();
+            Domain parent = domainAndParent.getValue();
+
+            if (parent == null) {
+                continue;
+            }
+
+            if ((domainsConnections.containsKey(domain) && domainsConnections.get(domain).equals(parent)) ||
+                    domainsConnections.containsKey(parent) && domainsConnections.get(parent).equals(domain)) {
+                continue;
+            }
+
+            domainsConnections.put(parent, domain);
+        }
+
+        return domainsConnections;
+    }
+
+    private static Map<Domain, Domain> getDFSParents(List<Domain> domains) {
+        Map<Domain, Domain> dfsParents = new HashMap<>();
+
+        if (domains.size() == 0) {
+            return dfsParents;
+        }
+
+        Domain domain = getDomainWithFewestNeighbors(domains);
+        Stack<Domain> dfsStack = new Stack<>();
+        Set<Domain> visited = new HashSet<>();
+        dfsStack.add(domain);
+        visited.add(domain);
+        dfsParents.put(domain, null);
+
+        while(!dfsStack.isEmpty() && dfsParents.keySet().size() != domains.size()) {
+            domain = dfsStack.pop();
+
+            //TODO order this by distance desc
+            Set<Domain> intersectingDomains = domain.getIntersectingDomains();
+
+            for (Domain intersectingDomain : intersectingDomains) {
+                if (!visited.contains(intersectingDomain)) {
+                    dfsStack.add(intersectingDomain);
+                    visited.add(intersectingDomain);
+                    dfsParents.put(intersectingDomain, domain);
+                }
+            }
+        }
+
+        return dfsParents;
+    }
+
+    private static Domain getDomainWithFewestNeighbors(List<Domain> domains) {
+        if (domains.size() == 0) {
+            return null;
+        }
+        Domain domainWithFewestNeighbors = domains.get(0);
+
+        for (Domain domain : domains) {
+            if (domain.getIntersectingDomains().size() < domainWithFewestNeighbors.getIntersectingDomains().size()) {
+                domainWithFewestNeighbors = domain;
+            }
+        }
+
+        return domainWithFewestNeighbors;
+    }
+
+
+    private static Domain getClosestIntersectingDomain(Domain domain) {
+        Set<Domain> intersectingDomains = domain.getIntersectingDomains();
+        Iterator<Domain> iterator = intersectingDomains.iterator();
+        if (!iterator.hasNext()) {
+            return null;
+        }
+
+        Domain closestDomain = iterator.next();
+        while (iterator.hasNext()) {
+            Domain nextDomain = iterator.next();
+
+            if (nextDomain.getStartingPoint().distance(domain.getStartingPoint())
+                    < closestDomain.getStartingPoint().distance(domain.getStartingPoint())) {
+                closestDomain = nextDomain;
+            }
+        }
+
+        return closestDomain;
     }
 
     private static List<Node> getPathBetween(Domain domain1, Domain domain2, Node intersectionPoint) {
@@ -137,15 +229,16 @@ public class RunMultipleBFS {
         List<Domain> bfsQueue = new ArrayList<>(domainsSize);
         Set<Domain> visitedSet = new HashSet<>(domainsSize);
         bfsQueue.add(startingDomain);
+        visitedSet.add(startingDomain);
 
         while (!bfsQueue.isEmpty()) {
             Domain domain = bfsQueue.remove(0);
-            visitedSet.add(domain);
 
             Set<Domain> intersectingDomains = domain.getIntersectingDomains();
             for (Domain intersectingDomain : intersectingDomains) {
                 if (!visitedSet.contains(intersectingDomain)) {
                     bfsQueue.add(intersectingDomain);
+                    visitedSet.add(intersectingDomain);
                 }
             }
 

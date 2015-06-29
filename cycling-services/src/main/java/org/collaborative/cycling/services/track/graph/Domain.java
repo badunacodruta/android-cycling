@@ -73,6 +73,10 @@ public class Domain {
         return border;
     }
 
+    public Node getStartingPoint() {
+        return startingPoint;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
