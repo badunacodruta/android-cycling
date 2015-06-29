@@ -1,7 +1,6 @@
 package org.collaborative.cycling.services.track.graph;
 
 
-
 import org.collaborative.cycling.models.RoadType;
 
 import java.util.*;
@@ -65,7 +64,32 @@ public class RunMultipleBFS {
             domainsConnections.add(new AbstractMap.SimpleEntry<Domain, Domain>(parent, domain));
         }
 
-        return domainsConnections;
+        return linearize(domainsConnections);
+    }
+
+    private static List<Map.Entry<Domain, Domain>> linearize(List<Map.Entry<Domain, Domain>> domainsConnections) {
+        List<Map.Entry<Domain, Domain>> linearDomainConnections = new ArrayList<>();
+        Stack<Map.Entry<Domain, Domain>> connectionsStack = new Stack<>();
+        Domain lastDomain = null;
+
+        while (!domainsConnections.isEmpty()) {
+            Map.Entry<Domain, Domain> connection = domainsConnections.remove(0);
+
+            if (lastDomain != null && !lastDomain.equals(connection.getKey())) {
+                while (!connection.getKey().equals(lastDomain) && !connectionsStack.isEmpty()) {
+                    Map.Entry<Domain, Domain> connectionToReverse = connectionsStack.pop();
+                    linearDomainConnections.add(new AbstractMap.SimpleEntry<Domain, Domain>
+                            (connectionToReverse.getValue(), connectionToReverse.getKey()));
+                    lastDomain = connectionToReverse.getKey();
+                }
+            }
+
+            linearDomainConnections.add(connection);
+            connectionsStack.push(connection);
+            lastDomain = connection.getValue();
+        }
+
+        return linearDomainConnections;
     }
 
     private static List<Map.Entry<Domain, Domain>> getDFSParents(List<Domain> domains) {
@@ -82,7 +106,7 @@ public class RunMultipleBFS {
         visited.add(domain);
         dfsParents.add(new AbstractMap.SimpleEntry<Domain, Domain>(domain, null));
 
-        while(!dfsStack.isEmpty() && dfsParents.size() != domains.size()) {
+        while (!dfsStack.isEmpty() && dfsParents.size() != domains.size()) {
             domain = dfsStack.pop();
 
             List<Domain> intersectingDomains = new ArrayList<>(domain.getIntersectingDomains());
