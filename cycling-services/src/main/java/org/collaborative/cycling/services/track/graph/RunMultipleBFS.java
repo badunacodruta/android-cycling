@@ -1,5 +1,7 @@
 package org.collaborative.cycling.services.track.graph;
 
+
+
 import java.util.*;
 
 public class RunMultipleBFS {
@@ -77,11 +79,11 @@ public class RunMultipleBFS {
     }
 
     private static List<Node> getPathBetweenDomains(List<Domain> domains) {
-        Map<Domain, Domain> domainsConnections = getDomainsConnections(domains);
+        List<Map.Entry<Domain, Domain>> domainsConnections = getDomainsConnections(domains);
         Random random = new Random();
         List<Node> nodes = new ArrayList<>();
 
-        for (Map.Entry<Domain, Domain> domaninConnection : domainsConnections.entrySet()) {
+        for (Map.Entry<Domain, Domain> domaninConnection : domainsConnections) {
             Domain domain1 = domaninConnection.getKey();
             Domain domain2 = domaninConnection.getValue();
 
@@ -95,11 +97,12 @@ public class RunMultipleBFS {
         return nodes;
     }
 
-    private static Map<Domain, Domain> getDomainsConnections(List<Domain> domains) {
-        Map<Domain, Domain> domainsConnections = new HashMap<>();
-        Map<Domain, Domain> dfsParentsByDomain = getDFSParents(domains);
+    private static List<Map.Entry<Domain, Domain>> getDomainsConnections(List<Domain> domains) {
+        List<Map.Entry<Domain, Domain>> domainsConnections = new ArrayList<>();
+        Map<Domain, Domain> domainsConnectionsMap = new HashMap<>();
+        List<Map.Entry<Domain, Domain>> dfsParentsByDomain = getDFSParents(domains);
 
-        for (Map.Entry<Domain, Domain> domainAndParent : dfsParentsByDomain.entrySet()) {
+        for (Map.Entry<Domain, Domain> domainAndParent : dfsParentsByDomain) {
             Domain domain = domainAndParent.getKey();
             Domain parent = domainAndParent.getValue();
 
@@ -107,19 +110,21 @@ public class RunMultipleBFS {
                 continue;
             }
 
-            if ((domainsConnections.containsKey(domain) && domainsConnections.get(domain).equals(parent)) ||
-                    domainsConnections.containsKey(parent) && domainsConnections.get(parent).equals(domain)) {
-                continue;
-            }
+            //TODO comment this ?
+//            if ((domainsConnectionsMap.containsKey(domain) && domainsConnectionsMap.get(domain).equals(parent)) ||
+//                    domainsConnectionsMap.containsKey(parent) && domainsConnectionsMap.get(parent).equals(domain)) {
+//                continue;
+//            }
 
-            domainsConnections.put(parent, domain);
+            domainsConnectionsMap.put(parent, domain);
+            domainsConnections.add(new AbstractMap.SimpleEntry<Domain, Domain>(parent, domain));
         }
 
         return domainsConnections;
     }
 
-    private static Map<Domain, Domain> getDFSParents(List<Domain> domains) {
-        Map<Domain, Domain> dfsParents = new HashMap<>();
+    private static List<Map.Entry<Domain, Domain>> getDFSParents(List<Domain> domains) {
+        List<Map.Entry<Domain, Domain>> dfsParents = new ArrayList<>();
 
         if (domains.size() == 0) {
             return dfsParents;
@@ -130,19 +135,33 @@ public class RunMultipleBFS {
         Set<Domain> visited = new HashSet<>();
         dfsStack.add(domain);
         visited.add(domain);
-        dfsParents.put(domain, null);
+        dfsParents.add(new AbstractMap.SimpleEntry<Domain, Domain>(domain, null));
 
-        while(!dfsStack.isEmpty() && dfsParents.keySet().size() != domains.size()) {
+        while(!dfsStack.isEmpty() && dfsParents.size() != domains.size()) {
             domain = dfsStack.pop();
 
-            //TODO order this by distance desc
-            Set<Domain> intersectingDomains = domain.getIntersectingDomains();
+            List<Domain> intersectingDomains = new ArrayList<>(domain.getIntersectingDomains());
+            final Domain finalDomain = domain;
+            Collections.sort(intersectingDomains, new Comparator<Domain>() {
+                @Override
+                public int compare(Domain o1, Domain o2) {
+                    double diff = o1.getStartingPoint().distance(finalDomain.getStartingPoint())
+                            - o2.getStartingPoint().distance(finalDomain.getStartingPoint());
+                    if (diff < 0) {
+                        return 1;
+                    }
+                    if (diff > 0) {
+                        return -1;
+                    }
+                    return 0;
+                }
+            });
 
             for (Domain intersectingDomain : intersectingDomains) {
                 if (!visited.contains(intersectingDomain)) {
                     dfsStack.add(intersectingDomain);
                     visited.add(intersectingDomain);
-                    dfsParents.put(intersectingDomain, domain);
+                    dfsParents.add(new AbstractMap.SimpleEntry<Domain, Domain>(intersectingDomain, domain));
                 }
             }
         }
